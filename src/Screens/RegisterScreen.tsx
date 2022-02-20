@@ -1,7 +1,7 @@
-const RegisterScreen = () => {
-    return (
-        <div>login screen</div>
-    )
+function RegisterScreen() {
+  return (
+    <div>login screen</div>
+  );
 }
 
 export default RegisterScreen;

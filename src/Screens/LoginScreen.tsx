@@ -1,7 +1,7 @@
-const LoginScreen = () => {
-    return (
-        <div>login screen</div>
-    )
+function LoginScreen() {
+  return (
+    <div>login screen</div>
+  );
 }
 
 export default LoginScreen;

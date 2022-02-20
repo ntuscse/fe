@@ -1,12 +1,13 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import HomeScreen from "./Screens/HomeScreen";
+import HomeScreen from './Screens/HomeScreen';
 import { ChakraProvider } from '@chakra-ui/react';
 
-export const App = () => (
-  <ChakraProvider>
-    <HomeScreen />
-  </ChakraProvider>
-);
-
+export function App() {
+  return (
+    <ChakraProvider>
+      <HomeScreen />
+    </ChakraProvider>
+  );
+}
