@@ -1,13 +1,16 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-import HomeScreen from './Screens/HomeScreen';
-import { ChakraProvider } from '@chakra-ui/react';
+import "./App.css";
+import { ChakraProvider } from "@chakra-ui/react";
+import { BrowserRouter } from "react-router-dom";
+import Routes from "./routes";
 
-export function App() {
+const App = () => {
   return (
     <ChakraProvider>
-      <HomeScreen />
+      <BrowserRouter>
+        <Routes />
+      </BrowserRouter>
     </ChakraProvider>
   );
-}
+};
+
+export default App;
