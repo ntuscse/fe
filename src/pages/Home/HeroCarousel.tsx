@@ -1,4 +1,5 @@
-import Carousel from "../../components/Carousel";
+import { Image } from "@chakra-ui/react";
+import Carousel, { Slide } from "../../components/Carousel";
 
 const slideImageUris = [
   "https://images.unsplash.com/photo-1523381294911-8d3cead13475?fit=crop&w=1080&q=85",
@@ -8,8 +9,21 @@ const slideImageUris = [
   "https://images.unsplash.com/photo-1602810319428-019690571b5b?fit=crop&w=1080&q=85",
 ];
 
+const slides: Slide[] = slideImageUris.map((uri, index) => ({
+  id: (index + 1).toString(),
+  component: (
+    <Image
+      width="100%"
+      height="70vh"
+      objectFit="cover"
+      src={uri}
+      alt={`Slide-${index + 1}`}
+    />
+  ),
+}));
+
 const HeroCarousel = () => {
-  return <Carousel slides={slideImageUris} />;
+  return <Carousel slides={slides} />;
 };
 
 export default HeroCarousel;

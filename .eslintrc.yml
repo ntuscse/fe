@@ -23,6 +23,7 @@ rules:
   arrow-body-style: 0
   "import/prefer-default-export": 0
   no-restricted-exports: 0
+  "react/jsx-props-no-spreading": 0
   "import/extensions":
     - "error"
     - "ignorePackages"

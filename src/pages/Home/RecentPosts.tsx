@@ -1,3 +1,4 @@
+import { ArrowForwardIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
@@ -6,6 +7,7 @@ import {
   GridItem,
   Heading,
   Image,
+  Spacer,
   Text,
   useBreakpointValue,
 } from "@chakra-ui/react";
@@ -17,7 +19,13 @@ const RecentPosts = () => {
 
   return (
     <Box p={12}>
-      <Heading>Recent Posts</Heading>
+      <Flex>
+        <Heading>Recent Posts</Heading>
+        <Spacer />{" "}
+        <Button rightIcon={<ArrowForwardIcon />} variant="ghost">
+          View All
+        </Button>
+      </Flex>
       {posts.map((post, index) => {
         return (
           <Grid

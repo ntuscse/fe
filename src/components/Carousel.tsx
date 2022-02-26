@@ -3,14 +3,21 @@ import "swiper/css";
 import "swiper/less/autoplay";
 
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Image } from "@chakra-ui/react";
-import { Navigation, Pagination, Autoplay, Lazy } from "swiper";
+import { Navigation, Pagination, Autoplay, Lazy, SwiperOptions } from "swiper";
+import { CSSProperties, ReactElement } from "react";
 
-type CarouselProps = {
-  slides: string[];
+export type Slide = {
+  id: string;
+  component: ReactElement;
 };
 
-const Carousel = ({ slides }: CarouselProps) => {
+type CarouselProps = {
+  slides: Slide[];
+  // eslint-disable-next-line react/require-default-props
+  options?: Partial<SwiperOptions & { style: CSSProperties }>;
+};
+
+const Carousel = ({ slides, options }: CarouselProps) => {
   return (
     <Swiper
       modules={[Navigation, Pagination, Lazy, Autoplay]}
@@ -39,17 +46,10 @@ const Carousel = ({ slides }: CarouselProps) => {
       slidesPerView={1}
       // onSlideChange={() => console.log("slide change")}
       // onSwiper={(currentSwiper) => console.log(currentSwiper)}
+      {...options}
     >
-      {slides.map((slide, index) => (
-        <SwiperSlide key={slide}>
-          <Image
-            width="100%"
-            height="70vh"
-            objectFit="cover"
-            src={slide}
-            alt={`Slide-${index + 1}`}
-          />
-        </SwiperSlide>
+      {slides.map((slide) => (
+        <SwiperSlide key={slide.id}>{slide.component}</SwiperSlide>
       ))}
     </Swiper>
   );
