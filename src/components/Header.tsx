@@ -57,7 +57,7 @@ const HeaderDrawer = () => {
 
 const Header = () => {
   return (
-    <Flex py={4} px={{ base: 4, md: 4, lg: 16 }}>
+    <Flex py={4} px={{ base: 4, md: 4, lg: 16 }} align="center">
       <HStack spacing={2}>
         <Image src="/images/SCSE-Logo.png" alt="SCSE Logo" boxSize={14} />
         <Heading>SCSE CLUB</Heading>
