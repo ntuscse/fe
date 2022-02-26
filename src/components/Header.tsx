@@ -1,3 +1,4 @@
+import { HamburgerIcon } from "@chakra-ui/icons";
 import {
   Link,
   Flex,
@@ -6,32 +7,82 @@ import {
   HStack,
   Spacer,
   Image,
+  Show,
+  IconButton,
+  useDisclosure,
+  Drawer,
+  DrawerOverlay,
+  DrawerContent,
+  DrawerCloseButton,
+  DrawerBody,
+  Grid,
 } from "@chakra-ui/react";
+// import { useRef } from "react";
 
-function Header() {
+const HeaderDrawer = () => {
+  // const btnRef = useRef();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   return (
-    <Flex py={4} px={16}>
+    <>
+      <IconButton
+        // ref={btnRef}
+        onClick={onOpen}
+        aria-label="Toggle Header Menu"
+        icon={<HamburgerIcon />}
+      />
+      <Drawer
+        isOpen={isOpen}
+        placement="right"
+        onClose={onClose}
+        // finalFocusRef={btnRef}
+      >
+        <DrawerOverlay />
+        <DrawerContent>
+          <DrawerCloseButton size="lg" />
+
+          <DrawerBody pt={8}>
+            <Grid rowGap={4}>
+              <Heading size="lg">Home</Heading>
+              <Heading size="lg">Projects</Heading>
+              <Heading size="lg">About Us</Heading>
+              <Heading size="lg">Merchandise</Heading>
+            </Grid>
+          </DrawerBody>
+        </DrawerContent>
+      </Drawer>
+    </>
+  );
+};
+
+const Header = () => {
+  return (
+    <Flex py={4} px={{ base: 4, md: 4, lg: 16 }}>
       <HStack spacing={2}>
         <Image src="/images/SCSE-Logo.png" alt="SCSE Logo" boxSize={14} />
         <Heading>SCSE CLUB</Heading>
       </HStack>
 
       <Spacer />
-
-      <HStack spacing={5}>
-        <Link href="/" fontWeight="700">
-          Home
-        </Link>
-        <Link href="/">Projects</Link>
-        <Link href="/">Abous Us</Link>
-        <Link href="/">Merchandise</Link>
-        <Button variant="outline" px={12}>
-          Sign in
-        </Button>
-        <Button variant="solid">Create an Account</Button>
-      </HStack>
+      <Show below="xl">
+        <HeaderDrawer />
+      </Show>
+      <Show above="xl">
+        <HStack spacing={5}>
+          <Link href="/" fontWeight="700">
+            Home
+          </Link>
+          <Link href="/">Projects</Link>
+          <Link href="/">Abous Us</Link>
+          <Link href="/">Merchandise</Link>
+          <Button variant="outline" px={12}>
+            Sign in
+          </Button>
+          <Button variant="solid">Create an Account</Button>
+        </HStack>
+      </Show>
     </Flex>
   );
-}
+};
 
 export default Header;
