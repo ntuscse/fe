@@ -2,7 +2,7 @@ import "./App.css";
 import { ChakraProvider } from "@chakra-ui/react";
 import { BrowserRouter } from "react-router-dom";
 import Routes from "./routes";
-import chakraTheme from "./components/theme";
+import chakraTheme from "./config/theme";
 
 const App = () => {
   return (

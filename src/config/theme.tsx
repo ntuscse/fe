@@ -11,7 +11,7 @@ const chakraTheme: Partial<ChakraTheme> = extendTheme({
       400: "#7477A1",
       500: "#1816C2",
       600: "#181C62",
-      700: "#0E113B"
+      700: "#0E113B",
     },
     secondary: {
       default: "#D72040",
@@ -25,9 +25,16 @@ const chakraTheme: Partial<ChakraTheme> = extendTheme({
       700: "#811303",
     },
   },
-  font: {
+  fonts: {
     heading: "Open Sans, sans-serif",
     body: "Montserrat, sans-serif",
+  },
+  components: {
+    Button: {
+      defaultProps: {
+        colorScheme: "secondary",
+      },
+    },
   },
   textStyles: {
     h1: {
@@ -38,12 +45,12 @@ const chakraTheme: Partial<ChakraTheme> = extendTheme({
       fontSize: ["48px", "60px"],
       fontWeight: "700",
     },
-   
+
     h3: {
       fontSize: ["36px", "48px"],
       fontWeight: "700",
     },
-  
+
     h4: {
       fontSize: ["30px", "36px"],
       fontWeight: "700",
@@ -104,8 +111,7 @@ const chakraTheme: Partial<ChakraTheme> = extendTheme({
     xs: {
       fontSize: ["12px", "30px"],
       fontWeight: "400",
-    }
-    
+    },
   },
 });
 
