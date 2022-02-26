@@ -84,7 +84,6 @@ const RecentEvents = () => {
             spaceBetween: 32,
             loop: false,
             autoplay: false,
-            // spaceBetween: 200,
             style: {
               padding: 24,
               paddingLeft: 42,
