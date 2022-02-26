@@ -10,7 +10,7 @@ function Header() {
       justifyContent="space-between"
     >
       <Flex>
-        <Heading mr="60px" fontSize="2xl" color="#181c62">
+        <Heading mr="60px" fontSize="h1" color="#181c62">
           SCSE CLUB
         </Heading>
       </Flex>
