@@ -72,23 +72,23 @@ const chakraTheme: Partial<ChakraTheme> = extendTheme({
       fontWeight: "700",
     },
 
-    xl6: {
+    "6xl": {
       fontSize: ["60px", "30px"],
       fontWeight: "400",
     },
-    xl5: {
+    "5xl": {
       fontSize: ["48px", "30px"],
       fontWeight: "400",
     },
-    xl4: {
+    "4xl": {
       fontSize: ["36px", "30px"],
       fontWeight: "400",
     },
-    xl3: {
+    "3xl": {
       fontSize: ["30px", "30px"],
       fontWeight: "400",
     },
-    xl2: {
+    "2xl": {
       fontSize: ["24px", "30px"],
       fontWeight: "400",
     },
