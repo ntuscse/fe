@@ -6,8 +6,11 @@ import { Link,
 
 function Footer() {
   return (
-    <Flex py={4} alignContent="center" justifyContent="center">
-        <HStack spacing={5} fontSize={{ base:"xs", md: "xs", lg:"lg" }} color="primary">
+    <Flex py={4} alignItems="center" justifyContent="center" flexDirection="column">
+        <HStack spacing={5} fontSize={{ base:"xs", md: "xs", lg:"lg" }} color="primary" mb={5}>
+
+          {/* TODO: Add mobile responsive styling for footer */}
+
           <Link href="/">NTU Website</Link>
           <Link href="/">SCSE Office</Link>
           <Link href="/">Abous Us</Link>
@@ -16,8 +19,11 @@ function Footer() {
           <Link href="/">Merchandise</Link>
           <Link href="/">Resources</Link>
         </HStack>
+        <Image src="./images/vercellogo.svg" w={48} objectFit="contain" mb={5}/>
     </Flex>
+
   );
 }
+
 
 export default Footer;
