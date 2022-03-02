@@ -73,7 +73,7 @@ const Header = () => {
             Home
           </Link>
           <Link href="/">Projects</Link>
-          <Link href="/">Abous Us</Link>
+          <Link href="/">About Us</Link>
           <Link href="/">Merchandise</Link>
           <Button variant="outline" px={12}>
             Sign in
