@@ -35,7 +35,7 @@ const EventCard = ({ event, showButtonOnRight, ...props }: EventCardProps) => {
   return (
     <Box
       w={{ base: "auto", md: 320 }}
-      boxShadow="lg"
+      boxShadow={{ base: "base", md: "lg" }}
       rounded="md"
       bg="white"
       {...props}
@@ -60,14 +60,14 @@ const EventCard = ({ event, showButtonOnRight, ...props }: EventCardProps) => {
 
 const RecentEvents = () => {
   return (
-    <Box pb={24}>
+    <Box pb={12} maxWidth="1400px" mx="auto">
       <Heading px={12}>Recent Events</Heading>
       <Show below="md">
         {events.map((event, index) => (
           <EventCard
             key={index.toString()}
             event={event}
-            mx={12}
+            mx={{ base: 6, md: 12 }}
             mb={8}
             showButtonOnRight
           />

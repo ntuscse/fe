@@ -18,11 +18,11 @@ const RecentPosts = () => {
   const dualColumn = useBreakpointValue({ base: false, md: true });
 
   return (
-    <Box p={12}>
-      <Flex>
+    <Box p={{ base: 8, lg: 12 }} maxWidth="1400px" mx="auto">
+      <Flex alignItems="center">
         <Heading>Recent Posts</Heading>
-        <Spacer />{" "}
-        <Button rightIcon={<ArrowForwardIcon />} variant="ghost">
+        <Spacer />
+        <Button rightIcon={<ArrowForwardIcon />} variant="ghost" size="sm">
           View All
         </Button>
       </Flex>
