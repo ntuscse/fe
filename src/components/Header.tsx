@@ -16,6 +16,7 @@ import {
   DrawerCloseButton,
   DrawerBody,
   Grid,
+  Hide,
 } from "@chakra-ui/react";
 // import { useRef } from "react";
 
@@ -67,7 +68,7 @@ const Header = () => {
       <Show below="xl">
         <HeaderDrawer />
       </Show>
-      <Show above="xl">
+      <Hide below="xl">
         <HStack spacing={5}>
           <Link href="/" fontWeight="700">
             Home
@@ -80,7 +81,7 @@ const Header = () => {
           </Button>
           <Button variant="solid">Create an Account</Button>
         </HStack>
-      </Show>
+      </Hide>
     </Flex>
   );
 };

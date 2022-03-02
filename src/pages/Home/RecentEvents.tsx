@@ -1,4 +1,4 @@
-import { ArrowForwardIcon } from "@chakra-ui/icons"
+import { ArrowForwardIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
@@ -34,7 +34,7 @@ const EventCard = ({ event, showButtonOnRight, ...props }: EventCardProps) => {
   const { imageUri, title, body } = event;
   return (
     <Box
-      w={{ base: "auto", lg: 320 }}
+      w={{ base: "auto", md: 320 }}
       boxShadow="lg"
       rounded="md"
       bg="white"
