@@ -18,16 +18,16 @@ import {
   Grid,
   Hide,
 } from "@chakra-ui/react";
-// import { useRef } from "react";
+import { useRef } from "react";
 
 const HeaderDrawer = () => {
-  // const btnRef = useRef();
+  const btnRef = useRef<HTMLButtonElement>(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <>
       <IconButton
-        // ref={btnRef}
+        ref={btnRef}
         onClick={onOpen}
         aria-label="Toggle Header Menu"
         icon={<HamburgerIcon />}
@@ -36,7 +36,7 @@ const HeaderDrawer = () => {
         isOpen={isOpen}
         placement="right"
         onClose={onClose}
-        // finalFocusRef={btnRef}
+        finalFocusRef={btnRef}
       >
         <DrawerOverlay />
         <DrawerContent>
