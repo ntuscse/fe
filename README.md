@@ -2,6 +2,8 @@
 
 This repo contains all code for NTU SCSE Club's site.
 
+This repo follows [Gitlab Flow](https://vercel.com/cse-it/fe/settings/git).
+
 This app was bootstrapped with create-react-app. All react-scripts work here.
 
 ## Requirements
