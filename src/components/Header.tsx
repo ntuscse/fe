@@ -19,6 +19,7 @@ import {
   Hide,
 } from "@chakra-ui/react";
 import { useRef } from "react";
+import { Link as RouterLink } from "react-router-dom";
 
 const HeaderDrawer = () => {
   const btnRef = useRef<HTMLButtonElement>(null);
@@ -76,10 +77,12 @@ const Header = () => {
           <Link href="/">Projects</Link>
           <Link href="/">About Us</Link>
           <Link href="/">Merchandise</Link>
-          <Button variant="outline" px={12}>
+          <Button to="/sign-in" as={RouterLink} variant="outline" px={12}>
             Sign in
           </Button>
-          <Button variant="solid">Create an Account</Button>
+          <Button to="/sign-up" as={RouterLink} variant="solid">
+            Create an Account
+          </Button>
         </HStack>
       </Hide>
     </Flex>
