@@ -18,7 +18,7 @@ const FooterLink = ({ children, href }: FooterLinkProps) => {
 
 function Footer() {
   return (
-    <Flex direction="column" alignItems="center" bottom={0}>
+    <Flex direction="column" alignItems="center">
       <Box>
         <Grid
           display="inline-grid"

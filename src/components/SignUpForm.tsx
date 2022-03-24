@@ -7,13 +7,10 @@ import {
     Input,
     Button,
     Text,
-    Divider
-  } from "@chakra-ui/react";
-
-import {
+    Divider,
     FormControl,
-    FormLabel,
-} from "@chakra-ui/form-control"
+    FormLabel
+  } from "@chakra-ui/react";
  
 import { ArrowForwardIcon } from "@chakra-ui/icons";
 

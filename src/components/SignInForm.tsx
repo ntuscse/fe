@@ -7,14 +7,10 @@ import {
     Input,
     Button,
     Text,
+    FormControl
   } from "@chakra-ui/react";
 
 import { ArrowForwardIcon } from "@chakra-ui/icons";
-
-import {
-    FormControl,
-} from "@chakra-ui/form-control"
-  
 
 const SignInForm = () => {
     return (
