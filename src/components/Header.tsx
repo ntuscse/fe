@@ -18,8 +18,9 @@ import {
   Grid,
   Hide,
 } from "@chakra-ui/react";
-import { useRef } from "react";
+import React, { useRef } from "react";
 import { Link as RouterLink } from "react-router-dom";
+import CognitoClient from "../utils/aws/cognito/cognitoClient";
 
 const HeaderDrawer = () => {
   const btnRef = useRef<HTMLButtonElement>(null);
@@ -58,6 +59,13 @@ const HeaderDrawer = () => {
 };
 
 const Header = () => {
+  const [isAuthenticated, setIsAuthenticated] = React.useState(false);
+  React.useEffect(() => {
+    CognitoClient.isUserSignedIn().then((isSignedIn) => {
+      setIsAuthenticated(isSignedIn)
+    });
+  }, []);
+  
   return (
     <Flex py={4} px={{ base: 4, md: 4, lg: 16 }} align="center">
       <HStack spacing={2}>
@@ -77,12 +85,11 @@ const Header = () => {
           <Link href="/">Projects</Link>
           <Link href="/">About Us</Link>
           <Link href="/">Merchandise</Link>
-          <Button to="/sign-in" as={RouterLink} variant="outline" px={12}>
+          {!isAuthenticated && (<><Button to="/sign-in" as={RouterLink} variant="outline" px={12}>
             Sign in
-          </Button>
-          <Button to="/sign-up" as={RouterLink} variant="solid">
-            Create an Account
-          </Button>
+          </Button><Button to="/sign-up" as={RouterLink} variant="solid">
+              Create an Account
+            </Button></>)}
         </HStack>
       </Hide>
     </Flex>
