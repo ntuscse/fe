@@ -89,6 +89,13 @@ import ErrorUI from "./ErrorUI";
             navigate(routes.CONFIRM_SIGN_UP)
         } catch (err:any) {
             switch (err.code) {
+                case 'UserLambdaValidationException':
+                    setError({
+                        errorTitle: 'Sign up failed',
+                        errorDescription: 'Invalid email domain',
+                        hasError: true
+                    })
+                    break
                 case 'UsernameExistsException':
                     setError({
                         errorTitle: 'Signup failed',
