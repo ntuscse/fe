@@ -64,10 +64,6 @@ import ErrorUI from "./ErrorUI";
             await passwordValidator.validateAsync(password)
             await phoneValidator.validateAsync(phoneNumber)
             confirmPasswordValidator()
-            setValidationError({
-                errorMessage: '',
-                hasError: false
-            })
         } catch (err: any) {
             setValidationError({
                 errorMessage: err.message,
