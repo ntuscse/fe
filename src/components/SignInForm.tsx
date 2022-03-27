@@ -15,19 +15,46 @@ import { useNavigate } from "react-router-dom";
 import React from "react";
 import CognitoClient from "../utils/aws/cognito/cognitoClient";
 import routes from "../utils/constants/routes";
+import ErrorUI from "./ErrorUI";
 
 const SignInForm = () => {
     const navigate = useNavigate()
     const [email, setEmail] = React.useState('')
     const [password, setPassword] = React.useState('')
+    const [error, setError] = React.useState({
+        errorTitle: '',
+        errorDescription: '',
+        hasError: false
+    })
 
     const onSubmitSignIn = async (event: any) => {
-        event.preventDefault()
         try {
+            event.preventDefault();
             await CognitoClient.signIn(email, password)
             navigate(routes.HOME)
-        } catch (err) {
-            alert(err)
+        } catch (err: any) {
+            switch (err.code) {
+                case 'NotAuthorizedException':
+                    setError({
+                        errorTitle: 'Login failed',
+                        errorDescription: 'Invalid email or password',
+                        hasError: true
+                    })
+                    break
+                case 'UserNotConfirmedException':
+                    setError({
+                        errorTitle: 'Login failed',
+                        errorDescription: 'User not confirmed',
+                        hasError: true
+                    })
+                    break
+                default:
+                    setError({
+                        errorTitle: 'Something went wrong',
+                        errorDescription: err.toString(),
+                        hasError: true
+                    })
+            }
         }
     }
 
@@ -39,8 +66,9 @@ const SignInForm = () => {
                 <form onSubmit={onSubmitSignIn}>
                     <FormControl>
                         <Flex flexDirection='column' w={[250, 450]} mt={4}>
-                            <Input id='email' type='email' placeholder='Email Address' mb={8} onChange={ event => setEmail(event.target.value) }/>
-                            <Input id='password' type='password' name='password' placeholder='Password' mb={4} onChange={event => setPassword(event.target.value)}/>
+                            {error.hasError && <ErrorUI errorTitle={error.errorTitle} errorDescription={error.errorDescription} />}
+                            <Input id='email' type='email' placeholder='Email Address' mb={8} onChange={ event => setEmail(event.target.value) } required/>
+                            <Input id='password' type='password' name='password' placeholder='Password' mb={4} onChange={event => setPassword(event.target.value)} required/>
                             <Flex justifyContent='flex-end'><Text mb={10} fontSize='sm'>Forgot Password?</Text></Flex>
                             <Flex justifyContent='space-between' mb={0}>
                                 <Text fontSize='sm' color='gray.700' fontWeight='semibold'>Create Account</Text>
