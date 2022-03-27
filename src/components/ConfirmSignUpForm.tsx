@@ -12,7 +12,6 @@ import {
   } from "@chakra-ui/react";
  
 import { ArrowForwardIcon } from "@chakra-ui/icons";
-import Joi from 'joi';
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import CognitoClient from "../utils/aws/cognito/cognitoClient";

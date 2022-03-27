@@ -50,7 +50,9 @@ import ErrorUI from "./ErrorUI";
                                     .minOfUppercase(1)
                                     .minOfLowercase(1)
                                     .label('Password')
-        const phoneValidator = Joi.string().regex(/^\+[1-9]\d{1,14}$/).label('Phone Number')
+        const phoneValidator = Joi.string().regex(/^\+[1-9]\d{1,14}$/).label('Phone Number').messages({
+            "string.pattern.base": "Phone number must be in the format +65xxxxxxxxxx"
+        })
         const confirmPasswordValidator = () => {
             if (password === confirmPassword) {
                 return Joi.valid(true)
