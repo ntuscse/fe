@@ -80,6 +80,15 @@ import ErrorUI from "./ErrorUI";
 
     const onSubmitSignUp = async (event: any) => {
         event.preventDefault();
+        setValidationError({
+            errorMessage: '',
+            hasError: false
+        })
+        setError({
+            errorTitle: '',
+            errorDescription: '',
+            hasError: false
+        })
         const isValidated = await formValidation()
         if (!isValidated) {
             return
