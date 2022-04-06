@@ -9,7 +9,8 @@ import {
     Text,
     Divider,
     FormControl,
-    FormLabel
+    FormLabel,
+    FormErrorMessage
   } from "@chakra-ui/react";
  
 import { ArrowForwardIcon } from "@chakra-ui/icons";
@@ -27,15 +28,27 @@ import routes from "../utils/constants/routes";
     const [givenName, setGivenName] = React.useState('')
     const [familyName, setFamilyName] = React.useState('')
 
+    let errName = '';
+    let isError = false;
+  
+
     const onSubmitSignUp = async (event: any) => {
         try {
             event.preventDefault();
             await CognitoClient.signUp(email, password, familyName, givenName, phoneNumber)
             navigate(routes.CONFIRM_SIGN_UP)
         } catch (err:any) {
-            switch (err.code) {
+            errName = err.name;
+            isError = true;
+            switch (err.name) {
+                
                 case 'UsernameExistsException':
                     alert('Email already exists')
+                    
+                    break
+                case 'InvalidParameterException':
+                    alert(err)
+
                     break
                 default:
                     alert(err)
@@ -57,6 +70,7 @@ import routes from "../utils/constants/routes";
                             <FormLabel htmlFor='family_name'>Family name</FormLabel>
                             <Input id='family_name' type='text' placeholder='Bob The Builder' mb={4} onChange={event => setFamilyName(event.target.value)}/>
                             <FormLabel htmlFor='email'>Email</FormLabel>
+                           
                             <Input id='email' type='email' placeholder='bob@ntu.edu.sg' mb={4} onChange={ event => setEmail(event.target.value) }/>
                             <FormLabel>Phone Number *Optional</FormLabel>
                             <Input id='phoneNumber' placeholder='Phone Number *Optional' mb={4} onChange={ event => setPhoneNumber(event.target.value) }/>

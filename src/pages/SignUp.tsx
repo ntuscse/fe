@@ -5,7 +5,7 @@ import Footer from "../components/Footer";
 
 const SignUp = () => {
   return (
-    <Flex direction="column" minHeight="100vh">
+    <Flex direction="column" minHeight="100vh" justifyContent='space-between'>
       <Header />
       <SignUpForm />
       <Footer /> 

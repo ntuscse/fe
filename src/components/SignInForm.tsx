@@ -7,7 +7,8 @@ import {
     Input,
     Button,
     Text,
-    FormControl
+    FormControl,
+    FormErrorMessage
   } from "@chakra-ui/react";
 
 import { ArrowForwardIcon } from "@chakra-ui/icons";
@@ -20,6 +21,7 @@ const SignInForm = () => {
     const navigate = useNavigate()
     const [email, setEmail] = React.useState('')
     const [password, setPassword] = React.useState('')
+    let isError = false;
 
     const onSubmitSignIn = async (event: any) => {
         event.preventDefault()
@@ -27,19 +29,21 @@ const SignInForm = () => {
             await CognitoClient.signIn(email, password)
             navigate(routes.HOME)
         } catch (err) {
-            alert(err)
+            isError = true;
+            alert(err);
+            
         }
     }
 
     return (
-        <Box borderWidth={1} borderRadius={2} p={4} margin='auto' mt={20} mb={20} boxShadow='sm'>
+        <Box borderWidth={1} borderRadius={2} p={4} margin='auto' mt={100} boxShadow='sm'>
             <VStack px={10} spacing={3} py={5}>
                 <Image src="../../images/SCSE-Logo.png" boxSize={16}/> 
                 <Heading fontSize={{ base: 'lg', md: '2xl' }}>Sign in</Heading>
                 <form onSubmit={onSubmitSignIn}>
                     <FormControl>
                         <Flex flexDirection='column' w={[250, 450]} mt={4}>
-                            <Input id='email' type='email' placeholder='Email Address' mb={8} onChange={ event => setEmail(event.target.value) }/>
+                            <Input isInvalid={isError} id='email' type='email' placeholder='Email Address' mb={8} onChange={ event => setEmail(event.target.value) } />
                             <Input id='password' type='password' name='password' placeholder='Password' mb={4} onChange={event => setPassword(event.target.value)}/>
                             <Flex justifyContent='flex-end'><Text mb={10} fontSize='sm'>Forgot Password?</Text></Flex>
                             <Flex justifyContent='space-between' mb={0}>
