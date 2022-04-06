@@ -59,7 +59,7 @@ const SignInForm = () => {
     }
 
     return (
-        <Box borderWidth={1} borderRadius={2} p={4} margin='auto' mt={20} mb={20} boxShadow='sm'>
+        <Box borderWidth={1} borderRadius={2} p={4} margin='auto' mt={100} boxShadow='sm'>
             <VStack px={10} spacing={3} py={5}>
                 <Image src="../../images/SCSE-Logo.png" boxSize={16}/> 
                 <Heading fontSize={{ base: 'lg', md: '2xl' }}>Sign in</Heading>
