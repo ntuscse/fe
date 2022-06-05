@@ -20,7 +20,7 @@ const MerchandiseList = () => {
             <Text textAlign='center' textStyle={['h6', 'h5']} textColor='primary.600' mt={5} mb={5}>SCSE Merchandise</Text>
             <Select bgColor={['white', 'gray.100']} w={125} h={8} alignSelf='center' borderRadius={20} placeholder='Product Type' size='xs' />
             <Flex justifyContent='space-between' mt={5} mb={5} alignItems='center'>
-                <Heading ml={[5, 20]} fontSize={['md', '2xl']} textColor={['primary.600', 'black']}>New Drop</Heading>
+                <Heading ml={[5, 16]} fontSize={['md', '2xl']} textColor={['primary.600', 'black']}>New Drop</Heading>
              
                 <Flex mr={[5, 20]} alignItems='center'>
                     <Text mr={[3, 5]} fontSize={['xs', 'xl']} textColor='primary.600'>Sort By:</Text>
