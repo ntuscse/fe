@@ -3,6 +3,7 @@ import ConfirmSignUp from "./pages/ConfirmSignUp";
 import Home from "./pages/Home"
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
+import MerchandiseList from "./pages/MerchandiseList/MerchandiseList";
 import routes from "./utils/constants/routes";
 
 const Routes = () => (
@@ -11,6 +12,7 @@ const Routes = () => (
     <Route path={routes.SIGN_IN} element={<SignIn />} />
     <Route path={routes.SIGN_UP} element={<SignUp />} />
     <Route path={routes.CONFIRM_SIGN_UP} element={<ConfirmSignUp />} />
+    <Route path={routes.MERCHANDISE_LIST} element={<MerchandiseList />} />
   </ReactRoutes>
 );
 

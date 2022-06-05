@@ -4,6 +4,7 @@ type Routes = {
     CONFIRM_SIGN_UP: string
     SIGN_IN: string
     FORGOT_PASSWORD: string
+    MERCHANDISE_LIST: string
 }
 
 const routes: Routes = {
@@ -12,6 +13,7 @@ const routes: Routes = {
     CONFIRM_SIGN_UP: '/confirm-sign-up',
     SIGN_IN: '/sign-in',
     FORGOT_PASSWORD: '/forgot-password',
+    MERCHANDISE_LIST: '/merchandise-list'
 }
 
 export default routes;
