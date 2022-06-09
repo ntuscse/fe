@@ -1,8 +1,11 @@
 import { Route, Routes as ReactRoutes } from "react-router-dom";
 import ConfirmSignUp from "./pages/ConfirmSignUp";
-import Home from "./pages/Home"
+import Home from "./pages/Home";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
+import Cart from "./pages/Cart";
+import Checkout from "./pages/Checkout";
+import OrderSummary from "./pages/OrderSummary";
 import routes from "./utils/constants/routes";
 
 const Routes = () => (
@@ -11,6 +14,9 @@ const Routes = () => (
     <Route path={routes.SIGN_IN} element={<SignIn />} />
     <Route path={routes.SIGN_UP} element={<SignUp />} />
     <Route path={routes.CONFIRM_SIGN_UP} element={<ConfirmSignUp />} />
+    <Route path={routes.CART} element={<Cart />} />
+    <Route path={routes.CHECKOUT} element={<Checkout />} />
+    <Route path={routes.ORDER_SUMMARY} element={<OrderSummary />} />
   </ReactRoutes>
 );
 
