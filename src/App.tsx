@@ -8,14 +8,21 @@ import "swiper/css/lazy";
 import "./App.css";
 import { ChakraProvider } from "@chakra-ui/react";
 import { BrowserRouter } from "react-router-dom";
+import { CartProvider } from "./context/cart";
 import Routes from "./routes";
 import chakraTheme from "./config/theme";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
 
 const App = () => {
   return (
     <ChakraProvider theme={chakraTheme}>
       <BrowserRouter>
-        <Routes />
+        <CartProvider>
+          <Header />
+          <Routes />
+          <Footer />
+        </CartProvider>
       </BrowserRouter>
     </ChakraProvider>
   );
