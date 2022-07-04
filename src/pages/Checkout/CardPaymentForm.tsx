@@ -9,6 +9,7 @@ import {
   InputGroup,
   InputRightElement,
 } from "@chakra-ui/react";
+import { Link } from "react-router-dom";
 
 const CardPaymentForm = () => {
   const [cn, setCN] = useState<string | undefined>("");
@@ -76,7 +77,7 @@ const CardPaymentForm = () => {
         </InputGroup>
       </Flex>
       <Button maxW={150} borderRadius="none" mt={2}>
-        CONTINUE
+        <Link to="/summary">CONTINUE</Link>
       </Button>
     </Flex>
   );

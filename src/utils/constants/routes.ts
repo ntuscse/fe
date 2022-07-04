@@ -7,6 +7,7 @@ type Routes = {
   CART: string;
   CHECKOUT: string;
   ORDER_SUMMARY: string;
+  ORDER_HISTORY: string;
 };
 
 const routes: Routes = {
@@ -18,6 +19,7 @@ const routes: Routes = {
   CART: "/cart",
   CHECKOUT: "/checkout",
   ORDER_SUMMARY: "/summary",
+  ORDER_HISTORY: "/order-history",
 };
 
 export default routes;
