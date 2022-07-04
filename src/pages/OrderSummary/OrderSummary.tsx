@@ -11,23 +11,11 @@ import {
   Skeleton,
   Stack,
 } from "@chakra-ui/react";
-import OrderItem from "./OrderItem";
+import OrderItem from "../../components/OrderItem";
 import { orderSummary } from "../../data/mock/orderstatus";
-import { OrderStatusType } from "../../typings/order-status";
 import { fakeDelay } from "../../utils/functions/random";
+import { renderOrderStatus } from "../../utils/constants/order-status";
 
-const renderOrderStatus = (status: OrderStatusType) => {
-  switch (status) {
-    case OrderStatusType.COLLECTED:
-      return "Order Collected";
-    case OrderStatusType.PROCESSING:
-      return "Processing";
-    case OrderStatusType.RECEIVED:
-      return "Order Received";
-    default:
-      return "Item Delayed";
-  }
-};
 export const OrderSummary = () => {
   // Check if break point hit.
   const isMobile: boolean =

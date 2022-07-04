@@ -1,5 +1,9 @@
 import { VoucherType } from "../../../typings/voucher";
-import { OrderItemType, OrderStatusType } from "../../../typings/order-status";
+import {
+  OrderItemType,
+  OrderStatusType,
+  OrderType,
+} from "../../../typings/order";
 
 export const orderItems: OrderItemType[] = [
   {
@@ -37,7 +41,7 @@ export const voucher: VoucherType = {
   description: "SCSECLUB#25 - $15 off",
 };
 
-export const orderSummary = {
+export const orderSummary: OrderType = {
   orderNo: "1234 5678 9102 3456",
   items: orderItems,
   status: OrderStatusType.READY_TO_COLLECT,
