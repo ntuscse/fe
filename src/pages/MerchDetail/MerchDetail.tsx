@@ -208,7 +208,6 @@ export const MerchDetail: React.FC = () => {
           return <br key={idx.toString()} />;
         })}
       </Box>
-      {JSON.stringify(cartState)}
     </Flex>
   );
 
