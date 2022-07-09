@@ -1,50 +1,47 @@
-import React, { useState } from "react";
+import React, { useRef } from "react";
 import {
   Box,
   Button,
   Flex,
   Heading,
-  Text,
   useBreakpointValue,
-  Input,
   Divider,
-  FormControl,
-  FormLabel,
-  FormHelperText,
   useDisclosure,
-  Center,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
-import { LinkIcon } from "@chakra-ui/icons";
 import CartItem from "./CartItem";
 import RemoveModal from "./RemoveModal";
 import CartHeader from "./CartHeader";
-import { addCartVoucher, useCartStore } from "../../context/cart";
+import CartEmptyView from "./CartEmptyView";
+import { CartAction, CartActionType, useCartStore } from "../../context/cart";
+import { VoucherSection } from "./VoucherSection";
 import { calCartSubTotal, calDiscountAmt } from "../../utils/functions/payment";
+import LoadingScreen from "../../components/LoadingScreen";
 
-export const Cart = () => {
+export const Cart: React.FC = () => {
   // Context hook.
   const cartContext = useCartStore();
-  const { state, dispatch } = cartContext;
+  const { state: cartState, dispatch: cartDispatch } = cartContext;
 
-  // Removal Modal states
+  // Removal Modal cartStates
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const toBeRemoved = React.useRef({ itemId: "", size: "" });
+  const toBeRemoved = useRef({ itemId: "", size: "" });
 
-  // Voucher Input state.
-  const [voucherInput, setVoucherInput] = useState("");
-  const [voucherLoading, setVoucherLoading] = useState(false);
   // Check if break point hit.
   const isMobile: boolean =
     useBreakpointValue({ base: true, md: false }) || false;
 
   // Calculate subtotal & discount amount.
-  const subTotal = state.items.length > 0 ? calCartSubTotal(state.items) : 0;
-  const discountAmt = calDiscountAmt(subTotal, state.voucherDetails);
+  const subTotal =
+    cartState.items.length > 0 ? calCartSubTotal(cartState.items) : 0;
+  const discountAmt = calDiscountAmt(subTotal, cartState.voucherDetails);
 
   // Update Cart Item by Size & Id (To be changed next time: BE)
   const removeItem = (itemId: string, size: string) => {
-    dispatch({ type: "remove_item", payload: { itemId, size } });
+    cartDispatch({
+      type: CartActionType.REMOVE_ITEM,
+      payload: { id: itemId, size },
+    });
     onClose();
   };
 
@@ -56,131 +53,69 @@ export const Cart = () => {
   };
   // Update Cart Item by Size & Id (To be changed next time: BE)
   const onQuantityChange = (itemId: string, size: string, qty: number) => {
-    dispatch({
-      type: "update_quantity",
-      payload: { itemId, size, qty },
-    });
+    const action: CartAction = {
+      type: CartActionType.UPDATE_QUANTITY,
+      payload: { id: itemId, size, quantity: qty },
+    };
+    cartDispatch(action);
   };
 
-  // Add Voucher (To be changed to API request: BE)
-  const addVoucher = async () => {
-    setVoucherLoading(true);
-    await addCartVoucher("Random", dispatch);
-    setVoucherInput("");
-    setVoucherLoading(false);
-  };
+  const CartHeading = (
+    <Heading textAlign="center" mb="12" size="xl">
+      Shopping Cart
+    </Heading>
+  );
 
-  React.useEffect(() => {
-    localStorage.setItem("shopping-cart", JSON.stringify(state));
-  }, [state]);
-
-  return (
+  const billBreakdown = (
     <>
-      <Box p={{ base: 8, lg: 12 }} maxWidth="1400px" mx="auto">
-        <Heading textAlign="center" mb="12" size="xl">
-          Shopping Cart
+      <Heading fontSize="md">Subtotal: ${subTotal.toFixed(2)}</Heading>
+      {cartState.voucherDetails && (
+        <Heading fontSize="md">
+          Voucher Discount: ${discountAmt.toFixed(2)}
         </Heading>
+      )}
+      <Heading fontSize="md">
+        Total Amount: {(subTotal - discountAmt).toFixed(2)}
+      </Heading>
+    </>
+  );
 
-        <Divider />
-        {state.items.length === 0 ? (
-          <Center minH="50vh">
-            <Flex flexDirection="column" gap={4}>
-              <Heading fontSize="2xl">No items in your cart.</Heading>
-              <Button size="sm" flexShrink={1} borderRadius={0}>
-                CONTINUE SHOPPING
-              </Button>
-            </Flex>
-          </Center>
-        ) : (
-          <>
-            {!isMobile && <CartHeader />}
-            {state.items.map((item) => (
-              <CartItem
-                key={item.id + item.size}
-                data={item}
-                isMobile={isMobile}
-                onRemove={handleRemoveItem}
-                onQuantityChange={onQuantityChange}
-              />
-            ))}
-            <Flex alignItems="end" flexDirection="column">
-              <FormControl maxW={350} my={4}>
-                <FormLabel htmlFor="voucher">
-                  <Heading fontSize="md">Voucher</Heading>
-                </FormLabel>
-                <Flex gap={4}>
-                  <Input
-                    size="sm"
-                    borderRadius={0}
-                    id="voucher-code"
-                    value={voucherInput}
-                    disabled={voucherLoading}
-                    placeholder="Voucher Code"
-                    onChange={(e: React.FormEvent<EventTarget>) => {
-                      const target = e.target as HTMLInputElement;
-                      setVoucherInput(target.value);
-                    }}
-                  />
-                  <Button
-                    px={4}
-                    size="sm"
-                    isLoading={voucherLoading}
-                    borderRadius={0}
-                    variant="outline"
-                    disabled={voucherInput.length === 0}
-                    onClick={addVoucher}
-                  >
-                    Apply
-                  </Button>
-                </Flex>
-                <FormHelperText>
-                  {state.voucherDetails === undefined ? (
-                    <Text>Apply your voucher code!</Text>
-                  ) : (
-                    <Text textAlign="right">
-                      Applied Voucher: {state.voucherDetails.description}
-                      {state.voucherDetails !== null && (
-                        <Button
-                          variant="link"
-                          onClick={() => dispatch({ type: "remove_voucher" })}
-                        >
-                          <LinkIcon height={3} width={3} />
-                        </Button>
-                      )}
-                    </Text>
-                  )}
-                </FormHelperText>
-              </FormControl>
-              <Divider mb="4" />
-              <Heading fontSize="md">Subtotal: ${subTotal.toFixed(2)}</Heading>
-              {state.voucherDetails && (
-                <Heading fontSize="md">
-                  Voucher Discount: ${discountAmt.toFixed(2)}
-                </Heading>
-              )}
-              <Heading fontSize="md">
-                Total Amount: {(subTotal - discountAmt).toFixed(2)}
-              </Heading>
-              <Divider my="4" />
+  const actionButtons = (
+    <Flex flexDirection="column" gap={8} alignItems="flex-end">
+      <Link to="/checkout">
+        <Button width={isMobile ? "100%" : "auto"} borderRadius={0}>
+          CHECK OUT
+        </Button>
+      </Link>
+      <Button
+        borderRadius={0}
+        variant="outline"
+        width={isMobile ? "100%" : "auto"}
+      >
+        CONTINUE SHOPPING
+      </Button>
+    </Flex>
+  );
 
-              <Link to="/checkout">
-                <Button width={isMobile ? "100%" : "auto"} borderRadius={0}>
-                  CHECK OUT
-                </Button>
-              </Link>
-
-              <br />
-              <Button
-                borderRadius={0}
-                variant="outline"
-                width={isMobile ? "100%" : "auto"}
-              >
-                CONTINUE SHOPPING
-              </Button>
-            </Flex>
-          </>
-        )}
-      </Box>
+  const renderCartView = () => (
+    <Box>
+      {!isMobile && <CartHeader />}
+      {cartState.items.map((item) => (
+        <CartItem
+          key={item.id + item.size}
+          data={item}
+          isMobile={isMobile}
+          onRemove={handleRemoveItem}
+          onQuantityChange={onQuantityChange}
+        />
+      ))}
+      <Flex alignItems="end" flexDirection="column">
+        <VoucherSection />
+        <Divider mb="4" />
+        {billBreakdown}
+        <Divider my="4" />
+        {actionButtons}
+      </Flex>
       <RemoveModal
         isOpen={isOpen}
         onClose={onClose}
@@ -188,6 +123,24 @@ export const Cart = () => {
           removeItem(toBeRemoved.current.itemId, toBeRemoved.current.size)
         }
       />
-    </>
+    </Box>
+  );
+
+  const renderCartContent = () => {
+    if (cartState.fetchStatus) {
+      return <LoadingScreen text="Fetching Cart Details" />;
+    }
+    if (cartState?.items?.length === 0) {
+      return <CartEmptyView />;
+    }
+    return renderCartView();
+  };
+
+  return (
+    <Box p={{ base: 8, lg: 12 }} maxWidth="1400px" mx="auto">
+      {CartHeading}
+      <Divider />
+      {renderCartContent()}
+    </Box>
   );
 };

@@ -8,6 +8,7 @@ import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
 import OrderSummary from "./pages/OrderSummary";
 import OrderHistory from "./pages/OrderHistory";
+import MerchDetail from "./pages/MerchDetail";
 import routes from "./utils/constants/routes";
 
 const Routes = () => (
@@ -21,6 +22,11 @@ const Routes = () => (
     <Route path={routes.CHECKOUT} element={<Checkout />} />
     <Route path={routes.ORDER_SUMMARY} element={<OrderSummary />} />
     <Route path={routes.ORDER_HISTORY} element={<OrderHistory />} />
+    <Route path={routes.ORDER_HISTORY} element={<OrderHistory />} />
+    <Route
+      path={`${routes.MERCH_DETAIL}/:merchSlug`}
+      element={<MerchDetail />}
+    />
   </ReactRoutes>
 );
 

@@ -22,7 +22,6 @@ import {
 } from "../../utils/constants/order-status";
 import OrderItem from "../../components/OrderItem";
 import { orderHistory } from "../../data/mock/orderHistory";
-import { fakeDelay } from "../../utils/functions/random";
 
 export const OrderHistory: React.FC = () => {
   // Check if break point hit.

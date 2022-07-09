@@ -36,6 +36,7 @@ export const orderItems: OrderItemType[] = [
 ];
 
 export const voucher: VoucherType = {
+  id: "LEMON",
   discount: 15,
   isPercentage: false,
   description: "SCSECLUB#25 - $15 off",

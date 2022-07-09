@@ -17,8 +17,8 @@ export function calDiscountAmt(
   if (voucher === undefined) {
     return 0;
   }
-  if (voucher.isPercentage) {
+  if (voucher?.isPercentage) {
     return subTotal * (voucher.discount / 100);
   }
-  return voucher.discount;
+  return voucher?.discount ?? 0;
 }

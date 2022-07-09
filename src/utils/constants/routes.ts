@@ -9,6 +9,7 @@ type Routes = {
   CHECKOUT: string;
   ORDER_SUMMARY: string;
   ORDER_HISTORY: string;
+  MERCH_DETAIL: string;
 };
 
 const routes: Routes = {
@@ -22,6 +23,7 @@ const routes: Routes = {
   CHECKOUT: "/checkout",
   ORDER_SUMMARY: "/summary",
   ORDER_HISTORY: "/order-history",
+  MERCH_DETAIL: "/merch",
 };
 
 export default routes;

@@ -1,88 +1,143 @@
-import React from "react";
-import { cartItems, cartVoucher } from "../../data/mock/cart";
-import { CartStateType } from "../../typings/cart";
-import { fakeDelay } from "../../utils/functions/random";
+import React, { useEffect, useReducer, useMemo } from "react";
+import {
+  dummyBackendCartResponse,
+  dummyBackendVoucherResponse,
+} from "../../data/mock/cart";
 
-type contextType = { state: CartStateType; dispatch: React.Dispatch<any> };
+import {
+  CartStateType,
+  StoredCartStateType,
+  CartItemType,
+} from "../../typings/cart";
+import { VoucherType } from "../../typings/voucher";
 
-const CartContext = React.createContext<contextType | null>(null);
+type ContextType = {
+  state: CartStateType;
+  dispatch: React.Dispatch<any>;
+} | null;
 
-const initState: CartStateType = {
-  fetchStatus: false, // Maybe needed for BE validation of item existence when checkout.
-  items: cartItems,
-  voucherDetails: cartVoucher,
+export enum CartActionType {
+  INITALIZE = "initialize",
+  ADD_ITEM = "add_item",
+  FETCH_LOADING = "fetch_loading",
+  UPDATE_QUANTITY = "update_quantity",
+  REMOVE_ITEM = "remove_item",
+  APPLY_VOUCHER = "apply_voucher",
+  REMOVE_VOUCHER = "remove_voucher",
+}
+
+export type CartAction =
+  | {
+      type: CartActionType.INITALIZE;
+      payload: CartStateType;
+    }
+  | { type: CartActionType.FETCH_LOADING; payload: null }
+  | { type: CartActionType.ADD_ITEM; payload: CartItemType }
+  | {
+      type: CartActionType.UPDATE_QUANTITY;
+      payload: { id: string; size: string; quantity: number };
+    }
+  | { type: CartActionType.REMOVE_ITEM; payload: { id: string; size: string } }
+  | { type: CartActionType.APPLY_VOUCHER; payload: VoucherType }
+  | { type: CartActionType.REMOVE_VOUCHER; payload: null };
+
+const CartContext = React.createContext<ContextType>(null);
+
+const initStorageCart: StoredCartStateType = {
+  items: [],
+  appliedVoucher: null,
 };
 
-const initializer = (initialValue = initState) => {
-  return (
-    JSON.parse(localStorage.getItem("shopping-cart") as string) || initialValue
-  );
+const initState: CartStateType = {
+  fetchStatus: false,
+  items: [],
+  voucherDetails: null,
 };
 
 export const addCartVoucher = async (
   voucher: string,
   dispatch: React.Dispatch<any>
 ) => {
-  await fakeDelay();
   try {
     // API Call: Verify voucher with BE...
+    const res = await dummyBackendVoucherResponse(voucher);
     dispatch({
-      type: "valid_voucher",
-      payload: {
-        discount: 20,
-        isPercentage: true,
-        description: "SCSE Welfare Package - 20% off",
-      },
+      type: CartActionType.APPLY_VOUCHER,
+      payload: res,
     });
   } catch (e) {
     console.log(e);
   }
 };
 
-export const cartReducer = (state: CartStateType, action: any) => {
-  const { payload } = action;
+export const cartReducer = (state: CartStateType, action: CartAction) => {
   switch (action.type) {
-    // TODO:
-    case "add_item": {
-      return { ...state };
+    case CartActionType.INITALIZE: {
+      return { ...state, ...action.payload };
     }
-    case "update_quantity": {
-      // Find object's index and update quantity.
-      const { itemId, size, qty } = payload;
-      const i = cartItems.findIndex((x) => x.id === itemId && x.size === size);
-      if (Number.isNaN(i)) return { ...state };
+    case CartActionType.FETCH_LOADING: {
+      return { ...state, fetchStatus: true };
+    }
+
+    case CartActionType.ADD_ITEM: {
+      // Find if there's an existing item already:
+      const { id, size, quantity } = action.payload;
+      const idx = state.items.findIndex((x) => x.id === id && x.size === size);
+      const newQuantity = (state?.items[idx]?.quantity ?? 0) + quantity;
 
       return {
         ...state,
-        items: [
-          ...state.items.slice(0, i),
-          { ...state.items[i], quantity: qty },
-          ...state.items.slice(i + 1),
-        ],
+        fetchStaus: false,
+        items:
+          idx === -1
+            ? [...state.items, action.payload]
+            : [
+                ...state.items.slice(0, idx),
+                { ...state.items[idx], quantity: newQuantity },
+                ...state.items.slice(idx + 1),
+              ],
       };
     }
-    case "remove_item": {
+
+    case CartActionType.UPDATE_QUANTITY: {
+      // Find if there's an existing item already:
+      const { id, size, quantity } = action.payload;
+      const idx = state.items.findIndex((x) => x.id === id && x.size === size);
+
+      return {
+        ...state,
+        fetchStaus: false,
+        items:
+          idx === -1
+            ? [...state.items]
+            : [
+                ...state.items.slice(0, idx),
+                { ...state.items[idx], quantity },
+                ...state.items.slice(idx + 1),
+              ],
+      };
+    }
+    case CartActionType.REMOVE_ITEM: {
       // Remove object.
-      const { itemId, size } = payload;
+      const { id, size } = action.payload;
       return {
         ...state,
         items: [
-          ...state.items.filter(
-            (item) => !(item.id === itemId && item.size === size)
-          ),
+          ...state.items.filter((x) => !(x.id === id && x.size === size)),
         ],
       };
     }
-    case "valid_voucher": {
-      return { ...state, voucherDetails: { ...payload } };
+
+    case CartActionType.APPLY_VOUCHER: {
+      return { ...state, voucherDetails: action.payload };
     }
-    case "remove_voucher": {
-      const nextState = { ...state };
-      delete nextState.voucherDetails;
-      return nextState;
+
+    case CartActionType.REMOVE_VOUCHER: {
+      return { ...state, voucherDetails: null };
     }
     default: {
-      throw new Error(`unhandled action type: ${action.type}`);
+      throw new Error(`Unhandled action type - ${JSON.stringify(action)}`);
+      // throw new Error(`unhandled action type: ${action.type}`);
     }
   }
 };
@@ -95,8 +150,59 @@ export const useCartStore = () => {
   return context;
 };
 
+export const fetchCartDetails = async (storedCartData: StoredCartStateType) => {
+  try {
+    const response = await dummyBackendCartResponse(storedCartData);
+    return response?.data;
+  } catch (err) {
+    throw new Error(err as string);
+  }
+};
+
+const initializer = async (dispatch: React.Dispatch<any>) => {
+  // Get stored cart data
+  const storedCartData: StoredCartStateType =
+    JSON.parse(localStorage.getItem("cart") as string) ?? initStorageCart;
+
+  dispatch({
+    type: CartActionType.FETCH_LOADING,
+  });
+  console.log("HERE", storedCartData);
+  // Based on the Data retrieved, we map.
+  const data = await fetchCartDetails(storedCartData);
+
+  const cartState: CartStateType = {
+    fetchStatus: false,
+    items: data?.items,
+    voucherDetails: data?.voucherDetail,
+  };
+  console.log("HERE cart state", cartState);
+  dispatch({
+    type: CartActionType.INITALIZE,
+    payload: cartState,
+  });
+};
+
 export const CartProvider: React.FC = ({ children }) => {
-  const [state, dispatch] = React.useReducer(cartReducer, initializer());
-  const value = React.useMemo(() => ({ state, dispatch }), [state]);
+  const [state, dispatch] = useReducer(cartReducer, initState);
+  const value = useMemo(() => ({ state, dispatch }), [state]);
+
+  useEffect(() => {
+    initializer(dispatch);
+  }, []);
+
+  useEffect(() => {
+    const cartStorage: StoredCartStateType = {
+      appliedVoucher: state.voucherDetails?.id ?? null,
+      items: state.items.map((item) => ({
+        id: item.id,
+        quantity: item.quantity,
+        size: item.size,
+      })),
+    };
+    localStorage.setItem("cart", JSON.stringify(cartStorage));
+    console.log("IM HERE BEING TRIGGERED", cartStorage);
+  }, [state]);
+
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 };
