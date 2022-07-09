@@ -3,7 +3,7 @@ import ConfirmSignUp from "./pages/ConfirmSignUp";
 import Home from "./pages/Home"
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
-import { MerchandiseList } from "./pages/MerchandiseList/MerchandiseList";
+import MerchandiseList  from "./pages/MerchandiseList";
 import routes from "./utils/constants/routes";
 
 const Routes = () => (
