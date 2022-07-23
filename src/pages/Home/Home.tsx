@@ -3,15 +3,14 @@ import HeroCarousel from "./HeroCarousel";
 import RecentPosts from "./RecentPosts";
 import RecentEvents from "./RecentEvents";
 import Footer from "../../components/Footer";
+import Page from "../../components/Page";
 
 export const Home = () => {
   return (
-    <div>
-      <Header />
+    <Page>
       <HeroCarousel />
       <RecentPosts />
       <RecentEvents />
-      <Footer />
-    </div>
+    </Page>
   );
 };
