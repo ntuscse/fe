@@ -18,7 +18,7 @@ class CognitoClient {
         }
 
         if (phoneNumber !== "") {
-            Object.assign(userAttributes, {phone_number: phoneNumber})
+            Object.assign(userAttributes, { phone_number: phoneNumber })
         }
 
         await Auth.signUp({
@@ -33,8 +33,7 @@ class CognitoClient {
     }
 
     public static async signIn(email: string, password: string): Promise<CognitoUser> {
-        const user: CognitoUser = await Auth.signIn(email, password);
-        return user
+        return (await Auth.signIn(email, password)) as CognitoUser;
     }
 
     public static async signOut(): Promise<void> {

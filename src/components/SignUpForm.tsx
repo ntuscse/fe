@@ -40,7 +40,7 @@ import ErrorUI from "./ErrorUI";
     })
 
     const formValidation = async () => {
-        const emailValidator = Joi.string().email({tlds: {allow: false}}).required().label('Email')
+        const emailValidator = Joi.string().email({ tlds: { allow: false } }).required().label('Email')
         const passwordValidator = joiPassword
                                     .string()
                                     .min(8)
