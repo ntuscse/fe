@@ -1,13 +1,14 @@
 import HeroCarousel from "./HeroCarousel";
 import RecentPosts from "./RecentPosts";
 import RecentEvents from "./RecentEvents";
+import Page from "../../components/Page";
 
 export const Home = () => {
   return (
-    <div>
+    <Page>
       <HeroCarousel />
       <RecentPosts />
       <RecentEvents />
-    </div>
+    </Page>
   );
 };
