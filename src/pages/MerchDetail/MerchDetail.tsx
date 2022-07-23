@@ -9,8 +9,7 @@ import {
   Button,
   Input,
 } from "@chakra-ui/react";
-import { MerchDetailType, MerchSizeType } from "../../typings/merch";
-import { merchDetail } from "../../data/mock/merchDetail";
+import { productList } from "../../data/mock/product";
 import MerchCarousel from "./MerchCarousel";
 import { theme } from "../../config/theme";
 import { BoxOption } from "./BoxOption";
@@ -18,9 +17,10 @@ import { CartAction, CartActionType, useCartStore } from "../../context/cart";
 import { dummyBackendMerchResponse } from "../../data/mock/cart";
 import MerchSkeleton from "./MerchSkeleton";
 import MerchEmptyView from "./MerchEmptyView";
+import { ProductSizeTypes, ProductType } from "../../typings/product";
 
 // All Sizes - Disable those are unavailable.
-const ALL_SIZES: MerchSizeType[] = ["XXS", "XS", "S", "M", "L", "XL", "2XL"];
+const ALL_SIZES: ProductSizeTypes[] = ["XXS", "XS", "S", "M", "L", "XL", "2XL"];
 
 const GroupTitle = ({ children }: any) => (
   <Heading fontSize="md" mb={2} color="grey" textTransform="uppercase">
@@ -30,14 +30,15 @@ const GroupTitle = ({ children }: any) => (
 
 export const MerchDetail: React.FC = () => {
   // Context hook.
-  const { state: cartState, dispatch: cartDispatch } = useCartStore();
+  const { dispatch: cartDispatch } = useCartStore();
 
   const { merchSlug } = useParams();
+  const merchDetail = productList[0];
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isDisabled, setIsDisabled] = useState<boolean>(false);
   const [quantity, setQuantity] = useState<number>(1);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
-  const [merchState, setMerchState] = useState<MerchDetailType | null>(null);
+  const [merchState, setMerchState] = useState<ProductType | null>(null);
 
   //* In/decrement quantity
   const handleQtyChangeCounter = (isAdd: boolean = true) => {
@@ -67,7 +68,7 @@ export const MerchDetail: React.FC = () => {
       type: CartActionType.ADD_ITEM,
       payload: {
         quantity,
-        id: merchDetail?.slug,
+        id: merchDetail?.id,
         imgUrl: merchDetail?.images[0],
         size: selectedSize ?? "S",
         price: merchDetail?.price,
@@ -197,16 +198,20 @@ export const MerchDetail: React.FC = () => {
     <Flex flexDirection="column" gap={2}>
       <GroupTitle>Description</GroupTitle>
       <Box whiteSpace="pre-line" fontSize={{ base: "sm", md: "md" }}>
-        {merchState?.description?.split("\n")?.map((line, idx) => {
-          if (line) {
-            return line.trim().startsWith("*") ? (
-              <li key={idx.toString()}>{line.trim().substring(1)}</li>
-            ) : (
-              line
-            );
-          }
-          return <br key={idx.toString()} />;
-        })}
+        {`Keep cool all summer in these versatile pants, the neat shape slims the legs and flatters the bottom. A great staple garment to add to your wardrobe. The luxurious washed linen is comfortable, breathable and soft. The 7/8 Length leg can be worn rolled up to a crop pant. Style with our Broderie Anglaise or Fray Top.\n
+  \n
+  *100% European Linen\n*Contrast stripe lined pockets\n*Stitched inseam pockets\n`
+          .split("\n")
+          ?.map((line, idx) => {
+            if (line) {
+              return line.trim().startsWith("*") ? (
+                <li key={idx.toString()}>{line.trim().substring(1)}</li>
+              ) : (
+                line
+              );
+            }
+            return <br key={idx.toString()} />;
+          })}
       </Box>
     </Flex>
   );
