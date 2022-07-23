@@ -158,6 +158,7 @@ export const MerchDetail: React.FC = () => {
         <Input
           type="tel"
           pattern="[0-9]*"
+          max={99}
           textAlign="center"
           value={quantity}
           borderRadius={0}

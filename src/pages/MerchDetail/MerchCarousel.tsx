@@ -55,7 +55,11 @@ const Controllerer = ({ length }: { length: number }) => {
   const [curIndex, setCurIndex] = useState<number>(0);
   const slideLeft = () => {
     swiper.slidePrev();
-    setCurIndex((curIndex - 1) % length);
+    if (curIndex - 1 < 0) {
+      setCurIndex(length - 1);
+    } else {
+      setCurIndex((curIndex - 1) % length);
+    }
   };
   const slideRight = () => {
     swiper.slideNext();
@@ -91,7 +95,7 @@ const MerchCarousel = ({ images }: CarouselProps) => {
 
   return (
     <Flex flexDirection="column" gap={2} flexGrow={1} alignItems="center">
-      <Box maxWidth={responsiveWidth}>
+      <Box maxWidth={responsiveWidth} pointerEvents="none">
         <Swiper
           loop
           onSwiper={setControlledSwiper}
