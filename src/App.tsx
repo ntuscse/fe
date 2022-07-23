@@ -11,17 +11,13 @@ import { BrowserRouter } from "react-router-dom";
 import { CartProvider } from "./context/cart";
 import Routes from "./routes";
 import chakraTheme from "./config/theme";
-import Header from "./components/Header";
-import Footer from "./components/Footer";
 
 const App = () => {
   return (
     <ChakraProvider theme={chakraTheme}>
       <BrowserRouter>
         <CartProvider>
-          <Header />
           <Routes />
-          <Footer />
         </CartProvider>
       </BrowserRouter>
     </ChakraProvider>
