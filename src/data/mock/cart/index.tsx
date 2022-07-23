@@ -2,6 +2,7 @@ import { CartItemType } from "../../../typings/cart";
 import { VoucherType } from "../../../typings/voucher";
 import { MerchDetailType } from "../../../typings/merch";
 import { fakeDelay } from "../../../utils/functions/random";
+import { ProductType } from "../../../typings/product";
 
 export const voucherDB: Record<string, VoucherType> = {
   LEMON_SQUEEZE: {
@@ -11,25 +12,22 @@ export const voucherDB: Record<string, VoucherType> = {
     description: "SCSE Welfare Package - 20% off",
   },
 };
-export const merchDB: Record<string, MerchDetailType> = {
+export const merchDB: Record<string, ProductType> = {
   "brown-sweater": {
-    slug: "brown-sweater",
+    id: "brown-sweater",
     images: [
       "https://image.uniqlo.com/UQ/ST3/sg/imagesgoods/448391/item/sggoods_36_448391.jpg?width=1600&impolicy=quality_75",
     ],
     name: "SCSE Sweater - Brown",
     sizes: ["S", "M", "L", "XL"],
     price: 25.0,
-    description: "",
   },
   "yellow-sweater": {
-    slug: "yellow-sweater",
+    id: "yellow-sweater",
     name: "Sweater for Winter",
     price: 49.9,
     sizes: ["XS", "S", "M", "L", "XL"],
-    description: `Keep cool all summer in these versatile pants, the neat shape slims the legs and flatters the bottom. A great staple garment to add to your wardrobe. The luxurious washed linen is comfortable, breathable and soft. The 7/8 Length leg can be worn rolled up to a crop pant. Style with our Broderie Anglaise or Fray Top.\n
-    \n
-    *100% European Linen\n*Contrast stripe lined pockets\n*Stitched inseam pockets\n`,
+
     images: [
       "https://image.uniqlo.com/UQ/ST3/sg/imagesgoods/446638/item/sggoods_00_446638.jpg?width=1600&impolicy=quality_75",
       "https://image.uniqlo.com/UQ/ST3/sg/imagesgoods/446638/sub/sggoods_446638_sub2.jpg?width=1600&impolicy=quality_75",
@@ -38,7 +36,7 @@ export const merchDB: Record<string, MerchDetailType> = {
     ],
   },
   "blue-sweater": {
-    slug: "blue-sweater",
+    id: "blue-sweater",
     images: [
       "https://image.uniqlo.com/UQ/ST3/sg/imagesgoods/448584/item/sggoods_09_448584.jpg?width=1008&impolicy=quality_75",
     ],
@@ -49,7 +47,7 @@ export const merchDB: Record<string, MerchDetailType> = {
   },
 
   "red-sweater": {
-    slug: "red-sweater",
+    id: "red-sweater",
     images: [
       "https://image.uniqlo.com/UQ/ST3/sg/imagesgoods/444593/item/sggoods_32_444593.jpg?width=1008&impolicy=quality_75",
     ],
@@ -78,10 +76,10 @@ export type cartQueryResponse = {
   };
 };
 
-export const dummyBackendMerchResponse = async (merchSlug: string) => {
+export const dummyBackendMerchResponse = async (merchid: string) => {
   await fakeDelay(1000);
-  if (merchSlug && merchSlug in merchDB) {
-    return merchDB[merchSlug];
+  if (merchid && merchid in merchDB) {
+    return merchDB[merchid];
   }
   return null;
 };
