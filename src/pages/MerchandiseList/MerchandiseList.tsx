@@ -8,10 +8,13 @@ import {
     useBreakpointValue
 } from "@chakra-ui/react";
 
+import { useQuery } from "@tanstack/react-query";
 import Card from "./Card";
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
 import Page from "../../components/Page";
+import { QueryKeys } from "../../utils/constants/queryKeys";
+import { api } from "../../services/api";
 
 
 const merchandise = [
@@ -65,14 +68,17 @@ const merchandise = [
     },
 ]
 
-const merchandiseList = merchandise.map(obj => <Card text={obj.text} price={obj.price} imgSrc={obj.imgSrc} sizeRange={obj.sizeRange}/>);
+const merchandiseList = merchandise.map((obj, index) => <Card key={index.toString()} text={obj.text} price={obj.price} imgSrc={obj.imgSrc} sizeRange={obj.sizeRange}/>);
 
 export const MerchandiseList = () => {
     const selectSize = useBreakpointValue({ base: 'xs', md: 'sm' });
 
+    const { data: products, isLoading, isError } = useQuery([QueryKeys.PRODUCTS], api.getProducts, {
+        enabled: true,
+    });
+
     return (
         <Page>
-            <Header />
             <Text textAlign='center' textStyle={['h6', 'h5']} textColor='primary.600' mt={5} mb={5}>SCSE Merchandise</Text>
             <Select bgColor={['white', 'gray.100']} w={125} h={8} alignSelf='center' borderRadius={20} placeholder='Product Type' size='xs' />
             <Flex justifyContent='space-between' my={5} alignItems='center'>
@@ -92,7 +98,6 @@ export const MerchandiseList = () => {
             <Flex wrap='wrap' justifyContent='space-evenly' mb={5} px={[0, 10]}>
                 {merchandiseList}
             </Flex>
-            <Footer />
         </Page>
 
     )
