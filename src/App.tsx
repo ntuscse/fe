@@ -8,16 +8,21 @@ import "swiper/css/lazy";
 import "./App.css";
 import { ChakraProvider } from "@chakra-ui/react";
 import { BrowserRouter } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import Routes from "./routes";
 import chakraTheme from "./config/theme";
 
+const queryClient = new QueryClient()
+
 const App = () => {
   return (
-    <ChakraProvider theme={chakraTheme}>
-      <BrowserRouter>
-        <Routes />
-      </BrowserRouter>
-    </ChakraProvider>
+      <QueryClientProvider client={queryClient}>
+        <ChakraProvider theme={chakraTheme}>
+          <BrowserRouter>
+            <Routes/>
+          </BrowserRouter>
+        </ChakraProvider>
+      </QueryClientProvider>
   );
 };
 
