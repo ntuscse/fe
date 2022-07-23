@@ -10,6 +10,7 @@ import OrderSummary from "./pages/OrderSummary";
 import OrderHistory from "./pages/OrderHistory";
 import MerchDetail from "./pages/MerchDetail";
 import routes from "./utils/constants/routes";
+import Error404 from "./pages/Error404";
 
 const Routes = () => (
   <ReactRoutes>
@@ -27,6 +28,7 @@ const Routes = () => (
       path={`${routes.MERCH_DETAIL}/:merchSlug`}
       element={<MerchDetail />}
     />
+    <Route path="*" element={<Error404 />} />
   </ReactRoutes>
 );
 
