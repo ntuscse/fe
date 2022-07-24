@@ -1,4 +1,4 @@
-export type ProductSizeTypes = "XXS" | "XS" | "S" | "M" | "L" | "XL" | "2XL";
+export type ProductSizeTypes = "xxs" | "xs" | "s" | "m" | "l" | "xl" | "2xl";
 
 export type ProductCategoryType = {
   name: string;

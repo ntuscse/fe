@@ -4,7 +4,7 @@ import { Center, Flex, Heading, Spinner, Text } from "@chakra-ui/react";
 const MerchEmptyView: React.FC = () => {
   useEffect(() => {
     setTimeout(() => {
-      window.location.href = "/";
+      window.location.href = "/merchanise-list";
     }, 3000);
   }, []);
 

@@ -1,13 +1,5 @@
 import React, { useRef } from "react";
-import {
-  Box,
-  Button,
-  Flex,
-  Heading,
-  useBreakpointValue,
-  Divider,
-  useDisclosure,
-} from "@chakra-ui/react";
+import { Box, Button, Flex, Heading, useBreakpointValue, Divider, useDisclosure } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import CartItem from "./CartItem";
 import RemoveModal from "./RemoveModal";
@@ -28,12 +20,10 @@ export const Cart: React.FC = () => {
   const toBeRemoved = useRef({ itemId: "", size: "" });
 
   // Check if break point hit.
-  const isMobile: boolean =
-    useBreakpointValue({ base: true, md: false }) || false;
+  const isMobile: boolean = useBreakpointValue({ base: true, md: false }) || false;
 
   // Calculate subtotal & discount amount.
-  const subTotal =
-    cartState.items.length > 0 ? calCartSubTotal(cartState.items) : 0;
+  const subTotal = cartState.items.length > 0 ? calCartSubTotal(cartState.items) : 0;
   const discountAmt = calDiscountAmt(subTotal, cartState.voucherDetails);
 
   // Update Cart Item by Size & Id (To be changed next time: BE)
@@ -69,14 +59,8 @@ export const Cart: React.FC = () => {
   const billBreakdown = (
     <>
       <Heading fontSize="md">Subtotal: ${subTotal.toFixed(2)}</Heading>
-      {cartState.voucherDetails && (
-        <Heading fontSize="md">
-          Voucher Discount: ${discountAmt.toFixed(2)}
-        </Heading>
-      )}
-      <Heading fontSize="md">
-        Total Amount: {(subTotal - discountAmt).toFixed(2)}
-      </Heading>
+      {cartState.voucherDetails && <Heading fontSize="md">Voucher Discount: ${discountAmt.toFixed(2)}</Heading>}
+      <Heading fontSize="md">Total Amount: {(subTotal - discountAmt).toFixed(2)}</Heading>
     </>
   );
 
@@ -87,11 +71,7 @@ export const Cart: React.FC = () => {
           CHECK OUT
         </Button>
       </Link>
-      <Button
-        borderRadius={0}
-        variant="outline"
-        width={isMobile ? "100%" : "auto"}
-      >
+      <Button borderRadius={0} variant="outline" width={isMobile ? "100%" : "auto"}>
         CONTINUE SHOPPING
       </Button>
     </Flex>
@@ -119,17 +99,15 @@ export const Cart: React.FC = () => {
       <RemoveModal
         isOpen={isOpen}
         onClose={onClose}
-        removeItem={() =>
-          removeItem(toBeRemoved.current.itemId, toBeRemoved.current.size)
-        }
+        removeItem={() => removeItem(toBeRemoved.current.itemId, toBeRemoved.current.size)}
       />
     </Box>
   );
 
   const renderCartContent = () => {
-    if (cartState.fetchStatus) {
-      return <LoadingScreen text="Fetching Cart Details" />;
-    }
+    // if (cartState.fetchStatus) {
+    //   return <LoadingScreen text="Fetching Cart Details" />;
+    // }
     if (cartState?.items?.length === 0) {
       return <CartEmptyView />;
     }

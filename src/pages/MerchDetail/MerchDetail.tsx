@@ -1,18 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useParams } from "react-router-dom";
-import { Box, Flex, Heading, Text, Divider, Button, Input } from "@chakra-ui/react";
+import { Box, Flex, Heading, Text, Divider, Button, Input, Grid, GridItem, Badge } from "@chakra-ui/react";
+import { useQuery } from "@tanstack/react-query";
 import { productList } from "../../data/mock/product";
 import MerchCarousel from "./MerchCarousel";
-import { BoxOption } from "./BoxOption";
+import { SizeOption } from "./SizeOption";
 import { CartAction, CartActionType, useCartStore } from "../../context/cart";
-import { dummyBackendMerchResponse } from "../../data/mock/cart";
 import MerchSkeleton from "./MerchSkeleton";
 import MerchEmptyView from "./MerchEmptyView";
 import { ProductSizeTypes, ProductType } from "../../typings/product";
 import Page from "../../components/Page";
+import { QueryKeys } from "../../utils/constants/queryKeys";
+import { api } from "../../services/api";
 
 // All Sizes - Disable those are unavailable.
-const ALL_SIZES: ProductSizeTypes[] = ["XXS", "XS", "S", "M", "L", "XL", "2XL"];
+const ALL_SIZES: ProductSizeTypes[] = ["xxs", "xs", "s", "m", "l", "xl", "2xl"];
 
 const GroupTitle = ({ children }: any) => (
   <Heading fontSize="md" mb={2} color="grey" textTransform="uppercase">
@@ -20,17 +22,28 @@ const GroupTitle = ({ children }: any) => (
   </Heading>
 );
 
+const fetchProductDetail = async (productId: string): Promise<ProductType | null> => {
+  if (productId) {
+    const productDetail = await api.getProduct(productId);
+    return productDetail ?? productList.find((p) => p.id === productId);
+  }
+  return null;
+};
+
 export const MerchDetail: React.FC = () => {
   // Context hook.
   const { dispatch: cartDispatch } = useCartStore();
-
-  const { merchSlug } = useParams();
-  const merchDetail = productList[0];
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [isDisabled, setIsDisabled] = useState<boolean>(false);
+  const { slug: productSlug = "" } = useParams();
   const [quantity, setQuantity] = useState<number>(1);
+  const [isDisabled, setIsDisabled] = useState<boolean>(true);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
-  const [merchState, setMerchState] = useState<ProductType | null>(null);
+
+  const { data: product, isLoading } = useQuery([QueryKeys.PRODUCT], () => fetchProductDetail(productSlug), {
+    onSuccess: (data: ProductType) => {
+      setIsDisabled(!(data?.isAvailable === true));
+      setSelectedSize(data?.sizes?.[0] ?? null);
+    },
+  });
 
   //* In/decrement quantity
   const handleQtyChangeCounter = (isAdd: boolean = true) => {
@@ -60,11 +73,8 @@ export const MerchDetail: React.FC = () => {
       type: CartActionType.ADD_ITEM,
       payload: {
         quantity,
-        id: merchDetail?.id,
-        imgUrl: merchDetail?.images[0],
-        size: selectedSize ?? "S",
-        price: merchDetail?.price,
-        itemName: merchDetail?.name,
+        id: productSlug,
+        size: selectedSize ?? product?.sizes?.[0] ?? "",
       },
     };
     cartDispatch(payload);
@@ -76,38 +86,18 @@ export const MerchDetail: React.FC = () => {
     window.location.href = `/cart`;
   };
 
-  useEffect(() => {
-    // TODO: async fetch to BE for Merch Order based on parameter.
-    const fetchMerchDetail = async (slug: any) => {
-      setIsLoading(true);
-      const res = await dummyBackendMerchResponse(slug);
-      return res;
-    };
-
-    fetchMerchDetail(merchSlug)
-      .then((res) => {
-        if (res !== null) {
-          setMerchState(res);
-          if (res?.sizes?.length > 0) {
-            setSelectedSize(res?.sizes?.[0]);
-          } else {
-            setIsDisabled(true);
-          }
-        }
-      })
-      .catch((e) => {
-        throw new Error(e);
-      })
-      .finally(() => setIsLoading(false));
-  }, [merchSlug]);
-
-  const merchHeader = (
+  const ProductNameSection = (
     <Flex flexDirection="column" gap={1}>
       <Heading color="primary.600" fontSize={{ base: "2xl", md: "4xl" }}>
-        {merchState?.name}
+        {product?.name}
+        {!product?.isAvailable && (
+          <Badge color="grey" ml={4} variant="outline" display="inline">
+            unavailable
+          </Badge>
+        )}
       </Heading>
       <Text fontSize="xl" fontWeight={600} color="primary.600">
-        ${merchState?.price?.toFixed(2)}
+        ${product?.price?.toFixed(2)}
       </Text>
     </Flex>
   );
@@ -123,14 +113,16 @@ export const MerchDetail: React.FC = () => {
       <Flex gap="15px" flexWrap="wrap">
         {ALL_SIZES.map((size, idx) => {
           return (
-            <BoxOption
+            <SizeOption
               key={idx.toString()}
-              disabled={!merchState?.sizes.includes(size)}
               active={selectedSize === size}
               onClick={() => setSelectedSize(size)}
+              disabled={isDisabled || !product?.sizes.includes(size)}
             >
-              <Text fontSize={{ base: "sm", md: "md" }}>{size}</Text>
-            </BoxOption>
+              <Text textTransform="uppercase" fontSize={{ base: "sm", md: "md" }}>
+                {size}
+              </Text>
+            </SizeOption>
           );
         })}
       </Flex>
@@ -141,9 +133,9 @@ export const MerchDetail: React.FC = () => {
     <Flex flexDirection="column" mt={8}>
       <GroupTitle>Quantity</GroupTitle>
       <Flex gap={4}>
-        <BoxOption active={false} onClick={() => handleQtyChangeCounter(false)}>
+        <SizeOption disabled={isDisabled} active={false} onClick={() => handleQtyChangeCounter(false)}>
           -
-        </BoxOption>
+        </SizeOption>
         <Input
           type="tel"
           pattern="[0-9]*"
@@ -153,11 +145,12 @@ export const MerchDetail: React.FC = () => {
           borderRadius={0}
           maxWidth={100}
           placeholder="Item Count"
+          disabled={isDisabled}
           onChange={handleQtyChangeInput}
         />
-        <BoxOption active={false} onClick={() => handleQtyChangeCounter(true)}>
+        <SizeOption disabled={isDisabled} active={false} onClick={() => handleQtyChangeCounter(true)}>
           +
-        </BoxOption>
+        </SizeOption>
       </Flex>
     </Flex>
   );
@@ -193,12 +186,12 @@ export const MerchDetail: React.FC = () => {
 
   const renderMerchDetails = () => {
     return (
-      <>
-        <Flex flex={1} justifyContent="center">
-          <MerchCarousel images={merchState?.images ?? []} />
-        </Flex>
-        <Flex flex={1} flexDirection="column">
-          {merchHeader}
+      <Grid templateColumns={{ base: "repeat(1, 1fr)", lg: "repeat(5, 1fr)" }} columnGap={16}>
+        <GridItem colSpan={2}>
+          <MerchCarousel images={product?.images ?? []} />
+        </GridItem>
+        <GridItem colSpan={3}>
+          {ProductNameSection}
           <Divider mt={4} mb={6} />
           {renderSizeSection}
           {renderQuantitySection}
@@ -206,14 +199,14 @@ export const MerchDetail: React.FC = () => {
           {purchaseButtons}
           <Divider my={6} />
           {renderDescription}
-        </Flex>
-      </>
+        </GridItem>
+      </Grid>
     );
   };
 
   const renderMerchPage = () => {
-    if (!isLoading) return <MerchSkeleton />;
-    if (merchState === null) return <MerchEmptyView />;
+    if (isLoading) return <MerchSkeleton />;
+    if (product === undefined || product === null) return <MerchEmptyView />;
     return renderMerchDetails();
   };
 

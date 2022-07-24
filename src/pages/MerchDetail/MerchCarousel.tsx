@@ -73,12 +73,7 @@ const Controllerer = ({ length }: { length: number }) => {
         {Array(length)
           .fill(null)
           .map((url, index) => (
-            <Marker
-              key={index.toString()}
-              index={index}
-              slideIndex={curIndex}
-              slideTo={slideTo}
-            />
+            <Marker key={index.toString()} index={index} slideIndex={curIndex} slideTo={slideTo} />
           ))}
       </Flex>
       <ChevronRightIcon w={8} h={8} cursor="pointer" onClick={slideRight} />
@@ -87,12 +82,11 @@ const Controllerer = ({ length }: { length: number }) => {
 };
 
 const MerchCarousel = ({ images }: CarouselProps) => {
-  const responsiveWidth = { base: "250px", sm: "350px", md: "450px" };
   const [controlledSwiper, setControlledSwiper] = useState<any>(null);
 
   return (
-    <Flex flexDirection="column" gap={2} flexGrow={1} alignItems="center">
-      <Box maxWidth={responsiveWidth} pointerEvents="none">
+    <Flex flexDirection="column" alignItems="center">
+      <Box maxWidth="100%" pointerEvents="none">
         <Swiper
           loop
           onSwiper={setControlledSwiper}
@@ -106,13 +100,8 @@ const MerchCarousel = ({ images }: CarouselProps) => {
           ))}
         </Swiper>
       </Box>
-      <Box maxWidth={responsiveWidth}>
-        <Swiper
-          loop
-          slidesPerView={1}
-          controller={{ control: controlledSwiper }}
-          modules={[Controller]}
-        >
+      <Box maxWidth="100%" my={4}>
+        <Swiper loop slidesPerView={1} controller={{ control: controlledSwiper }} modules={[Controller]}>
           {images.map((url, idx) => (
             <SwiperSlide key={(idx + 1).toString()} />
           ))}

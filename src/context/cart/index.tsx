@@ -1,14 +1,7 @@
-import React, { useEffect, useReducer, useMemo } from "react";
-import {
-  dummyBackendCartResponse,
-  dummyBackendVoucherResponse,
-} from "../../data/mock/cart";
+import React, { useEffect, useReducer, useMemo, useContext } from "react";
+import { dummyBackendVoucherResponse } from "../../data/mock/cart";
 
-import {
-  CartStateType,
-  StoredCartStateType,
-  CartItemType,
-} from "../../typings/cart";
+import { CartStateType, StoredCartStateType, CartItemType } from "../../typings/cart";
 import { VoucherType } from "../../typings/voucher";
 
 type ContextType = {
@@ -19,7 +12,6 @@ type ContextType = {
 export enum CartActionType {
   INITALIZE = "initialize",
   ADD_ITEM = "add_item",
-  FETCH_LOADING = "fetch_loading",
   UPDATE_QUANTITY = "update_quantity",
   REMOVE_ITEM = "remove_item",
   APPLY_VOUCHER = "apply_voucher",
@@ -31,7 +23,6 @@ export type CartAction =
       type: CartActionType.INITALIZE;
       payload: CartStateType;
     }
-  | { type: CartActionType.FETCH_LOADING; payload: null }
   | { type: CartActionType.ADD_ITEM; payload: CartItemType }
   | {
       type: CartActionType.UPDATE_QUANTITY;
@@ -43,21 +34,13 @@ export type CartAction =
 
 const CartContext = React.createContext<ContextType>(null);
 
-const initStorageCart: StoredCartStateType = {
-  items: [],
-  appliedVoucher: null,
-};
-
 const initState: CartStateType = {
   fetchStatus: false,
   items: [],
   voucherDetails: null,
 };
 
-export const addCartVoucher = async (
-  voucher: string,
-  dispatch: React.Dispatch<any>
-) => {
+export const addCartVoucher = async (voucher: string, dispatch: React.Dispatch<any>) => {
   try {
     // API Call: Verify voucher with BE...
     const res = await dummyBackendVoucherResponse(voucher);
@@ -75,9 +58,6 @@ export const cartReducer = (state: CartStateType, action: CartAction) => {
     case CartActionType.INITALIZE: {
       return { ...state, ...action.payload };
     }
-    case CartActionType.FETCH_LOADING: {
-      return { ...state, fetchStatus: true };
-    }
 
     case CartActionType.ADD_ITEM: {
       // Find if there's an existing item already:
@@ -87,7 +67,6 @@ export const cartReducer = (state: CartStateType, action: CartAction) => {
 
       return {
         ...state,
-        fetchStaus: false,
         items:
           idx === -1
             ? [...state.items, action.payload]
@@ -106,15 +85,10 @@ export const cartReducer = (state: CartStateType, action: CartAction) => {
 
       return {
         ...state,
-        fetchStaus: false,
         items:
           idx === -1
             ? [...state.items]
-            : [
-                ...state.items.slice(0, idx),
-                { ...state.items[idx], quantity },
-                ...state.items.slice(idx + 1),
-              ],
+            : [...state.items.slice(0, idx), { ...state.items[idx], quantity }, ...state.items.slice(idx + 1)],
       };
     }
     case CartActionType.REMOVE_ITEM: {
@@ -122,9 +96,7 @@ export const cartReducer = (state: CartStateType, action: CartAction) => {
       const { id, size } = action.payload;
       return {
         ...state,
-        items: [
-          ...state.items.filter((x) => !(x.id === id && x.size === size)),
-        ],
+        items: [...state.items.filter((x) => !(x.id === id && x.size === size))],
       };
     }
 
@@ -143,7 +115,7 @@ export const cartReducer = (state: CartStateType, action: CartAction) => {
 };
 
 export const useCartStore = () => {
-  const context = React.useContext(CartContext);
+  const context = useContext(CartContext);
   if (context === null) {
     throw new Error("useCardStore must be used within a CartProvider.");
   }
@@ -152,29 +124,26 @@ export const useCartStore = () => {
 
 export const fetchCartDetails = async (storedCartData: StoredCartStateType) => {
   try {
-    const response = await dummyBackendCartResponse(storedCartData);
-    return response?.data;
+    // const response = await dummyBackendCartResponse(storedCartData);
+    return { items: [], appliedVoucher: "" };
+    // eslint-disable-next-line no-unreachable
   } catch (err) {
     throw new Error(err as string);
   }
 };
 
+const initStorageCart: StoredCartStateType = { items: [], appliedVoucher: "" };
+
 const initializer = async (dispatch: React.Dispatch<any>) => {
   // Get stored cart data
-  const storedCartData: StoredCartStateType =
-    JSON.parse(localStorage.getItem("cart") as string) ?? initStorageCart;
+  const storedCartData: StoredCartStateType = JSON.parse(localStorage.getItem("cart") as string) ?? initStorageCart;
 
-  dispatch({
-    type: CartActionType.FETCH_LOADING,
-  });
-  console.log("HERE", storedCartData);
   // Based on the Data retrieved, we map.
   const data = await fetchCartDetails(storedCartData);
 
   const cartState: CartStateType = {
     fetchStatus: false,
     items: data?.items,
-    voucherDetails: data?.voucherDetail,
   };
   console.log("HERE cart state", cartState);
   dispatch({
@@ -193,11 +162,10 @@ export const CartProvider: React.FC = ({ children }) => {
 
   useEffect(() => {
     const cartStorage: StoredCartStateType = {
-      appliedVoucher: state.voucherDetails?.id ?? null,
       items: state.items.map((item) => ({
         id: item.id,
-        quantity: item.quantity,
         size: item.size,
+        quantity: item.quantity,
       })),
     };
     localStorage.setItem("cart", JSON.stringify(cartStorage));

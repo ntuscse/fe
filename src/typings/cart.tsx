@@ -1,38 +1,25 @@
 import { VoucherType } from "./voucher";
 
 /**
- * @Title StoredCartItemType
- * @description Stored in local storage, maybe inconsistency between FE and BE data - in terms of timeline.
- */
-export type StoredCartItemType = {
-  id: string;
-  size: string;
-  quantity: number;
-};
-
-export type StoredCartStateType = {
-  items: StoredCartItemType[];
-  appliedVoucher: number | string | null;
-};
-
-/**
  * @Title CartItemType
  * @description Displayed on FE in shopping-cart
  */
 
 export type CartItemType = {
   id: string;
-  imgUrl: string;
   size: string;
-  price: number;
   quantity: number;
-  itemName: string;
 };
 
 export type CartStateType = {
   fetchStatus: boolean;
   items: CartItemType[];
   voucherDetails?: VoucherType;
+};
+
+export type StoredCartStateType = {
+  items: CartItemType[];
+  appliedVoucher?: string;
 };
 
 /**

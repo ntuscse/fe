@@ -57,12 +57,12 @@ const CartItem: React.FC<CartItemProps> = (props: CartItemProps) => {
   return (
     <>
       <Flex my="4" justifyContent="center">
-        <Image width="100" height="100" objectFit="cover" src={data.imgUrl} />
+        {/* <Image width="100" height="100" objectFit="cover" src={data.imgUrl} /> */}
         <Grid templateColumns={!isMobile ? "3fr repeat(3, 1fr)" : "1fr"}>
           <GridItem pl="4">
             <Flex h={isMobile ? "auto" : 100} alignItems="center">
               <Text fontSize={isMobile ? "xs" : "md"}>
-                {data.itemName}
+                {/* {data.itemName} */}
                 <br />
                 Size: {data.size}
               </Text>
@@ -71,17 +71,14 @@ const CartItem: React.FC<CartItemProps> = (props: CartItemProps) => {
           <GridItem pl="4">
             <Flex {...flexItemConfig}>
               <Text fontSize={isMobile ? "xs" : "md"}>
-                {isMobile && "Unit Price:"} ${data.price.toFixed(2)}
+                {/* {isMobile && "Unit Price:"} ${data?.price.toFixed(2)} */}
               </Text>
             </Flex>
           </GridItem>
           <GridItem pl="4">
             <Flex {...flexItemConfig}>
               <InputGroup size="xs">
-                <InputLeftAddon
-                  style={{ cursor: "pointer" }}
-                  onClick={() => handleQtyChangeCounter(false)}
-                >
+                <InputLeftAddon style={{ cursor: "pointer" }} onClick={() => handleQtyChangeCounter(false)}>
                   -
                 </InputLeftAddon>
                 <Input
@@ -92,10 +89,7 @@ const CartItem: React.FC<CartItemProps> = (props: CartItemProps) => {
                   placeholder="Item Count"
                   onChange={handleQtyChangeInput}
                 />
-                <InputRightAddon
-                  style={{ cursor: "pointer" }}
-                  onClick={() => handleQtyChangeCounter(true)}
-                >
+                <InputRightAddon style={{ cursor: "pointer" }} onClick={() => handleQtyChangeCounter(true)}>
                   +
                 </InputRightAddon>
               </InputGroup>
@@ -104,20 +98,15 @@ const CartItem: React.FC<CartItemProps> = (props: CartItemProps) => {
           <GridItem pl="4">
             <Flex {...flexItemConfig}>
               <Text fontSize={isMobile ? "xs" : "md"}>
-                {isMobile && "Subtotal:"} $
-                {(data.price * data.quantity).toFixed(2)}
+                {/* {isMobile && "Subtotal:"} ${(data.price * data.quantity).toFixed(2)} */}
               </Text>
             </Flex>
           </GridItem>
         </Grid>
         <Flex alignItems={isMobile ? "start" : "center"}>
-          <Button
-            size="sm"
-            variant="link"
-            onClick={() => onRemove(data.id, data.size)}
-          >
+          {/* <Button size="sm" variant="link" onClick={() => onRemove(data.id, data.size)}>
             {isMobile ? <SmallCloseIcon h={5} w={5} /> : "Delete"}
-          </Button>
+          </Button> */}
         </Flex>
       </Flex>
       <Divider />

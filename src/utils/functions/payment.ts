@@ -6,14 +6,12 @@ export function calCartSubTotal(cartItems: CartItemType[]): number {
     return 0;
   }
   return cartItems.reduce((acc: number, cur: CartItemType) => {
-    return acc + cur.price * cur.quantity;
+    return 0;
+    // return acc + cur.price * cur.quantity;
   }, 0);
 }
 
-export function calDiscountAmt(
-  subTotal: number,
-  voucher?: VoucherType
-): number {
+export function calDiscountAmt(subTotal: number, voucher?: VoucherType): number {
   if (voucher === undefined) {
     return 0;
   }

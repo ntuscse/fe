@@ -15,9 +15,18 @@ export class Api {
   // eslint-disable-next-line class-methods-use-this
   async getProducts() {
     try {
-      await this.get("/products");
-      const response = await fetch(`https://jsonplaceholder.typicode.com/posts/`);
-      return response.json();
+      const res = await this.get("/products");
+      return res.json();
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  async getProduct(productId: string) {
+    try {
+      const res = await this.get(`/product/${productId}`);
+      return res.json();
     } catch (e) {
       return null;
     }

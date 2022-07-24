@@ -24,10 +24,7 @@ const Routes = () => (
     <Route path={routes.ORDER_SUMMARY} element={<OrderSummary />} />
     <Route path={routes.ORDER_HISTORY} element={<OrderHistory />} />
     <Route path={routes.ORDER_HISTORY} element={<OrderHistory />} />
-    <Route
-      path={`${routes.MERCH_DETAIL}/:merchSlug`}
-      element={<MerchDetail />}
-    />
+    <Route path={`${routes.MERCH_DETAIL}/:slug`} element={<MerchDetail />} />
     <Route path="*" element={<Error404 />} />
   </ReactRoutes>
 );

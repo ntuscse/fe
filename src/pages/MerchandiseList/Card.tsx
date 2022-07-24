@@ -1,4 +1,4 @@
-import { Box, Image, Text, Flex, Grid, GridItem } from "@chakra-ui/react";
+import { Box, Image, Text, GridItem } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 
 type card = {
