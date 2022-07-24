@@ -16,7 +16,7 @@ export const productList: ProductType[] = [
   {
     id: "brown-sweater",
     images: [
-      "https://ima dge.uniqlo.com/UQ/ST3/sg/imagesgoods/448391/item/sggoods_36_448391.jpg?width=1600&impolicy=quality_75",
+      "https://image.uniqlo.com/UQ/ST3/sg/imagesgoods/453401/item/sggoods_69_453401.jpg?width=1008&impolicy=quality_75",
     ],
     name: "SCSE Sweater - Brown",
     sizes: ["S", "M", "L", "XL"],
@@ -41,7 +41,7 @@ export const productList: ProductType[] = [
   {
     id: "blue-sweater",
     images: [
-      "https://image.uniqlo.com/UQ/ST3/sg/imagesgoods/448584/item/sggoods_09_448584.jpg?width=1008&impolicy=quality_75",
+      "https://image.uniqlo.com/UQ/ST3/sg/imagesgoods/448969/item/sggoods_65_448969.jpg?width=1008&impolicy=quality_75",
     ],
     name: "SCSE Graphic Tee - G",
     sizes: ["S", "M", "L", "XL"],
@@ -56,6 +56,39 @@ export const productList: ProductType[] = [
       "https://image.uniqlo.com/UQ/ST3/sg/imagesgoods/444593/item/sggoods_32_444593.jpg?width=1008&impolicy=quality_75",
     ],
     name: "SCSE Sweater - Beige",
+    sizes: ["S", "M", "L", "XL"],
+    price: 85.0,
+    isAvailable: true,
+    productCategory: productCategoryList[1],
+  },
+  {
+    id: "apple-sweater",
+    images: [
+      "https://image.uniqlo.com/UQ/ST3/sg/imagesgoods/446633/item/sggoods_41_446633.jpg?width=1008&impolicy=quality_75",
+    ],
+    name: "There's Jam on his shirt",
+    sizes: ["S", "M", "L", "XL"],
+    price: 85.0,
+    isAvailable: true,
+    productCategory: productCategoryList[1],
+  },
+  {
+    id: "indigo-sweater",
+    images: [
+      "https://image.uniqlo.com/UQ/ST3/sg/imagesgoods/446382/item/sggoods_15_446382.jpg?width=1008&impolicy=quality_75",
+    ],
+    name: "Blue note Records UT",
+    sizes: ["S", "M", "L", "XL"],
+    price: 12.0,
+    isAvailable: true,
+    productCategory: productCategoryList[1],
+  },
+  {
+    id: "jam-sweater",
+    images: [
+      "https://image.uniqlo.com/UQ/ST3/AsianCommon/imagesgoods/447167/item/goods_09_447167.jpg?width=1008&impolicy=quality_75",
+    ],
+    name: "Mango Looking T-Shirt from Daiso",
     sizes: ["S", "M", "L", "XL"],
     price: 85.0,
     isAvailable: true,

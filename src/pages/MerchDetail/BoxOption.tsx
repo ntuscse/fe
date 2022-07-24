@@ -1,6 +1,5 @@
 import React from "react";
 import { Box } from "@chakra-ui/react";
-import { theme } from "../../config/theme";
 
 type BoxOptionType = {
   active: boolean;
@@ -23,10 +22,10 @@ export const BoxOption: React.FC<BoxOptionType> = (props) => {
       lineHeight={10}
       opacity={disabled ? 0.4 : 1}
       cursor={disabled ? "not-allowed" : "pointer"}
-      border={`1px solid ${theme.colors.secondary[500]}`}
-      color={active ? "#FFF" : theme.colors.secondary[500]}
-      backgroundColor={active ? theme.colors.secondary[500] : "#FFF"}
-      _active={{ color: "#FFF", backgroundColor: theme.colors.secondary[500] }}
+      border={`1px solid secondary.500`}
+      color={active ? "#FFF" : "secondary.500"}
+      backgroundColor={active ? "secondary.500" : "#FFF"}
+      _active={{ color: "#FFF", backgroundColor: "secondary.500" }}
     >
       {children}
     </Box>

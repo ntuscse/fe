@@ -6,7 +6,6 @@ import { Controller } from "swiper";
 import { Swiper, SwiperSlide, useSwiper } from "swiper/react";
 import React, { ReactElement, useState } from "react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
-import { theme } from "../../config/theme";
 
 export type Slide = {
   id: string;
@@ -42,10 +41,8 @@ const Marker: React.FC<MarkerProps> = (props: MarkerProps) => {
       borderRadius="6px"
       cursor="pointer"
       onClick={handleClick}
-      borderColor={theme.colors.primary[600]}
-      backgroundColor={
-        slideIndex === index ? theme.colors.primary[600] : "white"
-      }
+      borderColor="primary.600"
+      backgroundColor={slideIndex === index ? "primary.600" : "white"}
     />
   );
 };

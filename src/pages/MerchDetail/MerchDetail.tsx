@@ -11,7 +11,6 @@ import {
 } from "@chakra-ui/react";
 import { productList } from "../../data/mock/product";
 import MerchCarousel from "./MerchCarousel";
-import { theme } from "../../config/theme";
 import { BoxOption } from "./BoxOption";
 import { CartAction, CartActionType, useCartStore } from "../../context/cart";
 import { dummyBackendMerchResponse } from "../../data/mock/cart";
@@ -111,13 +110,10 @@ export const MerchDetail: React.FC = () => {
 
   const merchHeader = (
     <Flex flexDirection="column" gap={1}>
-      <Heading
-        color={theme.colors.primary[600]}
-        fontSize={{ base: "2xl", md: "4xl" }}
-      >
+      <Heading color="primary.600" fontSize={{ base: "2xl", md: "4xl" }}>
         {merchState?.name}
       </Heading>
-      <Text fontSize="xl" fontWeight={600} color={theme.colors.secondary[500]}>
+      <Text fontSize="xl" fontWeight={600} color="primary.600">
         ${merchState?.price?.toFixed(2)}
       </Text>
     </Flex>
