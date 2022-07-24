@@ -7,6 +7,8 @@ import { QueryKeys } from "../../utils/constants/queryKeys";
 import { api } from "../../services/api";
 import { productList } from "../../data/mock/product";
 import { ProductType } from "../../typings/product";
+import ProductListSkeleton from "./Skeleton";
+import { fakeDelay } from "../../utils/functions/random";
 
 enum SortType {
   DATE_DESCENDING = 0,
@@ -15,13 +17,14 @@ enum SortType {
 
 const fetchProductList = async () => {
   const res = await api.getProducts();
+  await fakeDelay(1500);
   return res ?? productList;
 };
 
 export const MerchandiseList = () => {
   const selectSize = useBreakpointValue({ base: "xs", md: "sm" });
   const [selectedCategory, setSelectedCategory] = useState<string>("");
-  const { data: products, isLoading, isError } = useQuery([QueryKeys.PRODUCTS], fetchProductList, {});
+  const { data: products, isLoading } = useQuery([QueryKeys.PRODUCTS], fetchProductList, {});
   const categories = products?.map((product: ProductType) => product?.productCategory.name);
   const uniqueCategories = categories?.filter((c: string, idx: number) => categories.indexOf(c) === idx);
 
@@ -42,6 +45,7 @@ export const MerchandiseList = () => {
         borderRadius={20}
         placeholder="Product Type"
         size="xs"
+        disabled={isLoading}
         value={selectedCategory}
         onChange={handleCategoryChange}
       >
@@ -69,24 +73,27 @@ export const MerchandiseList = () => {
       <Center mb={5}>
         <Divider w={["90%", "91%"]} borderColor="blackAlpha.500" />
       </Center>
-
-      <Flex wrap="wrap" justifyContent="space-evenly" mb={5} px={[0, 10]}>
-        {products
-          ?.filter((product: ProductType) => {
-            if (selectedCategory === "") return true;
-            return product?.productCategory?.name === selectedCategory;
-          })
-          ?.map((item: ProductType, idx: number) => (
-            <Card
-              itemId={item.id}
-              key={idx.toString()}
-              text={item?.name}
-              price={item?.price}
-              imgSrc={item?.images?.[0]}
-              sizeRange={`${item?.sizes?.[0]} - ${item.sizes?.[item.sizes.length - 1]}`}
-            />
-          ))}
-      </Flex>
+      {isLoading ? (
+        <ProductListSkeleton />
+      ) : (
+        <Flex wrap="wrap" justifyContent="space-evenly" mb={5} px={[0, 10]}>
+          {products
+            ?.filter((product: ProductType) => {
+              if (selectedCategory === "") return true;
+              return product?.productCategory?.name === selectedCategory;
+            })
+            ?.map((item: ProductType, idx: number) => (
+              <Card
+                itemId={item.id}
+                key={idx.toString()}
+                text={item?.name}
+                price={item?.price}
+                imgSrc={item?.images?.[0]}
+                sizeRange={`${item?.sizes?.[0]} - ${item.sizes?.[item.sizes.length - 1]}`}
+              />
+            ))}
+        </Flex>
+      )}
     </Page>
   );
 };
