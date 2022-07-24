@@ -1,9 +1,9 @@
 import React from "react";
-import { Flex, Skeleton, Divider } from "@chakra-ui/react";
+import { Flex, Skeleton, Divider, Box } from "@chakra-ui/react";
 
 const MerchSkeleton: React.FC = () => {
   return (
-    <>
+    <Box width="100%">
       <Flex flex={1} justifyContent="center">
         <Skeleton height="300px" width="95%" />
       </Flex>
@@ -20,7 +20,7 @@ const MerchSkeleton: React.FC = () => {
         <Divider my={6} />
         <Skeleton width="90%" height="150px" />
       </Flex>
-    </>
+    </Box>
   );
 };
 

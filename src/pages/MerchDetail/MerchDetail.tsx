@@ -212,7 +212,7 @@ export const MerchDetail: React.FC = () => {
   };
 
   const renderMerchPage = () => {
-    if (isLoading) return <MerchSkeleton />;
+    if (!isLoading) return <MerchSkeleton />;
     if (merchState === null) return <MerchEmptyView />;
     return renderMerchDetails();
   };

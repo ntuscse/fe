@@ -3,7 +3,7 @@ import { Flex, Skeleton, SkeletonText } from "@chakra-ui/react";
 
 const ProductListSkeleton: React.FC = () => {
   return (
-    <Flex wrap="wrap" justifyContent="space-evenly" mb={5} px={[0, 10]} width="100%">
+    <Flex wrap="wrap" justifyContent="space-between" gap={2} mb={5}>
       {new Array(8).fill(null).map((item: any) => (
         <Flex p={3} flexDir="column" textAlign="center" w={{ base: 190, lg: "24%" }}>
           <Skeleton h={{ base: 200 }} width="100%" />

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Flex, Divider, Text, Select, Center, Heading, useBreakpointValue } from "@chakra-ui/react";
+import { Flex, Divider, Text, Select, Center, Heading, useBreakpointValue, Grid } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import Card from "./Card";
 import Page from "../../components/Page";
@@ -37,24 +37,26 @@ export const MerchandiseList = () => {
       <Text textAlign="center" textStyle={["h6", "h5"]} textColor="primary.600" mt={5} mb={5}>
         SCSE Merchandise
       </Text>
-      <Select
-        bgColor={["white", "gray.100"]}
-        w="fit-content"
-        textAlign="center"
-        alignSelf="center"
-        borderRadius="full"
-        placeholder="All Product Type"
-        size="xs"
-        disabled={isLoading}
-        value={selectedCategory}
-        onChange={handleCategoryChange}
-      >
-        {uniqueCategories?.map((category: string, idx: number) => (
-          <option key={idx.toString()} value={category}>
-            {category}
-          </option>
-        ))}
-      </Select>
+      <Center>
+        <Select
+          bgColor={["white", "gray.100"]}
+          w="fit-content"
+          textAlign="center"
+          alignSelf="center"
+          borderRadius="full"
+          placeholder="All Product Type"
+          size="xs"
+          disabled={isLoading}
+          value={selectedCategory}
+          onChange={handleCategoryChange}
+        >
+          {uniqueCategories?.map((category: string, idx: number) => (
+            <option key={idx.toString()} value={category}>
+              {category}
+            </option>
+          ))}
+        </Select>
+      </Center>
 
       <Flex justifyContent="space-between" my={5} alignItems="center">
         <Heading fontSize={["md", "2xl"]} textColor={["primary.600", "black"]}>
@@ -76,7 +78,7 @@ export const MerchandiseList = () => {
       {isLoading ? (
         <ProductListSkeleton />
       ) : (
-        <Flex wrap="wrap" justifyContent="space-between" gap={2} mb={5}>
+        <Grid templateColumns={{ base: "repeat(2, 1fr)", lg: "repeat(4, 1fr)" }} gap={8} mb={5}>
           {products
             ?.filter((product: ProductType) => {
               if (selectedCategory === "") return true;
@@ -92,7 +94,7 @@ export const MerchandiseList = () => {
                 sizeRange={`${item?.sizes?.[0]} - ${item.sizes?.[item.sizes.length - 1]}`}
               />
             ))}
-        </Flex>
+        </Grid>
       )}
     </Page>
   );

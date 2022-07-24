@@ -12,9 +12,9 @@ const Page = ({ children, hideHeader = false, ...props }: PageProps) => {
   return (
     <Flex flexDirection="column" {...props}>
       {!hideHeader && <Header />}
-      <Flex flexDir="column" gap={8} mx="auto" maxWidth="1400px" p={{ base: 8, lg: 12 }}>
+      <Box w="100%" flexDir="column" gap={8} mx="auto" maxWidth="1400px" p={{ base: 8, lg: 12 }}>
         {children}
-      </Flex>
+      </Box>
       <Footer />
     </Flex>
   );

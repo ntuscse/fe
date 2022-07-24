@@ -1,4 +1,4 @@
-import { Box, Image, Text, Flex } from "@chakra-ui/react";
+import { Box, Image, Text, Flex, Grid, GridItem } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 
 type card = {
@@ -11,10 +11,10 @@ type card = {
 
 const Card = ({ itemId, imgSrc, text, price, sizeRange }: card) => {
   return (
-    <Flex role="group" cursor="pointer" flexDir="column" textAlign="center" mt={4} w={{ base: 190, lg: "20%" }}>
+    <GridItem w="100%" role="group" cursor="pointer" textAlign="center" mt={4}>
       <Link to={`/merch/${itemId}`}>
         <Box _groupHover={{ boxShadow: "xl" }} boxShadow="md" borderRadius={5}>
-          <Image src={imgSrc} h={{ base: 200, lg: "20%" }} borderRadius={5} />
+          <Image src={imgSrc} w="100%" borderRadius={5} />
         </Box>
         <Text visibility="hidden">{sizeRange}</Text>
         <a href="/" style={{ textDecoration: "none" }}>
@@ -29,7 +29,7 @@ const Card = ({ itemId, imgSrc, text, price, sizeRange }: card) => {
           ${price.toFixed(2)}
         </Text>
       </Link>
-    </Flex>
+    </GridItem>
   );
 };
 
