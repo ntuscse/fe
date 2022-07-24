@@ -1,14 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import {
-  Box,
-  Flex,
-  Heading,
-  Text,
-  Divider,
-  Button,
-  Input,
-} from "@chakra-ui/react";
+import { Box, Flex, Heading, Text, Divider, Button, Input } from "@chakra-ui/react";
 import { productList } from "../../data/mock/product";
 import MerchCarousel from "./MerchCarousel";
 import { BoxOption } from "./BoxOption";
@@ -17,6 +9,7 @@ import { dummyBackendMerchResponse } from "../../data/mock/cart";
 import MerchSkeleton from "./MerchSkeleton";
 import MerchEmptyView from "./MerchEmptyView";
 import { ProductSizeTypes, ProductType } from "../../typings/product";
+import Page from "../../components/Page";
 
 // All Sizes - Disable those are unavailable.
 const ALL_SIZES: ProductSizeTypes[] = ["XXS", "XS", "S", "M", "L", "XL", "2XL"];
@@ -171,21 +164,10 @@ export const MerchDetail: React.FC = () => {
 
   const purchaseButtons = (
     <Flex gap={4} flexWrap="wrap">
-      <Button
-        flex={1}
-        borderRadius={0}
-        variant="outline"
-        onClick={handleAddToCart}
-        disabled={isDisabled}
-      >
+      <Button flex={1} borderRadius={0} variant="outline" onClick={handleAddToCart} disabled={isDisabled}>
         ADD TO CART
       </Button>
-      <Button
-        flex={1}
-        borderRadius={0}
-        onClick={handleBuyNow}
-        disabled={isDisabled}
-      >
+      <Button flex={1} borderRadius={0} onClick={handleBuyNow} disabled={isDisabled}>
         BUY NOW
       </Button>
     </Flex>
@@ -201,11 +183,7 @@ export const MerchDetail: React.FC = () => {
           .split("\n")
           ?.map((line, idx) => {
             if (line) {
-              return line.trim().startsWith("*") ? (
-                <li key={idx.toString()}>{line.trim().substring(1)}</li>
-              ) : (
-                line
-              );
+              return line.trim().startsWith("*") ? <li key={idx.toString()}>{line.trim().substring(1)}</li> : line;
             }
             return <br key={idx.toString()} />;
           })}
@@ -239,16 +217,5 @@ export const MerchDetail: React.FC = () => {
     return renderMerchDetails();
   };
 
-  return (
-    <Box
-      gap={8}
-      mx="auto"
-      display="flex"
-      maxWidth="1400px"
-      p={{ base: 8, lg: 12 }}
-      flexDirection={{ base: "column", lg: "row" }}
-    >
-      {renderMerchPage()}
-    </Box>
-  );
+  return <Page>{renderMerchPage()}</Page>;
 };

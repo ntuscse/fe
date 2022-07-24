@@ -11,7 +11,7 @@ type card = {
 
 const Card = ({ itemId, imgSrc, text, price, sizeRange }: card) => {
   return (
-    <Flex p={3} role="group" cursor="pointer" flexDir="column" textAlign="center" w={{ base: 190, lg: "24%" }}>
+    <Flex role="group" cursor="pointer" flexDir="column" textAlign="center" mt={4} w={{ base: 190, lg: "20%" }}>
       <Link to={`/merch/${itemId}`}>
         <Box _groupHover={{ boxShadow: "xl" }} boxShadow="md" borderRadius={5}>
           <Image src={imgSrc} h={{ base: 200, lg: "20%" }} borderRadius={5} />

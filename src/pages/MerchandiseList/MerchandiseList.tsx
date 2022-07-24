@@ -57,10 +57,10 @@ export const MerchandiseList = () => {
       </Select>
 
       <Flex justifyContent="space-between" my={5} alignItems="center">
-        <Heading ml={[5, 16]} fontSize={["md", "2xl"]} textColor={["primary.600", "black"]}>
+        <Heading fontSize={["md", "2xl"]} textColor={["primary.600", "black"]}>
           New Drop
         </Heading>
-        <Flex mr={[5, 20]} alignItems="center">
+        <Flex alignItems="center">
           <Text mr={[3, 5]} fontSize={["sm", "xl"]} textColor="primary.600">
             Sort By:
           </Text>
@@ -70,13 +70,13 @@ export const MerchandiseList = () => {
           </Select>
         </Flex>
       </Flex>
-      <Center mb={5}>
-        <Divider w={["90%", "91%"]} borderColor="blackAlpha.500" />
+      <Center>
+        <Divider borderColor="blackAlpha.500" />
       </Center>
       {isLoading ? (
         <ProductListSkeleton />
       ) : (
-        <Flex wrap="wrap" justifyContent="space-evenly" mb={5} px={[0, 10]}>
+        <Flex wrap="wrap" justifyContent="space-between" gap={2} mb={5}>
           {products
             ?.filter((product: ProductType) => {
               if (selectedCategory === "") return true;

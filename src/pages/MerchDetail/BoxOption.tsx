@@ -22,7 +22,7 @@ export const BoxOption: React.FC<BoxOptionType> = (props) => {
       lineHeight={10}
       opacity={disabled ? 0.4 : 1}
       cursor={disabled ? "not-allowed" : "pointer"}
-      border={`1px solid secondary.500`}
+      border="1px solid secondary.500"
       color={active ? "#FFF" : "secondary.500"}
       backgroundColor={active ? "secondary.500" : "#FFF"}
       _active={{ color: "#FFF", backgroundColor: "secondary.500" }}
