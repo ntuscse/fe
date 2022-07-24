@@ -39,11 +39,11 @@ export const MerchandiseList = () => {
       </Text>
       <Select
         bgColor={["white", "gray.100"]}
-        w={125}
-        h={8}
+        w="fit-content"
+        textAlign="center"
         alignSelf="center"
-        borderRadius={20}
-        placeholder="Product Type"
+        borderRadius="full"
+        placeholder="All Product Type"
         size="xs"
         disabled={isLoading}
         value={selectedCategory}
@@ -61,7 +61,7 @@ export const MerchandiseList = () => {
           New Drop
         </Heading>
         <Flex mr={[5, 20]} alignItems="center">
-          <Text mr={[3, 5]} fontSize={["xs", "xl"]} textColor="primary.600">
+          <Text mr={[3, 5]} fontSize={["sm", "xl"]} textColor="primary.600">
             Sort By:
           </Text>
           <Select w={[100, 180]} size={selectSize} borderRadius={6}>
