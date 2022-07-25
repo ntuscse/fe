@@ -17,7 +17,6 @@ plugins:
   - "@typescript-eslint"
 rules:
   "@typescript-eslint/no-unused-vars": 1
-  "@typescript-eslint/no-shadow": ["error"]
   "@typescript-eslint/consistent-type-definitions": ["error", "type"]
   "react/jsx-filename-extension": [1, { "extensions": [".tsx"] }]
   react/function-component-definition: 0
