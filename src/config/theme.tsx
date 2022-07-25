@@ -1,6 +1,6 @@
 import { ChakraTheme, extendTheme } from "@chakra-ui/react";
 
-const chakraTheme: Partial<ChakraTheme> = extendTheme({
+export const theme = {
   colors: {
     primary: {
       default: "#1816C2",
@@ -113,6 +113,8 @@ const chakraTheme: Partial<ChakraTheme> = extendTheme({
       fontWeight: "400",
     },
   },
-});
+};
+
+const chakraTheme: Partial<ChakraTheme> = extendTheme(theme);
 
 export default chakraTheme;
