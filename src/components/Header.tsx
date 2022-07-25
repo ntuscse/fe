@@ -59,6 +59,7 @@ const HeaderDrawer = () => {
 };
 
 const Header = () => {
+
   const [isAuthenticated, setIsAuthenticated] = React.useState(false);
   React.useEffect(() => {
     CognitoClient.isUserSignedIn().then((isSignedIn) => {
@@ -82,9 +83,9 @@ const Header = () => {
           <Link href="/" fontWeight="700">
             Home
           </Link>
-          <Link href="/">Projects</Link>
-          <Link href="/">About Us</Link>
-          <Link href="/">Merchandise</Link>
+          {/* <Link href="/">Projects</Link> */}
+          {/* <Link href="/">About Us</Link> */}
+          <Link href="/merchandise-list">Merchandise</Link>
           {!isAuthenticated && (<><Button to="/sign-in" as={RouterLink} variant="outline" px={12}>
             Sign in
           </Button><Button to="/sign-up" as={RouterLink} variant="solid">

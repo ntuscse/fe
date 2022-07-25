@@ -44,7 +44,7 @@ function Footer() {
             <Image src="/images/SCSE-Logo.png" alt="SCSE Logo" boxSize={14} />
           </GridItem>
           <FooterLink href="/">Contact Us</FooterLink>
-          <FooterLink href="/">Merchandise</FooterLink>
+          <FooterLink href="/merchandise-list">Merchandise</FooterLink>
           <FooterLink href="/">Resources</FooterLink>
         </Grid>
       </Box>
