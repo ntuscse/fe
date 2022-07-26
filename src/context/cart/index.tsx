@@ -1,8 +1,8 @@
 import React, { useEffect, useReducer, useMemo, useContext } from "react";
 import { dummyBackendVoucherResponse } from "../../data/mock/cart";
 
-import { CartStateType, StoredCartStateType, CartItemType } from "../../typings/cart";
 import { VoucherType } from "../../typings/voucher";
+import { CartStateType, StoredCartStateType, CartItemType } from "../../typings/cart";
 
 type ContextType = {
   state: CartStateType;
@@ -122,54 +122,23 @@ export const useCartStore = () => {
   return context;
 };
 
-export const fetchCartDetails = async (storedCartData: StoredCartStateType) => {
-  try {
-    // const response = await dummyBackendCartResponse(storedCartData);
-    return { items: [], appliedVoucher: "" };
-    // eslint-disable-next-line no-unreachable
-  } catch (err) {
-    throw new Error(err as string);
-  }
-};
-
-const initStorageCart: StoredCartStateType = { items: [], appliedVoucher: "" };
-
-const initializer = async (dispatch: React.Dispatch<any>) => {
-  // Get stored cart data
-  const storedCartData: StoredCartStateType = JSON.parse(localStorage.getItem("cart") as string) ?? initStorageCart;
-
-  // Based on the Data retrieved, we map.
-  const data = await fetchCartDetails(storedCartData);
-
-  const cartState: CartStateType = {
-    fetchStatus: false,
-    items: data?.items,
-  };
-  console.log("HERE cart state", cartState);
-  dispatch({
-    type: CartActionType.INITALIZE,
-    payload: cartState,
-  });
-};
+const initStorageCart: StoredCartStateType = { items: [] };
 
 export const CartProvider: React.FC = ({ children }) => {
   const [state, dispatch] = useReducer(cartReducer, initState);
   const value = useMemo(() => ({ state, dispatch }), [state]);
 
   useEffect(() => {
-    initializer(dispatch);
+    const cartState: CartStateType = { items: [], fetchStatus: false };
+    const storedCartData: StoredCartStateType = JSON.parse(localStorage.getItem("cart") as string) ?? initStorageCart;
+    cartState.items = storedCartData.items;
+    dispatch({ type: CartActionType.INITALIZE, payload: cartState });
+    console.log("Init Cart:", cartState);
   }, []);
 
   useEffect(() => {
-    const cartStorage: StoredCartStateType = {
-      items: state.items.map((item) => ({
-        id: item.id,
-        size: item.size,
-        quantity: item.quantity,
-      })),
-    };
-    localStorage.setItem("cart", JSON.stringify(cartStorage));
-    console.log("IM HERE BEING TRIGGERED", cartStorage);
+    localStorage.setItem("cart", JSON.stringify(state));
+    console.log("Storage Cart being triggered:", state);
   }, [state]);
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

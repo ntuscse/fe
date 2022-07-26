@@ -1,20 +1,10 @@
 import { ProductType, ProductCategoryType } from "../../../typings/product";
 
-export const productCategoryList: ProductCategoryType[] = [
-  {
-    name: "sweater",
-  },
-  {
-    name: "t-shirt",
-  },
-  {
-    name: "hoodie",
-  },
-];
+export const productCategoryList: ProductCategoryType[] = ["sweater", "t-shirt", "hoodie"];
 
 export const productList: ProductType[] = [
   {
-    id: "brown-sweater",
+    id: "1",
     images: [
       "https://image.uniqlo.com/UQ/ST3/sg/imagesgoods/453401/item/sggoods_69_453401.jpg?width=1008&impolicy=quality_75",
     ],
@@ -25,7 +15,7 @@ export const productList: ProductType[] = [
     productCategory: productCategoryList[0],
   },
   {
-    id: "yellow-sweater",
+    id: "2",
     name: "Sweater for Winter",
     price: 49.9,
     sizes: ["xs", "s", "m", "l", "xl"],
@@ -39,7 +29,7 @@ export const productList: ProductType[] = [
     productCategory: productCategoryList[0],
   },
   {
-    id: "blue-sweater",
+    id: "3",
     images: [
       "https://image.uniqlo.com/UQ/ST3/sg/imagesgoods/448969/item/sggoods_65_448969.jpg?width=1008&impolicy=quality_75",
     ],
@@ -51,7 +41,7 @@ export const productList: ProductType[] = [
   },
 
   {
-    id: "red-sweater",
+    id: "4",
     images: [
       "https://image.uniqlo.com/UQ/ST3/sg/imagesgoods/444593/item/sggoods_32_444593.jpg?width=1008&impolicy=quality_75",
     ],
@@ -62,7 +52,7 @@ export const productList: ProductType[] = [
     productCategory: productCategoryList[1],
   },
   {
-    id: "apple-sweater",
+    id: "5",
     images: [
       "https://image.uniqlo.com/UQ/ST3/sg/imagesgoods/446633/item/sggoods_41_446633.jpg?width=1008&impolicy=quality_75",
     ],
@@ -73,7 +63,7 @@ export const productList: ProductType[] = [
     productCategory: productCategoryList[1],
   },
   {
-    id: "indigo-sweater",
+    id: "6",
     images: [
       "https://image.uniqlo.com/UQ/ST3/sg/imagesgoods/446382/item/sggoods_15_446382.jpg?width=1008&impolicy=quality_75",
     ],
@@ -84,7 +74,7 @@ export const productList: ProductType[] = [
     productCategory: productCategoryList[1],
   },
   {
-    id: "jam-sweater",
+    id: "7",
     images: [
       "https://image.uniqlo.com/UQ/ST3/AsianCommon/imagesgoods/447167/item/goods_09_447167.jpg?width=1008&impolicy=quality_75",
     ],

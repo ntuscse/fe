@@ -12,7 +12,7 @@ type Routes = {
   MERCH_DETAIL: string;
 };
 
-const routes: Routes = {
+export const routes: Routes = {
   HOME: "/",
   SIGN_UP: "/sign-up",
   CONFIRM_SIGN_UP: "/confirm-sign-up",

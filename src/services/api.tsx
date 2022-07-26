@@ -1,34 +1,50 @@
+import { productList } from "../data/mock/product";
+import { fakeDelay } from "../utils/functions/random";
+
+const QUERY_DELAY_TIME = 1500;
+const CUSTOM_MOCK_DATA = true;
+
 export class Api {
-  // private API_ORIGIN: string
-  //
-  // constructor() {
-  //     this.API_ORIGIN = 'https://api.dev.ntuscse.com'
-  // }
+  private API_ORIGIN: string;
+
+  constructor() {
+    this.API_ORIGIN = "https://api.dev.ntuscse.com";
+  }
 
   // http methods
   // eslint-disable-next-line class-methods-use-this
   async get(urlPath: string): Promise<Record<string, any>> {
-    const response = await fetch(`https://api.dev.ntuscse.com${urlPath}`);
+    const response = await fetch(`${this.API_ORIGIN}${urlPath}`);
     return response.json();
   }
 
   // eslint-disable-next-line class-methods-use-this
   async getProducts() {
     try {
+      if (CUSTOM_MOCK_DATA) {
+        await fakeDelay(QUERY_DELAY_TIME);
+        return productList;
+      }
       const res = await this.get("/products");
-      return res.json();
-    } catch (e) {
-      return null;
+      console.log("product-list", res);
+      return res?.products ?? [];
+    } catch (e: any) {
+      throw new Error(e);
     }
   }
 
   // eslint-disable-next-line class-methods-use-this
   async getProduct(productId: string) {
     try {
+      if (CUSTOM_MOCK_DATA) {
+        await fakeDelay(QUERY_DELAY_TIME);
+        return productList.find((product) => product.id === productId);
+      }
       const res = await this.get(`/product/${productId}`);
+      console.log("res", res);
       return res.json();
-    } catch (e) {
-      return null;
+    } catch (e: any) {
+      throw new Error(e);
     }
   }
 }

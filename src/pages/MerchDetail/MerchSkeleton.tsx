@@ -1,26 +1,26 @@
 import React from "react";
-import { Flex, Skeleton, Divider, Box } from "@chakra-ui/react";
+import { Flex, Skeleton, Divider, GridItem, Grid } from "@chakra-ui/react";
 
 const MerchSkeleton: React.FC = () => {
   return (
-    <Box width="100%">
-      <Flex flex={1} justifyContent="center">
-        <Skeleton height="300px" width="95%" />
-      </Flex>
-      <Flex flex={1} flexDirection="column">
+    <Grid templateColumns={{ base: "repeat(1, 1fr)", lg: "repeat(5, 1fr)" }} columnGap={16} rowGap={4}>
+      <GridItem colSpan={2}>
+        <Skeleton height="300px" width="100%" />
+      </GridItem>
+      <GridItem colSpan={3}>
         <Flex gap={2} flexDirection="column">
-          <Skeleton width="90%" height="42px" />
-          <Skeleton width="35%" height="28px" />
+          <Skeleton height="42px" />
+          <Skeleton height="28px" />
         </Flex>
         <Divider mt={4} mb={6} />
-        <Skeleton width="90%" height="42px" />
-        <Skeleton width="90%" height="42px" />
+        <Skeleton height="42px" />
+        <Skeleton height="42px" />
         <Divider my={6} />
-        <Skeleton width="90%" height="42px" />
+        <Skeleton height="42px" />
         <Divider my={6} />
-        <Skeleton width="90%" height="150px" />
-      </Flex>
-    </Box>
+        <Skeleton width="100%" height="150px" />
+      </GridItem>
+    </Grid>
   );
 };
 

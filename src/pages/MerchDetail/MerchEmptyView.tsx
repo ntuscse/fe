@@ -1,10 +1,11 @@
 import React, { useEffect } from "react";
 import { Center, Flex, Heading, Spinner, Text } from "@chakra-ui/react";
+import routes from "../../utils/constants/routes";
 
 const MerchEmptyView: React.FC = () => {
   useEffect(() => {
     setTimeout(() => {
-      window.location.href = "/merchanise-list";
+      window.location.href = routes.MERCHANDISE_LIST;
     }, 3000);
   }, []);
 

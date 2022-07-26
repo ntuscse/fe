@@ -1,8 +1,19 @@
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
-import { Box, Flex, Heading, Text, Divider, Button, Input, Grid, GridItem, Badge } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Heading,
+  Text,
+  Divider,
+  Button,
+  Input,
+  Grid,
+  GridItem,
+  Badge,
+  useDisclosure,
+} from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
-import { productList } from "../../data/mock/product";
 import MerchCarousel from "./MerchCarousel";
 import { SizeOption } from "./SizeOption";
 import { CartAction, CartActionType, useCartStore } from "../../context/cart";
@@ -12,6 +23,7 @@ import { ProductSizeTypes, ProductType } from "../../typings/product";
 import Page from "../../components/Page";
 import { QueryKeys } from "../../utils/constants/queryKeys";
 import { api } from "../../services/api";
+import SizeDialog from "./SizeDialog";
 
 // All Sizes - Disable those are unavailable.
 const ALL_SIZES: ProductSizeTypes[] = ["xxs", "xs", "s", "m", "l", "xl", "2xl"];
@@ -22,23 +34,18 @@ const GroupTitle = ({ children }: any) => (
   </Heading>
 );
 
-const fetchProductDetail = async (productId: string): Promise<ProductType | null> => {
-  if (productId) {
-    const productDetail = await api.getProduct(productId);
-    return productDetail ?? productList.find((p) => p.id === productId);
-  }
-  return null;
-};
-
 export const MerchDetail: React.FC = () => {
   // Context hook.
-  const { dispatch: cartDispatch } = useCartStore();
+  const { state, dispatch: cartDispatch } = useCartStore();
   const { slug: productSlug = "" } = useParams();
+
   const [quantity, setQuantity] = useState<number>(1);
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
 
-  const { data: product, isLoading } = useQuery([QueryKeys.PRODUCT], () => fetchProductDetail(productSlug), {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const { data: product, isLoading } = useQuery([QueryKeys.PRODUCT, productSlug], () => api.getProduct(productSlug), {
     onSuccess: (data: ProductType) => {
       setIsDisabled(!(data?.isAvailable === true));
       setSelectedSize(data?.sizes?.[0] ?? null);
@@ -78,6 +85,7 @@ export const MerchDetail: React.FC = () => {
       },
     };
     cartDispatch(payload);
+    console.log(state);
     setIsDisabled(false);
   };
 
@@ -106,7 +114,7 @@ export const MerchDetail: React.FC = () => {
     <Flex flexDirection="column">
       <Flex justifyContent="space-between" mb={2} display="flex">
         <GroupTitle>Sizes</GroupTitle>
-        <Button size="sm" variant="unstyled">
+        <Button size="sm" variant="unstyled" onClick={onOpen}>
           Size Chart
         </Button>
       </Flex>
@@ -200,6 +208,7 @@ export const MerchDetail: React.FC = () => {
           <Divider my={6} />
           {renderDescription}
         </GridItem>
+        <SizeDialog onClose={onClose} isOpen={isOpen} />
       </Grid>
     );
   };
