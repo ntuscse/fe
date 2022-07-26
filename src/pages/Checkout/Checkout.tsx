@@ -1,21 +1,12 @@
 import React from "react";
-import {
-  Box,
-  Flex,
-  Heading,
-  Text,
-  Divider,
-  Image,
-  Icon,
-  Link,
-} from "@chakra-ui/react";
+import { Box, Flex, Heading, Text, Divider, Image, Icon, Link } from "@chakra-ui/react";
 
 import { AiOutlineCreditCard } from "react-icons/ai";
 import PaymentCard from "./PaymentCard";
 import PayLahForm from "./PayLahForm";
 import CardPaymentForm from "./CardPaymentForm";
 import { useCartStore } from "../../context/cart";
-import { calCartSubTotal, calDiscountAmt } from "../../utils/functions/payment";
+import { calCartSubTotal, calDiscountAmt } from "../../utils/functions/price";
 
 enum PaymentTypes {
   card,
@@ -27,13 +18,11 @@ export const Checkout = () => {
   const cartContext = useCartStore();
   const { state } = cartContext;
   // Calculate subtotal & discount amount.
-  const subTotal = calCartSubTotal(state.items);
+  const subTotal = calCartSubTotal(state.items, {});
   const discountAmt = calDiscountAmt(subTotal, state.voucherDetails);
 
   // Payment Type.
-  const [paymentType, setPaymentType] = React.useState<PaymentTypes>(
-    PaymentTypes.card
-  );
+  const [paymentType, setPaymentType] = React.useState<PaymentTypes>(PaymentTypes.card);
 
   const renderPaymentForm = () => {
     switch (paymentType) {
@@ -51,14 +40,7 @@ export const Checkout = () => {
       </Heading>
       <Divider />
       <Flex gap={8} mt={12} flexDir={{ base: "column-reverse", md: "row" }}>
-        <Flex
-          flex={2}
-          p={6}
-          borderWidth="1px"
-          borderRadius="lg"
-          overflow="hidden"
-          flexDir="column"
-        >
+        <Flex flex={2} p={6} borderWidth="1px" borderRadius="lg" overflow="hidden" flexDir="column">
           <Flex gap={4} flexWrap="wrap">
             <PaymentCard
               onClick={() => setPaymentType(PaymentTypes.card)}
@@ -82,13 +64,7 @@ export const Checkout = () => {
           {renderPaymentForm()}
         </Flex>
         <Flex flex={1} direction="column" gap={4}>
-          <Flex
-            p={3}
-            gap={4}
-            flexDir="column"
-            borderWidth="1px"
-            borderRadius="lg"
-          >
+          <Flex p={3} gap={4} flexDir="column" borderWidth="1px" borderRadius="lg">
             <Flex justifyContent="space-between">
               <Text>Order Summary | {state.items.length} item(s)</Text>
               <Link cursor="pointer" href="/cart">
@@ -110,20 +86,13 @@ export const Checkout = () => {
               <Text>$ {(subTotal - discountAmt).toFixed(2)}</Text>
             </Flex>
           </Flex>
-          <Flex
-            p={3}
-            gap={4}
-            flexDir="column"
-            borderWidth="1px"
-            borderRadius="lg"
-          >
+          <Flex p={3} gap={4} flexDir="column" borderWidth="1px" borderRadius="lg">
             <Flex gap={4} flexDir="column">
               <Text>Collection Details</Text>
               <Divider />
               <Text>
-                An email will be sent to you closer to the collection date. Our
-                collection venue is at 50 Nanyang Ave, #32 Block N4 #02a,
-                Singapore 639798
+                An email will be sent to you closer to the collection date. Our collection venue is at 50 Nanyang Ave,
+                #32 Block N4 #02a, Singapore 639798
               </Text>
             </Flex>
           </Flex>

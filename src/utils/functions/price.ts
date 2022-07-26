@@ -1,13 +1,14 @@
+import { ProductInfoMapType } from "../../pages/Cart/Cart";
 import { CartItemType } from "../../typings/cart";
 import { VoucherType } from "../../typings/voucher";
 
-export function calCartSubTotal(cartItems: CartItemType[]): number {
+export function calCartSubTotal(cartItems: CartItemType[], productInfo: ProductInfoMapType): number {
   if (cartItems === undefined) {
     return 0;
   }
+
   return cartItems.reduce((acc: number, cur: CartItemType) => {
-    return 0;
-    // return acc + cur.price * cur.quantity;
+    return acc + cur.quantity * (productInfo?.[cur.id]?.price ?? 0);
   }, 0);
 }
 

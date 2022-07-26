@@ -1,4 +1,5 @@
 import { productList } from "../data/mock/product";
+import { voucherList } from "../data/mock/voucher";
 import { fakeDelay } from "../utils/functions/random";
 
 const QUERY_DELAY_TIME = 1500;
@@ -41,6 +42,20 @@ export class Api {
         return productList.find((product) => product.id === productId);
       }
       const res = await this.get(`/product/${productId}`);
+      console.log("res", res);
+      return res.json();
+    } catch (e: any) {
+      throw new Error(e);
+    }
+  }
+
+  async getVoucher(voucherId: string) {
+    try {
+      if (CUSTOM_MOCK_DATA) {
+        await fakeDelay(QUERY_DELAY_TIME);
+        return voucherList.find((voucher) => voucher?.id === voucherId);
+      }
+      const res = await this.get(`/voucher/${voucherId}`);
       console.log("res", res);
       return res.json();
     } catch (e: any) {

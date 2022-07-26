@@ -11,21 +11,22 @@ import {
   InputRightAddon,
   InputGroup,
   Divider,
+  Box,
 } from "@chakra-ui/react";
 
 import { SmallCloseIcon } from "@chakra-ui/icons";
 import { CartItemType } from "../../typings/cart";
+import { ProductInfoType } from "./Cart";
 
 export type CartItemProps = {
   isMobile: boolean;
   data: CartItemType;
+  productInfo: ProductInfoType;
   onRemove: (itemId: string, size: string) => void;
   onQuantityChange: (itemId: string, size: string, qty: number) => void;
 };
 
-const CartItem: React.FC<CartItemProps> = (props: CartItemProps) => {
-  const { isMobile, data, onRemove, onQuantityChange } = props;
-
+const CartItem: React.FC<CartItemProps> = ({ isMobile, data, onRemove, onQuantityChange, productInfo }) => {
   const flexItemConfig = {
     alignItems: "center",
     h: isMobile ? "auto" : 100,
@@ -57,21 +58,25 @@ const CartItem: React.FC<CartItemProps> = (props: CartItemProps) => {
   return (
     <>
       <Flex my="4" justifyContent="center">
-        {/* <Image width="100" height="100" objectFit="cover" src={data.imgUrl} /> */}
-        <Grid templateColumns={!isMobile ? "3fr repeat(3, 1fr)" : "1fr"}>
+        <Box boxShadow="sm" borderRadius={5} maxW={isMobile ? 150 : 100}>
+          <Image w="100%" borderRadius={5} src={productInfo?.image} fallbackSrc="https://via.placeholder.com/100" />
+        </Box>
+        <Grid templateColumns={!isMobile ? "3fr repeat(3, 1fr)" : "1fr"} rowGap={2}>
           <GridItem pl="4">
-            <Flex h={isMobile ? "auto" : 100} alignItems="center">
-              <Text fontSize={isMobile ? "xs" : "md"}>
-                {/* {data.itemName} */}
-                <br />
-                Size: {data.size}
-              </Text>
+            <Flex h={isMobile ? "auto" : 100} flexDir="column" fontWeight="600" fontSize={isMobile ? "sm" : "md"}>
+              <Text color="primary.600">{productInfo?.name}</Text>
+              <Flex color="grey">
+                Size:
+                <Text ml={1} textTransform="uppercase">
+                  {data.size}
+                </Text>
+              </Flex>
             </Flex>
           </GridItem>
           <GridItem pl="4">
             <Flex {...flexItemConfig}>
-              <Text fontSize={isMobile ? "xs" : "md"}>
-                {/* {isMobile && "Unit Price:"} ${data?.price.toFixed(2)} */}
+              <Text fontSize={isMobile ? "sm" : "md"} fontWeight={500}>
+                {isMobile && "Unit Price:"} ${productInfo?.price?.toFixed(2) ?? 0}
               </Text>
             </Flex>
           </GridItem>
@@ -97,16 +102,16 @@ const CartItem: React.FC<CartItemProps> = (props: CartItemProps) => {
           </GridItem>
           <GridItem pl="4">
             <Flex {...flexItemConfig}>
-              <Text fontSize={isMobile ? "xs" : "md"}>
-                {/* {isMobile && "Subtotal:"} ${(data.price * data.quantity).toFixed(2)} */}
+              <Text fontSize={isMobile ? "sm" : "md"} fontWeight={500}>
+                {isMobile && "Subtotal:"} ${(productInfo?.price ?? 0 * data.quantity).toFixed(2)}
               </Text>
             </Flex>
           </GridItem>
         </Grid>
         <Flex alignItems={isMobile ? "start" : "center"}>
-          {/* <Button size="sm" variant="link" onClick={() => onRemove(data.id, data.size)}>
+          <Button size="sm" variant="link" onClick={() => onRemove(data.id, data.size)}>
             {isMobile ? <SmallCloseIcon h={5} w={5} /> : "Delete"}
-          </Button> */}
+          </Button>
         </Flex>
       </Flex>
       <Divider />

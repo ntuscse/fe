@@ -1,17 +1,11 @@
 import React, { useState } from "react";
-import {
-  Button,
-  Flex,
-  Heading,
-  Text,
-  Input,
-  FormControl,
-  FormLabel,
-  FormHelperText,
-} from "@chakra-ui/react";
-
+import { Button, Flex, Heading, Text, Input, FormControl, FormLabel, FormHelperText, Box } from "@chakra-ui/react";
 import { LinkIcon } from "@chakra-ui/icons";
-import { addCartVoucher, useCartStore } from "../../context/cart";
+import { useMutation } from "@tanstack/react-query";
+import { CartActionType, useCartStore } from "../../context/cart";
+import { QueryKeys } from "../../utils/constants/queryKeys";
+import { api } from "../../services/api";
+import { VoucherType } from "../../typings/voucher";
 
 export const VoucherSection = () => {
   // Context hook.
@@ -20,15 +14,24 @@ export const VoucherSection = () => {
 
   // Voucher Input cartState.
   const [voucherInput, setVoucherInput] = useState("");
+  const [hasError, setHasError] = useState<boolean>(false);
   const [voucherLoading, setVoucherLoading] = useState(false);
-
-  // Add Voucher (To be changed to API request: BE)
-  const addVoucher = async () => {
-    setVoucherLoading(true);
-    await addCartVoucher(voucherInput, cartDispatch);
-    setVoucherInput("");
-    setVoucherLoading(false);
-  };
+  // Fetch and check if cart item is valid.
+  const { mutate: addVoucher } = useMutation([QueryKeys.VOUCHER, voucherInput], () => api.getVoucher(voucherInput), {
+    onMutate: () => {
+      setHasError(false);
+      setVoucherLoading(true);
+    },
+    onSuccess: (data: VoucherType) => {
+      setVoucherInput("");
+      setVoucherLoading(false);
+      if (!data) {
+        setHasError(true);
+        return;
+      }
+      cartDispatch({ type: CartActionType.APPLY_VOUCHER, payload: data });
+    },
+  });
 
   return (
     <FormControl maxW={350} my={4}>
@@ -55,7 +58,7 @@ export const VoucherSection = () => {
           borderRadius={0}
           variant="outline"
           disabled={voucherInput.length === 0}
-          onClick={addVoucher}
+          onClick={() => addVoucher()}
         >
           Apply
         </Button>
@@ -65,14 +68,14 @@ export const VoucherSection = () => {
           <Text>Apply your voucher code!</Text>
         ) : (
           <Text textAlign="right">
-            Applied Voucher: {cartState?.voucherDetails?.description}
+            {hasError && <Text color="red.500">Voucher does not exist.</Text>}
             {cartState.voucherDetails !== null && (
-              <Button
-                variant="link"
-                onClick={() => cartDispatch({ type: "remove_voucher" })}
-              >
-                <LinkIcon height={3} width={3} />
-              </Button>
+              <Flex justifyContent="flex-end">
+                <Text color="green.500">Applied Voucher</Text>
+                <Button ml={1} variant="link" onClick={() => cartDispatch({ type: "remove_voucher" })}>
+                  <LinkIcon height={3} width={3} />
+                </Button>
+              </Flex>
             )}
           </Text>
         )}

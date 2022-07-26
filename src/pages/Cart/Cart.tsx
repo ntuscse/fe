@@ -1,19 +1,34 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { Box, Button, Flex, Heading, useBreakpointValue, Divider, useDisclosure } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 import CartItem from "./CartItem";
 import RemoveModal from "./RemoveModal";
 import CartHeader from "./CartHeader";
 import CartEmptyView from "./CartEmptyView";
 import { CartAction, CartActionType, useCartStore } from "../../context/cart";
 import { VoucherSection } from "./VoucherSection";
-import { calCartSubTotal, calDiscountAmt } from "../../utils/functions/payment";
+import { calCartSubTotal, calDiscountAmt } from "../../utils/functions/price";
 import LoadingScreen from "../../components/LoadingScreen";
+import { QueryKeys } from "../../utils/constants/queryKeys";
+import { api } from "../../services/api";
+import { ProductType } from "../../typings/product";
+import { CartItemType } from "../../typings/cart";
+import Page from "../../components/Page";
+
+export type ProductInfoType = {
+  name: string;
+  image: string;
+  price: number;
+};
+
+export type ProductInfoMapType = Record<string, ProductInfoType>;
 
 export const Cart: React.FC = () => {
   // Context hook.
   const cartContext = useCartStore();
   const { state: cartState, dispatch: cartDispatch } = cartContext;
+  const [productInfo, setProductInfo] = useState<ProductInfoMapType>({});
 
   // Removal Modal cartStates
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -22,8 +37,31 @@ export const Cart: React.FC = () => {
   // Check if break point hit.
   const isMobile: boolean = useBreakpointValue({ base: true, md: false }) || false;
 
+  // Fetch and check if cart item is valid.
+  const { isLoading } = useQuery([QueryKeys.PRODUCTS], () => api.getProducts(), {
+    onSuccess: (data: ProductType[]) => {
+      if (cartState.items.length === 0) {
+        return;
+      }
+      const tempProductInfo: ProductInfoMapType = {};
+      cartState.items.forEach((item: CartItemType) => {
+        const product = data.find((i) => i.id === item.id);
+        if (product && product.isAvailable) {
+          tempProductInfo[product?.id] = {
+            image: product?.images?.[0],
+            price: product?.price,
+            name: product.name,
+          };
+        } else {
+          cartDispatch({ type: CartActionType.REMOVE_ITEM, payload: { id: item.id, size: item.size } });
+        }
+      });
+      setProductInfo(tempProductInfo);
+    },
+  });
+
   // Calculate subtotal & discount amount.
-  const subTotal = cartState.items.length > 0 ? calCartSubTotal(cartState.items) : 0;
+  const subTotal = calCartSubTotal(cartState.items, productInfo);
   const discountAmt = calDiscountAmt(subTotal, cartState.voucherDetails);
 
   // Update Cart Item by Size & Id (To be changed next time: BE)
@@ -60,7 +98,7 @@ export const Cart: React.FC = () => {
     <>
       <Heading fontSize="md">Subtotal: ${subTotal.toFixed(2)}</Heading>
       {cartState.voucherDetails && <Heading fontSize="md">Voucher Discount: ${discountAmt.toFixed(2)}</Heading>}
-      <Heading fontSize="md">Total Amount: {(subTotal - discountAmt).toFixed(2)}</Heading>
+      <Heading fontSize="md">Total Amount: ${(subTotal - discountAmt).toFixed(2)}</Heading>
     </>
   );
 
@@ -84,6 +122,7 @@ export const Cart: React.FC = () => {
         <CartItem
           key={item.id + item.size}
           data={item}
+          productInfo={productInfo?.[item.id]}
           isMobile={isMobile}
           onRemove={handleRemoveItem}
           onQuantityChange={onQuantityChange}
@@ -105,9 +144,9 @@ export const Cart: React.FC = () => {
   );
 
   const renderCartContent = () => {
-    // if (cartState.fetchStatus) {
-    //   return <LoadingScreen text="Fetching Cart Details" />;
-    // }
+    if (isLoading) {
+      return <LoadingScreen text="Fetching Cart Details" />;
+    }
     if (cartState?.items?.length === 0) {
       return <CartEmptyView />;
     }
@@ -115,10 +154,10 @@ export const Cart: React.FC = () => {
   };
 
   return (
-    <Box p={{ base: 8, lg: 12 }} maxWidth="1400px" mx="auto">
+    <Page>
       {CartHeading}
       <Divider />
       {renderCartContent()}
-    </Box>
+    </Page>
   );
 };

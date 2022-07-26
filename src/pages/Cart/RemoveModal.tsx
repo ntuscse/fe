@@ -1,15 +1,6 @@
 import React from "react";
 
-import {
-  Button,
-  Divider,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalFooter,
-  ModalBody,
-  Text,
-} from "@chakra-ui/react";
+import { Button, Divider, Modal, ModalOverlay, ModalContent, ModalFooter, ModalBody, Text } from "@chakra-ui/react";
 
 type RemoveModalType = {
   isOpen: boolean;
@@ -23,8 +14,8 @@ const RemoveModal: React.FC<RemoveModalType> = (props) => {
     <Modal isOpen={isOpen} onClose={onClose} isCentered trapFocus={false}>
       <ModalOverlay />
       <ModalContent>
-        <ModalBody p="4">
-          <Text fontSize="sm">Do you want to remove this product?</Text>
+        <ModalBody px="4" py={8} textAlign="center">
+          <Text fontSize="md">Do you want to remove this product?</Text>
         </ModalBody>
         <Divider />
         <ModalFooter justifyContent="center" p={0}>
@@ -39,13 +30,7 @@ const RemoveModal: React.FC<RemoveModalType> = (props) => {
           >
             No
           </Button>
-          <Button
-            border={0}
-            borderRadius={0}
-            flexGrow={1}
-            variant="outline"
-            onClick={() => removeItem()}
-          >
+          <Button border={0} borderRadius={0} flexGrow={1} variant="outline" onClick={() => removeItem()}>
             Yes
           </Button>
         </ModalFooter>
