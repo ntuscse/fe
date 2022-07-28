@@ -2,7 +2,7 @@ import { productList } from "../data/mock/product";
 import { voucherList } from "../data/mock/voucher";
 import { fakeDelay } from "../utils/functions/random";
 
-const QUERY_DELAY_TIME = 1500;
+const QUERY_DELAY_TIME = 1000;
 const CUSTOM_MOCK_DATA = true;
 
 export class Api {

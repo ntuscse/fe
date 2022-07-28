@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import { useRef, useState, FC } from "react";
 import { Box, Button, Flex, Heading, useBreakpointValue, Divider, useDisclosure } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
@@ -13,18 +13,10 @@ import LoadingScreen from "../../components/LoadingScreen";
 import { QueryKeys } from "../../utils/constants/queryKeys";
 import { api } from "../../services/api";
 import { ProductType } from "../../typings/product";
-import { CartItemType } from "../../typings/cart";
+import { CartItemType, ProductInfoMapType } from "../../typings/cart";
 import Page from "../../components/Page";
 
-export type ProductInfoType = {
-  name: string;
-  image: string;
-  price: number;
-};
-
-export type ProductInfoMapType = Record<string, ProductInfoType>;
-
-export const Cart: React.FC = () => {
+export const Cart: FC = () => {
   // Context hook.
   const cartContext = useCartStore();
   const { state: cartState, dispatch: cartDispatch } = cartContext;
@@ -38,7 +30,7 @@ export const Cart: React.FC = () => {
   const isMobile: boolean = useBreakpointValue({ base: true, md: false }) || false;
 
   // Fetch and check if cart item is valid.
-  const { isLoading } = useQuery([QueryKeys.PRODUCTS], () => api.getProducts(), {
+  const { isLoading, isRefetching } = useQuery([QueryKeys.PRODUCTS], () => api.getProducts(), {
     onSuccess: (data: ProductType[]) => {
       if (cartState.items.length === 0) {
         return;
@@ -144,7 +136,7 @@ export const Cart: React.FC = () => {
   );
 
   const renderCartContent = () => {
-    if (isLoading) {
+    if (isLoading || isRefetching) {
       return <LoadingScreen text="Fetching Cart Details" />;
     }
     if (cartState?.items?.length === 0) {

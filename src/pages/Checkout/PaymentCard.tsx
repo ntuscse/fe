@@ -18,6 +18,7 @@ const PaymentCard: React.FC<PaymentCardProps> = (props) => {
       borderWidth={isFocused ? "2px" : "1px"}
       borderColor={isFocused ? "#3187FA" : ""}
       flexDirection="column"
+      gap={2}
       p={3}
       w={130}
       justifyContent="center"

@@ -1,5 +1,4 @@
-import { ProductInfoMapType } from "../../pages/Cart/Cart";
-import { CartItemType } from "../../typings/cart";
+import { CartItemType, ProductInfoMapType } from "../../typings/cart";
 import { VoucherType } from "../../typings/voucher";
 
 export function calCartSubTotal(cartItems: CartItemType[], productInfo: ProductInfoMapType): number {

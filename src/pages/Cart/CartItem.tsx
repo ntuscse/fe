@@ -15,8 +15,7 @@ import {
 } from "@chakra-ui/react";
 
 import { SmallCloseIcon } from "@chakra-ui/icons";
-import { CartItemType } from "../../typings/cart";
-import { ProductInfoType } from "./Cart";
+import { CartItemType, ProductInfoType } from "../../typings/cart";
 
 export type CartItemProps = {
   isMobile: boolean;
