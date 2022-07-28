@@ -6,13 +6,14 @@ import Footer from "./Footer";
 type PageProps = FlexProps & {
   children: ReactNode;
   hideHeader?: boolean;
+  contentWidth?: string;
 };
 
-const Page = ({ children, hideHeader = false, ...props }: PageProps) => {
+const Page = ({ children, hideHeader = false, contentWidth = "1400px", ...props }: PageProps) => {
   return (
     <Flex flexDirection="column" {...props}>
       {!hideHeader && <Header />}
-      <Box w="100%" flexDir="column" gap={8} mx="auto" maxWidth="1400px" p={{ base: 8, lg: 12 }}>
+      <Box w="100%" flexDir="column" mt={14} mx="auto" maxWidth={contentWidth}>
         {children}
       </Box>
       <Footer />

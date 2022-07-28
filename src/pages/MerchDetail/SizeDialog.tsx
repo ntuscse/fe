@@ -8,6 +8,7 @@ import {
   ModalBody,
   ModalCloseButton,
   Divider,
+  Box,
 } from "@chakra-ui/react";
 
 type SizeDialogType = {
@@ -23,8 +24,10 @@ const SizeDialog: React.FC<SizeDialogType> = ({ isOpen, onClose }) => {
         <ModalHeader>Size Chart</ModalHeader>
         <Divider />
         <ModalCloseButton />
-        <ModalBody p={8}>
-          <Image src="https://lh4.googleusercontent.com/1lDMIBCmQuCU1FXFCKcuXnPZi6NssGRwQ7pMevNCsIM_C2Wjd6CXBPEimotMEVlqDmum9_yBzXP8-hLmSR-i1MLL56q2mG9f5bGvDRuQGC9j8ZN1OPhWomR1bBv1RC4kKO6MOSwz" />
+        <ModalBody p={8} width="fit-content">
+          <Image src="https://uniqlo.scene7.com/is/image/UNIQLO/us2_graph_bodysize_uq_m" />
+          <Box my={4} />
+          <Image src="http://uniqlo.scene7.com/is/image/UNIQLO/us2_graph_bodysize_uq_w" />
         </ModalBody>
       </ModalContent>
     </Modal>
