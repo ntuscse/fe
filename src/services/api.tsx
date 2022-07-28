@@ -77,6 +77,20 @@ export class Api {
       throw new Error(e);
     }
   }
+
+  async getOrderHistory(userId: string) {
+    try {
+      if (CUSTOM_MOCK_DATA) {
+        await fakeDelay(QUERY_DELAY_TIME);
+        return orderList.filter((order) => order.userId === userId) ?? [];
+      }
+      const res = await this.get(`/order-history/${userId}`);
+      console.log("Order Summary response:", res);
+      return res.json();
+    } catch (e: any) {
+      throw new Error(e);
+    }
+  }
 }
 
 export const api = new Api();

@@ -33,7 +33,3 @@ export type OrderType = {
   orderDate: string | Date;
   lastUpdate: string | Date;
 };
-
-export type OrderHistoryType = {
-  orders: OrderType[];
-};
