@@ -1,8 +1,8 @@
 import { Route, Routes as ReactRoutes } from "react-router-dom";
-import ConfirmSignUp from "./pages/ConfirmSignUp";
+import ConfirmSignUp from "./pages/ConfirmSignUp/ConfirmSignUp";
 import Home from "./pages/Home";
-import SignIn from "./pages/SignIn";
-import SignUp from "./pages/SignUp";
+import SignIn from "./pages/SignIn/SignIn";
+import SignUp from "./pages/Signup/SignUp";
 import MerchandiseList from "./pages/MerchandiseList";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
