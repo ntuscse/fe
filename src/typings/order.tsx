@@ -11,11 +11,11 @@ export enum OrderStatusType {
 
 export type OrderItemType = {
   id: string;
-  imgUrl: string;
+  image: string;
   size: string;
   price: number;
   quantity: number;
-  itemName: string;
+  name: string;
 };
 
 export type OrderBillingType = {
@@ -25,7 +25,8 @@ export type OrderBillingType = {
 };
 
 export type OrderType = {
-  orderNo: string;
+  userId: string;
+  orderId: string;
   items: OrderItemType[];
   status: OrderStatusType;
   billing: OrderBillingType;

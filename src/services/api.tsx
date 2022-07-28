@@ -1,3 +1,4 @@
+import { orderList } from "../data/mock/orderList";
 import { productList } from "../data/mock/product";
 import { voucherList } from "../data/mock/voucher";
 import { fakeDelay } from "../utils/functions/random";
@@ -57,6 +58,20 @@ export class Api {
       }
       const res = await this.get(`/voucher/${voucherId}`);
       console.log("res", res);
+      return res.json();
+    } catch (e: any) {
+      throw new Error(e);
+    }
+  }
+
+  async getOrder(userId: string, orderId: string) {
+    try {
+      if (CUSTOM_MOCK_DATA) {
+        await fakeDelay(QUERY_DELAY_TIME);
+        return orderList.find((order) => order.userId === userId && order.orderId === orderId);
+      }
+      const res = await this.get(`/order-summary/${orderId}`);
+      console.log("Order Summary response:", res);
       return res.json();
     } catch (e: any) {
       throw new Error(e);

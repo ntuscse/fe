@@ -1,32 +1,13 @@
 import React, { useState, useEffect } from "react";
-import {
-  Box,
-  Flex,
-  Heading,
-  Text,
-  useBreakpointValue,
-  Divider,
-  Link,
-  Skeleton,
-  Stack,
-} from "@chakra-ui/react";
+import { Box, Flex, Heading, Text, useBreakpointValue, Divider, Link, Skeleton, Stack } from "@chakra-ui/react";
 
-import {
-  OrderHistoryType,
-  OrderItemType,
-  OrderType,
-} from "../../typings/order";
-import {
-  renderOrderStatus,
-  getOrderStatusColor,
-} from "../../utils/constants/order-status";
+import { OrderHistoryType, OrderItemType, OrderType } from "../../typings/order";
+import { renderOrderStatus, getOrderStatusColor } from "../../utils/constants/order-status";
 import OrderItem from "../../components/OrderItem";
-import { orderHistory } from "../../data/mock/orderHistory";
 
 export const OrderHistory: React.FC = () => {
   // Check if break point hit.
-  const isMobile: boolean =
-    useBreakpointValue({ base: true, md: false }) || false;
+  const isMobile: boolean = useBreakpointValue({ base: true, md: false }) || false;
   const [loading, setLoading] = useState<boolean>(false);
   const [orderList, setOrderList] = useState<OrderHistoryType | null>(null);
 
@@ -37,7 +18,7 @@ export const OrderHistory: React.FC = () => {
       // await fakeDelay(); // Stimulate
     };
     fetchOrderHistory()
-      .then((res) => setOrderList(orderHistory))
+      .then((res) => setOrderList(orderList))
       .catch((e) => {
         throw new Error(e);
       })
@@ -62,45 +43,28 @@ export const OrderHistory: React.FC = () => {
       ) : (
         orderList?.orders.map((order: OrderType) => {
           const orderItems = order?.items || [];
-          const { orderNo, orderDate, lastUpdate } = order ?? {};
+          const { orderId, orderDate, lastUpdate } = order ?? {};
           const orderHeader = (
-            <Flex
-              justifyContent="space-between"
-              fontSize={{ base: "xs", md: "sm" }}
-            >
+            <Flex justifyContent="space-between" fontSize={{ base: "xs", md: "sm" }}>
               <Flex gap="5px" flexDirection={{ base: "column", md: "row" }}>
-                <Text>Order ID: {orderNo}</Text>
+                <Text>Order ID: {orderId}</Text>
                 {!isMobile && <Text>|</Text>}
                 <Text>Order Date: {orderDate}</Text>
                 {!isMobile && <Text>|</Text>}
                 <Text>Last Update: {lastUpdate}</Text>
               </Flex>
-              <Box color={getOrderStatusColor(order?.status)}>
-                {renderOrderStatus(order?.status)}
-              </Box>
+              <Box color={getOrderStatusColor(order?.status)}>{renderOrderStatus(order?.status)}</Box>
             </Flex>
           );
           return (
             <Flex flexDirection="column" mt={5}>
-              <Flex
-                p={5}
-                borderWidth="1px"
-                borderRadius="lg"
-                overflow="hidden"
-                flexDir="column"
-              >
+              <Flex p={5} borderWidth="1px" borderRadius="lg" overflow="hidden" flexDir="column">
                 {orderHeader}
                 <Divider mt={4} />
                 {orderItems.map((item: OrderItemType) => {
                   return <OrderItem data={item} isMobile={isMobile} />;
                 })}
-                <Flex
-                  mt={4}
-                  gap="8px"
-                  alignItems="flex-end"
-                  flexDirection="column"
-                  fontSize={{ base: "xs", md: "sm" }}
-                >
+                <Flex mt={4} gap="8px" alignItems="flex-end" flexDirection="column" fontSize={{ base: "xs", md: "sm" }}>
                   <Box display="flex" gap="4px">
                     <Text fontWeight={500}>Order Total:</Text>
                     {`$${order?.billing?.total?.toFixed(2)}`}

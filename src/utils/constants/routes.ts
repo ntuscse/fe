@@ -21,7 +21,7 @@ export const routes: Routes = {
   MERCHANDISE_LIST: "/merchandise-list",
   CART: "/cart",
   CHECKOUT: "/checkout",
-  ORDER_SUMMARY: "/summary",
+  ORDER_SUMMARY: "/order-summary",
   ORDER_HISTORY: "/order-history",
   MERCH_DETAIL: "/merch",
 };

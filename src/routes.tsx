@@ -21,8 +21,7 @@ const Routes = () => (
     <Route path={routes.MERCHANDISE_LIST} element={<MerchandiseList />} />
     <Route path={routes.CART} element={<Cart />} />
     <Route path={routes.CHECKOUT} element={<Checkout />} />
-    <Route path={routes.ORDER_SUMMARY} element={<OrderSummary />} />
-    <Route path={routes.ORDER_HISTORY} element={<OrderHistory />} />
+    <Route path={`${routes.ORDER_SUMMARY}/:slug`} element={<OrderSummary />} />
     <Route path={routes.ORDER_HISTORY} element={<OrderHistory />} />
     <Route path={`${routes.MERCH_DETAIL}/:slug`} element={<MerchDetail />} />
     <Route path="*" element={<Error404 />} />
