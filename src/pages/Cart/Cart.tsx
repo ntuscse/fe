@@ -15,6 +15,7 @@ import { api } from "../../services/api";
 import { ProductType } from "../../typings/product";
 import { CartItemType, ProductInfoMapType } from "../../typings/cart";
 import Page from "../../components/Page";
+import routes from "../../utils/constants/routes";
 
 export const Cart: FC = () => {
   // Context hook.
@@ -96,14 +97,16 @@ export const Cart: FC = () => {
 
   const actionButtons = (
     <Flex flexDirection="column" gap={8} alignItems="flex-end">
-      <Link to="/checkout">
+      <Link to={routes.CHECKOUT}>
         <Button width={isMobile ? "100%" : "auto"} borderRadius={0}>
           CHECK OUT
         </Button>
       </Link>
-      <Button borderRadius={0} variant="outline" width={isMobile ? "100%" : "auto"}>
-        CONTINUE SHOPPING
-      </Button>
+      <Link to={routes.MERCHANDISE_LIST}>
+        <Button borderRadius={0} variant="outline" width={isMobile ? "100%" : "auto"}>
+          CONTINUE SHOPPING
+        </Button>
+      </Link>
     </Flex>
   );
 
@@ -148,7 +151,6 @@ export const Cart: FC = () => {
   return (
     <Page>
       {CartHeading}
-      <Divider />
       {renderCartContent()}
     </Page>
   );
