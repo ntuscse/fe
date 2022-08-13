@@ -36,7 +36,7 @@ const GroupTitle = ({ children }: any) => (
 
 export const MerchDetail: React.FC = () => {
   // Context hook.
-  const { state, dispatch: cartDispatch } = useCartStore();
+  const { dispatch: cartDispatch } = useCartStore();
   const { slug: productSlug = "" } = useParams();
 
   const [quantity, setQuantity] = useState<number>(1);

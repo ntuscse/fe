@@ -1,5 +1,15 @@
 import { useRef, useState, FC } from "react";
-import { Box, Button, Flex, Heading, useBreakpointValue, Divider, useDisclosure } from "@chakra-ui/react";
+import {
+  Button,
+  Flex,
+  Heading,
+  useBreakpointValue,
+  Divider,
+  useDisclosure,
+  Grid,
+  GridItem,
+  Text,
+} from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import CartItem from "./CartItem";
@@ -88,22 +98,30 @@ export const Cart: FC = () => {
   );
 
   const billBreakdown = (
-    <>
-      <Heading fontSize="md">Subtotal: ${subTotal.toFixed(2)}</Heading>
-      {cartState.voucherDetails && <Heading fontSize="md">Voucher Discount: ${discountAmt.toFixed(2)}</Heading>}
-      <Heading fontSize="md">Total Amount: ${(subTotal - discountAmt).toFixed(2)}</Heading>
-    </>
+    <Flex flexDir="column" rowGap={[1, 2]}>
+      <Flex justifyContent="space-between">
+        <Text fontSize="md">Item(s) subtotal</Text>
+        <Text>${subTotal.toFixed(2)}</Text>
+      </Flex>
+      <Flex justifyContent="space-between">
+        <Text fontSize="md">Voucher Discount</Text>
+        <Text>${discountAmt.toFixed(2)}</Text>
+      </Flex>
+      <Divider />
+      <Flex justifyContent="space-between" fontWeight={600}>
+        <Text fontSize="md">Total</Text>
+        <Text>${(subTotal - discountAmt).toFixed(2)}</Text>
+      </Flex>
+    </Flex>
   );
 
   const actionButtons = (
-    <Flex flexDirection="column" gap={8} alignItems="flex-end">
+    <Flex flexDirection="column" gap={4} alignItems="flex-end">
       <Link to={routes.CHECKOUT}>
-        <Button width={isMobile ? "100%" : "auto"} borderRadius={0}>
-          CHECK OUT
-        </Button>
+        <Button borderRadius={0}>CHECK OUT</Button>
       </Link>
       <Link to={routes.MERCHANDISE_LIST}>
-        <Button borderRadius={0} variant="outline" width={isMobile ? "100%" : "auto"}>
+        <Button borderRadius={0} variant="outline">
           CONTINUE SHOPPING
         </Button>
       </Link>
@@ -111,31 +129,38 @@ export const Cart: FC = () => {
   );
 
   const renderCartView = () => (
-    <Box>
-      {!isMobile && <CartHeader />}
-      {cartState.items.map((item) => (
-        <CartItem
-          key={item.id + item.size}
-          data={item}
-          productInfo={productInfo?.[item.id]}
-          isMobile={isMobile}
-          onRemove={handleRemoveItem}
-          onQuantityChange={onQuantityChange}
-        />
-      ))}
-      <Flex alignItems="end" flexDirection="column">
-        <VoucherSection />
-        <Divider mb="4" />
-        {billBreakdown}
-        <Divider my="4" />
-        {actionButtons}
-      </Flex>
+    <Grid templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(6, 1fr)" }}>
+      <GridItem colSpan={4} px={[0, 4]}>
+        {!isMobile && <CartHeader />}
+        {cartState.items.map((item, index) => (
+          <>
+            <CartItem
+              key={item.id + item.size}
+              data={item}
+              productInfo={productInfo?.[item.id]}
+              isMobile={isMobile}
+              onRemove={handleRemoveItem}
+              onQuantityChange={onQuantityChange}
+            />
+            {index !== cartState.items.length - 1 && <Divider />}
+          </>
+        ))}
+      </GridItem>
+      <GridItem colSpan={2} px={[0, 4]}>
+        <Flex p={3} gap={4} flexDir="column" borderWidth="1px" borderRadius="lg">
+          <VoucherSection />
+          <Divider />
+          {billBreakdown}
+          <Divider />
+          {actionButtons}
+        </Flex>
+      </GridItem>
       <RemoveModal
         isOpen={isOpen}
         onClose={onClose}
         removeItem={() => removeItem(toBeRemoved.current.itemId, toBeRemoved.current.size)}
       />
-    </Box>
+    </Grid>
   );
 
   const renderCartContent = () => {

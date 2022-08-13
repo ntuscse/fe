@@ -19,7 +19,6 @@ import {
   Grid,
   Hide,
   Icon,
-  Box,
 } from "@chakra-ui/react";
 import React, { useRef, useState, useEffect } from "react";
 import { Link as RouterLink } from "react-router-dom";
