@@ -10,11 +10,17 @@ type PageProps = FlexProps & {
   contentPadding?: number[];
 };
 
-const Page = ({ children, hideHeader = false, contentWidth = "1400px", ...props }: PageProps) => {
+const Page = ({
+  children,
+  hideHeader = false,
+  contentWidth = "1400px",
+  contentPadding = [4, 6, 8],
+  ...props
+}: PageProps) => {
   return (
     <Flex flexDirection="column" {...props}>
       {!hideHeader && <Header />}
-      <Box w="100%" flexDir="column" mt={[6, 10]} mx="auto" maxWidth={contentWidth} px={[2, 8]}>
+      <Box w="100%" flexDir="column" mt={[6, 10]} mx="auto" maxWidth={contentWidth} px={contentPadding}>
         {children}
       </Box>
       <Footer />

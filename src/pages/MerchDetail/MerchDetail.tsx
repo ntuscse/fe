@@ -17,8 +17,8 @@ import { useQuery } from "@tanstack/react-query";
 import MerchCarousel from "./MerchCarousel";
 import { SizeOption } from "./SizeOption";
 import { CartAction, CartActionType, useCartStore } from "../../context/cart";
-import MerchSkeleton from "./MerchSkeleton";
-import MerchEmptyView from "./MerchEmptyView";
+import MerchSkeleton from "./Skeleton";
+import MerchEmptyView from "./EmptyView";
 import { ProductSizeTypes, ProductType } from "../../typings/product";
 import Page from "../../components/Page";
 import { QueryKeys } from "../../utils/constants/queryKeys";
@@ -26,7 +26,7 @@ import { api } from "../../services/api";
 import SizeDialog from "./SizeDialog";
 
 // All Sizes - Disable those are unavailable.
-const ALL_SIZES: ProductSizeTypes[] = ["xxs", "xs", "s", "m", "l", "xl", "2xl"];
+const ALL_SIZES: ProductSizeTypes[] = ["3xs", "xxs", "xs", "s", "m", "l", "xl", "2xl", "3xl"];
 
 const GroupTitle = ({ children }: any) => (
   <Heading fontSize="md" mb={2} color="grey" textTransform="uppercase">
@@ -85,7 +85,6 @@ export const MerchDetail: React.FC = () => {
       },
     };
     cartDispatch(payload);
-    console.log(state);
     setIsDisabled(false);
   };
 
@@ -96,7 +95,7 @@ export const MerchDetail: React.FC = () => {
 
   const ProductNameSection = (
     <Flex flexDirection="column" gap={1}>
-      <Heading color="primary.600" fontSize={{ base: "2xl", md: "4xl" }}>
+      <Heading color="primary.600" fontSize={["xl", "2xl", "3xl", "4xl"]}>
         {product?.name}
         {!product?.isAvailable && (
           <Badge color="grey" ml={4} variant="outline" display="inline">
@@ -112,13 +111,13 @@ export const MerchDetail: React.FC = () => {
 
   const renderSizeSection = (
     <Flex flexDirection="column">
-      <Flex justifyContent="space-between" mb={2} display="flex">
+      <Flex justifyContent="space-between" alignItems="center" mb={2} display="flex">
         <GroupTitle>Sizes</GroupTitle>
         <Button size="sm" variant="unstyled" onClick={onOpen}>
           Size Chart
         </Button>
       </Flex>
-      <Flex gap="15px" flexWrap="wrap">
+      <Flex gap={[4, 4]} flexWrap="wrap">
         {ALL_SIZES.map((size, idx) => {
           return (
             <SizeOption
@@ -194,11 +193,11 @@ export const MerchDetail: React.FC = () => {
 
   const renderMerchDetails = () => {
     return (
-      <Grid templateColumns={{ base: "repeat(1, 1fr)", lg: "repeat(5, 1fr)" }} columnGap={16}>
-        <GridItem colSpan={2}>
+      <Grid templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(5, 1fr)" }}>
+        <GridItem colSpan={2} px={[0, 4]}>
           <MerchCarousel images={product?.images ?? []} />
         </GridItem>
-        <GridItem colSpan={3}>
+        <GridItem colSpan={3} px={[0, 4]}>
           {ProductNameSection}
           <Divider mt={4} mb={6} />
           {renderSizeSection}

@@ -24,10 +24,8 @@ const SizeDialog: React.FC<SizeDialogType> = ({ isOpen, onClose }) => {
         <ModalHeader>Size Chart</ModalHeader>
         <Divider />
         <ModalCloseButton />
-        <ModalBody p={8} width="fit-content">
-          <Image src="https://uniqlo.scene7.com/is/image/UNIQLO/us2_graph_bodysize_uq_m" />
-          <Box my={4} />
-          <Image src="http://uniqlo.scene7.com/is/image/UNIQLO/us2_graph_bodysize_uq_w" />
+        <ModalBody width="fit-content">
+          <Image src="/images/size-chart.png" />
         </ModalBody>
       </ModalContent>
     </Modal>

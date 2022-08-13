@@ -1,4 +1,4 @@
-export type ProductSizeTypes = "xxs" | "xs" | "s" | "m" | "l" | "xl" | "2xl";
+export type ProductSizeTypes = "3xs" | "xxs" | "xs" | "s" | "m" | "l" | "xl" | "2xl" | "3xl";
 
 export type ProductCategoryType = string;
 

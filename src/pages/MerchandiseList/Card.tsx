@@ -1,6 +1,7 @@
 import { ArrowForwardIcon } from "@chakra-ui/icons";
 import { Box, Image, Text, GridItem, Flex } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
+import routes from "../../utils/constants/routes";
 
 type card = {
   itemId: string;
@@ -13,7 +14,7 @@ type card = {
 const Card = ({ itemId, imgSrc, text, price, sizeRange }: card) => {
   return (
     <GridItem role="group" cursor="pointer" mt={4}>
-      <Link to={`/merch/${itemId}`}>
+      <Link to={`${routes.MERCHANDISE_LIST}/${itemId}`}>
         <Box
           boxShadow="sm"
           maxW="sm"
