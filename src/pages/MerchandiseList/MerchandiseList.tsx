@@ -22,7 +22,7 @@ export const MerchandiseList = () => {
 
   return (
     <Page>
-      <Text textAlign="center" textStyle={["h6", "h5"]} textColor="primary.600" mt={5} mb={10}>
+      <Text textAlign="center" textStyle={["h6", "h5"]} textColor="primary.600" mb={10}>
         SCSE Merchandise
       </Text>
       <Flex justifyContent="space-between" my={5} alignItems="center">
@@ -47,11 +47,11 @@ export const MerchandiseList = () => {
           ))}
         </Select>
       </Flex>
-      <Divider borderColor="blackAlpha.500" mt={10} mb={5} />
+      <Divider borderColor="blackAlpha.500" mt={[5, 10]} />
       {isLoading ? (
         <ProductListSkeleton />
       ) : (
-        <Grid templateColumns={{ base: "repeat(2, 1fr)", lg: "repeat(4, 1fr)" }} gap={8} mb={5}>
+        <Grid templateColumns={{ base: "repeat(2, 1fr)", lg: "repeat(4, 1fr)" }} columnGap={4} rowGap={2}>
           {products
             ?.filter((product: ProductType) => {
               if (selectedCategory === "") return true;

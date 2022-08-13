@@ -1,3 +1,4 @@
+import { ArrowForwardIcon } from "@chakra-ui/icons";
 import { Box, Image, Text, GridItem, Flex } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 
@@ -11,22 +12,36 @@ type card = {
 
 const Card = ({ itemId, imgSrc, text, price, sizeRange }: card) => {
   return (
-    <GridItem role="group" cursor="pointer" textAlign="center" mt={4}>
+    <GridItem role="group" cursor="pointer" mt={4}>
       <Link to={`/merch/${itemId}`}>
-        <Box _groupHover={{ boxShadow: "xl" }} boxShadow="md" borderRadius={5}>
-          <Image src={imgSrc} w="100%" borderRadius={5} fallbackSrc="https://via.placeholder.com/150" />
+        <Box
+          boxShadow="sm"
+          maxW="sm"
+          borderWidth="1px"
+          borderRadius="lg"
+          overflow="hidden"
+          _groupHover={{ boxShadow: "xl" }}
+        >
+          <Image src={imgSrc} w="100%" maxHeight="300" fallbackSrc="https://via.placeholder.com/150" />
+          <Box p={2}>
+            <Flex
+              justifyContent="space-between"
+              gap={2}
+              fontWeight={500}
+              textColor="primary.600"
+              fontSize={["sm", "md"]}
+            >
+              <Text noOfLines={2}>{text}</Text>
+              <Text align="center">${price.toFixed(2)}</Text>
+            </Flex>
+            <Flex textColor="gray.400" justifyContent="space-between" mt={1} alignItems="center">
+              <Text fontWeight={600} textTransform="uppercase" fontSize={["xs", "sm"]}>
+                {sizeRange}
+              </Text>
+              <ArrowForwardIcon />
+            </Flex>
+          </Box>
         </Box>
-        <Text align="center" noOfLines={2} textColor="primary.600" fontWeight={600} mt={4}>
-          {text}
-        </Text>
-        <Flex justifyContent="space-between" mt={2}>
-          <Text textColor="gray.400" fontWeight={700} textTransform="uppercase" fontSize={["sm", "md"]}>
-            {sizeRange}
-          </Text>
-          <Text align="center" fontSize={["sm", "md"]} fontWeight="600" textColor="primary.600">
-            ${price.toFixed(2)}
-          </Text>
-        </Flex>
       </Link>
     </GridItem>
   );

@@ -20,10 +20,9 @@ export const productList: ProductType[] = [
     price: 49.9,
     sizes: ["xs", "s", "m", "l", "xl"],
     images: [
-      "https://image.uniqlo.com/UQ/ST3/sg/imagesgoods/446638/item/sggoods_00_446638.jpg?width=1600&impolicy=quality_75",
-      "https://image.uniqlo.com/UQ/ST3/sg/imagesgoods/446638/sub/sggoods_446638_sub2.jpg?width=1600&impolicy=quality_75",
-      "https://image.uniqlo.com/UQ/ST3/sg/imagesgoods/446638/sub/sggoods_446638_sub7.jpg?width=1600&impolicy=quality_75",
-      "https://image.uniqlo.com/UQ/ST3/sg/imagesgoods/446638/sub/sggoods_446638_sub13.jpg?width=1600&impolicy=quality_75",
+      "https://image.uniqlo.com/UQ/ST3/sg/imagesgoods/433037/item/sggoods_67_433037.jpg?width=1600&impolicy=quality_75",
+      "https://image.uniqlo.com/UQ/ST3/sg/imagesgoods/433037/sub/sggoods_433037_sub1.jpg?width=1600&impolicy=quality_75",
+      "https://image.uniqlo.com/UQ/ST3/sg/imagesgoods/433037/sub/sggoods_433037_sub2.jpg?width=1600&impolicy=quality_75",
     ],
     isAvailable: true,
     productCategory: productCategoryList[0],
@@ -54,7 +53,7 @@ export const productList: ProductType[] = [
   {
     id: "5",
     images: [
-      "https://image.uniqlo.com/UQ/ST3/sg/imagesgoods/446633/item/sggoods_41_446633.jpg?width=1008&impolicy=quality_75",
+      "https://image.uniqlo.com/UQ/ST3/sg/imagesgoods/435805/item/sggoods_03_435805.jpg?width=1008&impolicy=quality_75",
     ],
     name: "There's Jam on his shirt",
     sizes: ["s", "m", "l", "xl"],

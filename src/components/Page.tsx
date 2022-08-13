@@ -7,13 +7,14 @@ type PageProps = FlexProps & {
   children: ReactNode;
   hideHeader?: boolean;
   contentWidth?: string;
+  contentPadding?: number[];
 };
 
 const Page = ({ children, hideHeader = false, contentWidth = "1400px", ...props }: PageProps) => {
   return (
     <Flex flexDirection="column" {...props}>
       {!hideHeader && <Header />}
-      <Box w="100%" flexDir="column" mt={14} mx="auto" maxWidth={contentWidth}>
+      <Box w="100%" flexDir="column" mt={[6, 10]} mx="auto" maxWidth={contentWidth} px={[2, 8]}>
         {children}
       </Box>
       <Footer />
