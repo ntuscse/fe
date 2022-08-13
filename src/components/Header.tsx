@@ -39,7 +39,7 @@ const HeaderDrawer: React.FC<HeaderDrawerProp> = ({ cartLength = 0 }) => {
   return (
     <>
       <RouterLink to={routes.CART}>
-        <Flex alignItems="center" gap={1}>
+        <Flex alignItems="center" gap={1} mr={4}>
           <Icon as={AiOutlineShoppingCart} w={5} h={5} />
           {cartLength > 0 && <Badge>{cartLength > 99 ? "99+" : cartLength}</Badge>}
         </Flex>
