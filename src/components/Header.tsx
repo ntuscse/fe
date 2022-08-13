@@ -1,6 +1,7 @@
 import { HamburgerIcon } from "@chakra-ui/icons";
+import { AiOutlineShoppingCart } from "react-icons/ai";
 import {
-  Link,
+  Badge,
   Flex,
   Heading,
   Button,
@@ -17,18 +18,32 @@ import {
   DrawerBody,
   Grid,
   Hide,
+  Icon,
+  Box,
 } from "@chakra-ui/react";
-import React, { useRef } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import CognitoClient from "../utils/aws/cognito/cognitoClient";
 import routes from "../utils/constants/routes";
+import { useCartStore } from "../context/cart";
+import { CartItemType } from "../typings/cart";
 
-const HeaderDrawer = () => {
+type HeaderDrawerProp = {
+  cartLength?: number;
+};
+
+const HeaderDrawer: React.FC<HeaderDrawerProp> = ({ cartLength = 0 }) => {
   const btnRef = useRef<HTMLButtonElement>(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <>
+      <RouterLink to={routes.CART}>
+        <Flex alignItems="center" gap={1}>
+          <Icon as={AiOutlineShoppingCart} w={5} h={5} />
+          {cartLength > 0 && <Badge>{cartLength > 99 ? "99+" : cartLength}</Badge>}
+        </Flex>
+      </RouterLink>
       <IconButton ref={btnRef} onClick={onOpen} aria-label="Toggle Header Menu" icon={<HamburgerIcon />} />
       <Drawer isOpen={isOpen} placement="right" onClose={onClose} finalFocusRef={btnRef}>
         <DrawerOverlay />
@@ -40,8 +55,6 @@ const HeaderDrawer = () => {
               <RouterLink to={routes.HOME}>
                 <Heading size="lg">Home</Heading>
               </RouterLink>
-              {/* <Heading size="lg">Projects</Heading>
-              <Heading size="lg">About Us</Heading> */}
               <RouterLink to={routes.MERCHANDISE_LIST}>
                 <Heading size="lg">Merchandise</Heading>
               </RouterLink>
@@ -54,8 +67,12 @@ const HeaderDrawer = () => {
 };
 
 const Header = () => {
-  const [isAuthenticated, setIsAuthenticated] = React.useState(false);
-  React.useEffect(() => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const cartContext = useCartStore();
+  const { state: cartState } = cartContext;
+  const cartLength = cartState.items.reduce((acc: number, cur: CartItemType) => acc + cur.quantity, 0);
+
+  useEffect(() => {
     CognitoClient.isUserSignedIn().then((isSignedIn) => {
       setIsAuthenticated(isSignedIn);
     });
@@ -70,19 +87,17 @@ const Header = () => {
 
       <Spacer />
       <Show below="xl">
-        <HeaderDrawer />
+        <HeaderDrawer cartLength={cartLength} />
       </Show>
       <Hide below="xl">
-        <HStack spacing={5}>
-          <RouterLink to={routes.HOME}>
-            <Link href="/" fontWeight="700">
-              Home
-            </Link>
-          </RouterLink>
-          {/* <Link href="/">Projects</Link>
-          <Link href="/">About Us</Link> */}
-          <RouterLink to={routes.MERCHANDISE_LIST}>
-            <Link href="/">Merchandise</Link>
+        <HStack spacing={5} alignItems="center">
+          <RouterLink to={routes.HOME}>Home</RouterLink>
+          <RouterLink to={routes.MERCHANDISE_LIST}>Merchandise</RouterLink>
+          <RouterLink to={routes.CART}>
+            <Flex alignItems="center" gap={1}>
+              <Icon as={AiOutlineShoppingCart} w={5} h={5} />
+              {cartLength > 0 && <Badge>{cartLength > 99 ? "99+" : cartLength}</Badge>}
+            </Flex>
           </RouterLink>
           {/* TODO: Sign Out */}
           {!isAuthenticated && (
