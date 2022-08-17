@@ -48,7 +48,6 @@ const HeaderDrawer: React.FC<HeaderDrawerProp> = ({ cartLength = 0 }) => {
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton size="lg" />
-
           <DrawerBody pt={8}>
             <Grid rowGap={4}>
               <RouterLink to={routes.HOME}>

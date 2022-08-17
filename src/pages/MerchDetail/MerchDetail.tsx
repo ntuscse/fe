@@ -56,6 +56,7 @@ export const MerchDetail: React.FC = () => {
   const handleQtyChangeCounter = (isAdd: boolean = true) => {
     const value = isAdd ? 1 : -1;
     if (!isAdd && quantity === 1) return;
+    if (isAdd && quantity === 99) return;
     setQuantity(quantity + value);
   };
 
@@ -69,9 +70,11 @@ export const MerchDetail: React.FC = () => {
     const value = parseInt(target.value, 10);
     if (value <= 0) {
       setQuantity(1);
-      return;
+    } else if (value > 99) {
+      setQuantity(99);
+    } else {
+      setQuantity(value);
     }
-    setQuantity(value);
   };
 
   const handleAddToCart = () => {
