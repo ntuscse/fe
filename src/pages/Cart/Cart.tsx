@@ -167,7 +167,7 @@ export const Cart: FC = () => {
     if (isLoading || isRefetching) {
       return <LoadingScreen text="Fetching Cart Details" />;
     }
-    if (cartState?.items?.length !== 0) {
+    if (cartState?.items?.length === 0) {
       return <CartEmptyView />;
     }
     return renderCartView();
