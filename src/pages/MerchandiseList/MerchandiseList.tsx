@@ -51,7 +51,11 @@ export const MerchandiseList = () => {
       {isLoading ? (
         <ProductListSkeleton />
       ) : (
-        <Grid templateColumns={{ base: "repeat(2, 1fr)", lg: "repeat(4, 1fr)" }} columnGap={4} rowGap={2}>
+        <Grid
+          templateColumns={{ base: "repeat(2, 1fr)", md: "repeat(3, 1fr)", lg: "repeat(4, 1fr)" }}
+          columnGap={4}
+          rowGap={2}
+        >
           {products
             ?.filter((product: ProductType) => {
               if (selectedCategory === "") return true;

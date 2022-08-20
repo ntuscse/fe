@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Flex, Heading, Text, Input, FormControl, FormLabel, FormHelperText } from "@chakra-ui/react";
+import { Button, Flex, Text, Input, FormControl, FormHelperText } from "@chakra-ui/react";
 import { LinkIcon } from "@chakra-ui/icons";
 import { useMutation } from "@tanstack/react-query";
 import { CartActionType, useCartStore } from "../../context/cart";

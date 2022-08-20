@@ -63,7 +63,7 @@ export const cartReducer = (state: CartStateType, action: CartAction) => {
       // Find if there's an existing item already:
       const { id, size, quantity } = action.payload;
       const idx = state.items.findIndex((x) => x.id === id && x.size === size);
-      const newQuantity = (state?.items[idx]?.quantity ?? 0) + quantity;
+      const newQuantity = Math.min((state?.items[idx]?.quantity ?? 0) + quantity, 99);
 
       return {
         ...state,
