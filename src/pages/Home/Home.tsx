@@ -5,7 +5,7 @@ import Page from "../../components/Page";
 
 export const Home = () => {
   return (
-    <Page contentWidth="100%">
+    <Page contentWidth="100%" contentPadding={[0]}>
       <HeroCarousel />
       <RecentPosts />
       <RecentEvents />
