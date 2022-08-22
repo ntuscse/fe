@@ -20,7 +20,15 @@ const Page = ({
   return (
     <Flex flexDirection="column" {...props}>
       {!hideHeader && <Header />}
-      <Box w="100%" flexDir="column" mt={[6, 10]} mx="auto" maxWidth={contentWidth} px={contentPadding}>
+      <Box
+        w="100%"
+        flexDir="column"
+        mt={[6, 10]}
+        mx="auto"
+        minHeight="75vh"
+        maxWidth={contentWidth}
+        px={contentPadding}
+      >
         {children}
       </Box>
       <Footer />

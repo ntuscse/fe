@@ -1,15 +1,5 @@
 import React, { useState } from "react";
-
-import {
-  Button,
-  Flex,
-  Heading,
-  Input,
-  Image,
-  InputGroup,
-  InputRightElement,
-} from "@chakra-ui/react";
-import { Link } from "react-router-dom";
+import { Button, Flex, Text, Input, Image, InputGroup, InputRightElement } from "@chakra-ui/react";
 
 const CardPaymentForm = () => {
   const [cn, setCN] = useState<string | undefined>("");
@@ -38,9 +28,12 @@ const CardPaymentForm = () => {
   };
 
   return (
-    <Flex mt={10} flexDirection="column" gap={4}>
-      <Heading fontSize="lg">Card Information</Heading>
+    <Flex flexDir="column">
+      <Text fontWeight={500} fontSize={["md", "l"]}>
+        Card information
+      </Text>
       <Input
+        mt={2}
         size="lg"
         value={cn}
         maxLength={22}
@@ -48,37 +41,22 @@ const CardPaymentForm = () => {
         pattern="^[0-9\b]+$"
         placeholder="1234  1234  1234  1234"
       />
-
-      <Flex gap={6}>
-        <Input
-          size="lg"
-          maxLength={5}
-          value={expiry}
-          placeholder="MM/YY"
-          onChange={expiryOnChange}
-        />
+      <Flex gap={6} mt={4}>
+        <Input size="lg" maxLength={5} value={expiry} placeholder="MM/YY" onChange={expiryOnChange} />
         <InputGroup>
           <Input
             size="lg"
             value={cvc}
             maxLength={3}
             placeholder="CVC"
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setCVC(e.target.value)
-            }
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCVC(e.target.value)}
           />
           <InputRightElement pointerEvents="none">
-            <Image
-              mr={2}
-              height={6}
-              src="https://icon-library.com/images/cvv-icon/cvv-icon-28.jpg"
-            />
+            <Image mr={2} height={6} src="https://icon-library.com/images/cvv-icon/cvv-icon-28.jpg" />
           </InputRightElement>
         </InputGroup>
       </Flex>
-      <Button maxW={150} borderRadius="none" mt={2}>
-        <Link to="/summary">CONTINUE</Link>
-      </Button>
+      <Button mt={4}>Pay</Button>
     </Flex>
   );
 };
