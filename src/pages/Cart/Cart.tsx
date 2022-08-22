@@ -117,12 +117,14 @@ export const Cart: FC = () => {
       </Flex>
       <Divider />
       <Flex flexDirection="column" rowGap={4}>
-        <Button borderRadius={0}>
-          <Link to={routes.CHECKOUT}>CHECK OUT</Link>
-        </Button>
-        <Button borderRadius={0} variant="outline">
-          <Link to={routes.MERCHANDISE_LIST}>CONTINUE SHOPPING</Link>
-        </Button>
+        <Link to={routes.CHECKOUT}>
+          <Button width="100%">CHECK OUT</Button>
+        </Link>
+        <Link to={routes.MERCHANDISE_LIST}>
+          <Button width="100%" variant="outline">
+            CONTINUE SHOPPING
+          </Button>
+        </Link>
       </Flex>
     </CartCard>
   );

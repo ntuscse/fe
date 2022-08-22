@@ -41,7 +41,6 @@ export const VoucherSection = () => {
           <Input
             size="sm"
             flex={1}
-            borderRadius={0}
             id="voucher-code"
             value={voucherInput}
             disabled={voucherLoading}
@@ -55,7 +54,6 @@ export const VoucherSection = () => {
             px={4}
             size="sm"
             isLoading={voucherLoading}
-            borderRadius={0}
             variant="outline"
             disabled={voucherInput.length === 0}
             onClick={() => addVoucher()}

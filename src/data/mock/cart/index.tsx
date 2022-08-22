@@ -31,7 +31,7 @@ export type cartQueryResponse = {
 };
 
 export const dummyBackendMerchResponse = async (productId: string) => {
-  await fakeDelay(1000);
+  await fakeDelay(0);
   if (productId) {
     return productList.find((product) => product.id === productId) ?? null;
   }

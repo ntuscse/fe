@@ -1,10 +1,8 @@
 import { FC, useState } from "react";
-import { Flex, Heading, Text, Divider, Image, Icon } from "@chakra-ui/react";
+import { Flex, Heading, Text, Icon, GridItem, Grid, Input, Box, Image, Badge } from "@chakra-ui/react";
 import { AiOutlineCreditCard } from "react-icons/ai";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
-import PaymentCard from "./PaymentCard";
-import PayLahForm from "./PayLahForm";
 import CardPaymentForm from "./CardPaymentForm";
 import { CartActionType, useCartStore } from "../../context/cart";
 import { calCartSubTotal, calDiscountAmt } from "../../utils/functions/price";
@@ -12,14 +10,16 @@ import { CartItemType, ProductInfoMapType } from "../../typings/cart";
 import { QueryKeys } from "../../utils/constants/queryKeys";
 import { api } from "../../services/api";
 import { ProductType } from "../../typings/product";
-import LoadingScreen from "../../components/LoadingScreen";
 import CartEmptyView from "../Cart/CartEmptyView";
 import Page from "../../components/Page";
 import routes from "../../utils/constants/routes";
+import PaymentMethod from "./PaymentCard";
+import PayNowForm from "./PaynowForm";
+import CheckoutSkeleton from "./Skeleton";
 
 enum PaymentTypes {
-  card,
-  paylah,
+  CARD,
+  PAYNOW,
 }
 
 export const Checkout: FC = () => {
@@ -51,88 +51,102 @@ export const Checkout: FC = () => {
     },
   });
 
+  // Calculate subtotal & discount amount.
+  const noOfItems = cartState.items.length;
   const subTotal = calCartSubTotal(cartState.items, productInfo);
   const discountAmt = calDiscountAmt(subTotal, cartState.voucherDetails);
-
+  const totalAmount = (subTotal - discountAmt).toFixed(2);
   // Payment Type.
-  const [paymentType, setPaymentType] = useState<PaymentTypes>(PaymentTypes.card);
+  const [paymentType, setPaymentType] = useState<PaymentTypes>(PaymentTypes.CARD);
 
   const renderPaymentForm = () => {
     switch (paymentType) {
-      case PaymentTypes.paylah:
-        return <PayLahForm />;
+      case PaymentTypes.PAYNOW:
+        return <PayNowForm />;
       default:
         return <CardPaymentForm />;
     }
   };
 
   const renderCheckoutView = () => (
-    <Flex gap={8} mt={12} flexDir={{ base: "column-reverse", md: "row" }}>
-      <Flex flex={2} p={6} borderWidth="1px" borderRadius="lg" overflow="hidden" flexDir="column">
-        <Flex gap={4} flexWrap="wrap">
-          <PaymentCard onClick={() => setPaymentType(PaymentTypes.card)} isFocused={paymentType === PaymentTypes.card}>
-            <Icon as={AiOutlineCreditCard} h={6} w={6} />
-            {JSON.stringify(isRefetching)}
-            <Text fontWeight={500}>Card</Text>
-          </PaymentCard>
-          <PaymentCard
-            onClick={() => setPaymentType(PaymentTypes.paylah)}
-            isFocused={paymentType === PaymentTypes.paylah}
-          >
-            <Image
-              height={6}
-              width={6}
-              src="https://play-lh.googleusercontent.com/jN6klarG9Q65oa0nHE-roczIUaIJlB3jlb5jAb1z75R7ycB-sFDkzNrt5-p3mIU_6A"
-            />
-            <Text fontWeight={500}>Paylah</Text>
-          </PaymentCard>
-        </Flex>
-        {renderPaymentForm()}
-      </Flex>
-      <Flex flex={1} direction="column" gap={4}>
-        <Flex p={3} gap={4} flexDir="column" borderWidth="1px" borderRadius="lg">
-          <Flex justifyContent="space-between">
-            <Text>Order Summary | {cartState.items.length} item(s)</Text>
+    <Grid templateColumns={{ base: "repeat(1, 1fr)", lg: "repeat(2, 1fr)" }} rowGap={[4, 0]} columnGap={[0, 4]}>
+      <GridItem px={[0, 4]} colSpan={1} mb={8}>
+        <Box borderWidth={1} borderRadius="lg" p={[4, 6]} boxShadow="md">
+          <Flex justifyContent="space-between" alignItems="center">
+            <Heading fontSize={["xl", "2xl", "3xl"]}>Order Summary</Heading>
             <Link to={routes.CART}>
-              <Text as="u">Edit</Text>
+              <Text fontSize={["md", "l"]}>{`${noOfItems} item(s) Edit`}</Text>
             </Link>
           </Flex>
-          <Divider />
-          <Flex justifyContent="space-between">
-            <Text>Item(s) subtotal</Text>
-            <Text>${subTotal.toFixed(2)}</Text>
+          <Heading fontWeight={500} fontSize={["xl", "2xl", "3xl"]} mt={4} mb={8}>
+            ${totalAmount}
+          </Heading>
+          {cartState.items.map((item) => {
+            const product = productInfo?.[item.id];
+            const subtotal = product.price * item.quantity;
+            return (
+              <Flex key={item.id} mt={4}>
+                <Image src={product?.image} h={70} w={70} borderRadius="md" />
+                <Flex flexDirection="column" flex={1} ml={2}>
+                  <Flex justifyContent="space-between" alignItems="center">
+                    <Flex alignItems="center" gap={2} fontWeight={500}>
+                      <Text noOfLines={2}>{product.name}</Text>
+                      <Badge>{item.size}</Badge>
+                    </Flex>
+                    <Text fontWeight={500}>${subtotal.toFixed(2)}</Text>
+                  </Flex>
+                  <Flex justifyContent="space-between" color="gray.600" alignItems="center">
+                    <Text fontSize="sm">{`Qty x${item.quantity}`}</Text>
+                    <Text>${product.price.toFixed(2)} each</Text>
+                  </Flex>
+                </Flex>
+              </Flex>
+            );
+          })}
+        </Box>
+      </GridItem>
+      <GridItem px={[0, 4]} colSpan={1}>
+        <Flex flexDirection="column">
+          <Text fontWeight={500} fontSize={["md", "l"]}>
+            Contact information
+          </Text>
+          <Input size="md" placeholder="email" mt={2} />
+          <Text fontWeight={500} fontSize={["md", "l"]} mt={6}>
+            Payment method
+          </Text>
+          <Flex gap={4} flexWrap="wrap" mt={2}>
+            <PaymentMethod
+              text="Card"
+              icon={<Icon as={AiOutlineCreditCard} h={6} w={6} />}
+              onClick={() => setPaymentType(PaymentTypes.CARD)}
+              isFocused={paymentType === PaymentTypes.CARD}
+            />
+            <PaymentMethod
+              text="Paynow"
+              icon={
+                <Box
+                  backgroundRepeat="no-repeat"
+                  bgPos="center"
+                  bgSize="cover"
+                  backgroundImage="/images/Paynow-logo.png"
+                  w={20}
+                  h={6}
+                />
+              }
+              onClick={() => setPaymentType(PaymentTypes.PAYNOW)}
+              isFocused={paymentType === PaymentTypes.PAYNOW}
+            />
           </Flex>
-
-          {cartState?.voucherDetails && (
-            <Flex justifyContent="space-between">
-              <Text>Voucher Discount</Text>
-              <Text>-${discountAmt.toFixed(2)}</Text>
-            </Flex>
-          )}
-
-          <Divider />
-          <Flex justifyContent="space-between">
-            <Text>Total Amount</Text>
-            <Text>$ {(subTotal - discountAmt).toFixed(2)}</Text>
-          </Flex>
+          <Box mt={8} />
+          {renderPaymentForm()}
         </Flex>
-        <Flex p={3} gap={4} flexDir="column" borderWidth="1px" borderRadius="lg">
-          <Flex gap={4} flexDir="column">
-            <Text>Collection Details</Text>
-            <Divider />
-            <Text>
-              An email will be sent to you closer to the collection date. Our collection venue is at 50 Nanyang Ave, #32
-              Block N4 #02a, Singapore 639798
-            </Text>
-          </Flex>
-        </Flex>
-      </Flex>
-    </Flex>
+      </GridItem>
+    </Grid>
   );
 
   const renderCheckoutContent = () => {
     if (isLoading || isRefetching) {
-      return <LoadingScreen text="Loading Cart Details" />;
+      return <CheckoutSkeleton />;
     }
     if (cartState?.items?.length === 0) {
       return <CartEmptyView />;
@@ -141,10 +155,9 @@ export const Checkout: FC = () => {
   };
   return (
     <Page>
-      <Heading textAlign="center" mb="12" size="xl">
-        Check Out
+      <Heading textAlign="center" mb={[4, 6, 12]} size="xl">
+        Checkout
       </Heading>
-      <Divider />
       {renderCheckoutContent()}
     </Page>
   );
