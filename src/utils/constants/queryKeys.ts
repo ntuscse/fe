@@ -4,4 +4,6 @@ export enum QueryKeys {
   VOUCHER = "VOUCHER",
   ORDER = "ORDER",
   ORDERS = "ORDERS",
+  EMAIL = "EMAIL",
+  CHECKOUT = "CHECKOUT",
 }

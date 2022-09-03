@@ -1,5 +1,3 @@
-import { VoucherType } from "./voucher";
-
 // eslint-disable-next-line no-shadow
 export enum OrderStatusType {
   RECEIVED,
@@ -21,7 +19,7 @@ export type OrderItemType = {
 export type OrderBillingType = {
   total: number;
   subtotal: number;
-  appliedVoucher?: VoucherType;
+  appliedVoucher?: null;
 };
 
 export type OrderType = {

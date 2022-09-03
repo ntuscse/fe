@@ -63,7 +63,7 @@ export const MerchandiseList = () => {
             })
             ?.map((item: ProductType, idx: number) => (
               <Card
-                itemId={item.id}
+                productId={item.id}
                 key={idx.toString()}
                 text={item?.name}
                 price={item?.price}

@@ -8,7 +8,6 @@ import {
   ModalBody,
   ModalCloseButton,
   Divider,
-  Box,
 } from "@chakra-ui/react";
 
 type SizeDialogType = {

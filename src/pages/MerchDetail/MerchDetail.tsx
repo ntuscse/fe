@@ -37,7 +37,7 @@ const GroupTitle = ({ children }: any) => (
 export const MerchDetail: React.FC = () => {
   // Context hook.
   const { dispatch: cartDispatch } = useCartStore();
-  const { slug: productSlug = "" } = useParams();
+  const { slug: productId = "" } = useParams();
 
   const [quantity, setQuantity] = useState<number>(1);
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
@@ -45,7 +45,7 @@ export const MerchDetail: React.FC = () => {
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const { data: product, isLoading } = useQuery([QueryKeys.PRODUCT, productSlug], () => api.getProduct(productSlug), {
+  const { data: product, isLoading } = useQuery([QueryKeys.PRODUCT, productId], () => api.getProduct(productId), {
     onSuccess: (data: ProductType) => {
       setIsDisabled(!(data?.isAvailable === true));
       setSelectedSize(data?.sizes?.[0] ?? null);
@@ -82,8 +82,8 @@ export const MerchDetail: React.FC = () => {
     const payload: CartAction = {
       type: CartActionType.ADD_ITEM,
       payload: {
+        productId,
         quantity,
-        id: productSlug,
         size: selectedSize ?? product?.sizes?.[0] ?? "",
       },
     };
