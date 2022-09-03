@@ -20,33 +20,36 @@ export type CartItemProps = {
   isMobile: boolean;
   data: CartItemType;
   productInfo: ProductInfoType;
-  onRemove: (itemId: string, size: string) => void;
-  onQuantityChange: (itemId: string, size: string, qty: number) => void;
+  onRemove: (productId: string, size: string) => void;
+  onQuantityChange: (productId: string, size: string, qty: number) => void;
 };
+
+const MIN_ITEM_CNT = 1;
+const MAX_ITEM_CNT = 99;
 
 const CartItem: React.FC<CartItemProps> = ({ isMobile, data, onRemove, onQuantityChange, productInfo }) => {
   const handleQtyChangeCounter = (isAdd: boolean = true) => {
     const value = isAdd ? 1 : -1;
-    if (!isAdd && data.quantity === 1) {
-      onRemove(data.id, data.size);
+    if (!isAdd && data.quantity === MIN_ITEM_CNT) {
+      onRemove(data.productId, data.size);
       return;
     }
-    if (isAdd && data.quantity === 99) return;
-    onQuantityChange(data.id, data.size, data.quantity + value);
+    if (isAdd && data.quantity === MAX_ITEM_CNT) return;
+    onQuantityChange(data.productId, data.size, data.quantity + value);
   };
 
   const handleQtyChangeInput = (e: React.FormEvent<EventTarget>): void => {
     const target = e.target as HTMLInputElement;
     if (Number.isNaN(parseInt(target.value, 10))) {
-      onQuantityChange(data.id, data.size, 1);
+      onQuantityChange(data.productId, data.size, MIN_ITEM_CNT);
     } else {
       const value = parseInt(target.value, 10);
       if (value <= 0) {
-        onRemove(data.id, data.size);
-      } else if (value > 99) {
-        onQuantityChange(data.id, data.size, 99);
+        onRemove(data.productId, data.size);
+      } else if (value > MAX_ITEM_CNT) {
+        onQuantityChange(data.productId, data.size, MAX_ITEM_CNT);
       } else {
-        onQuantityChange(data.id, data.size, value);
+        onQuantityChange(data.productId, data.size, value);
       }
     }
   };
@@ -103,7 +106,7 @@ const CartItem: React.FC<CartItemProps> = ({ isMobile, data, onRemove, onQuantit
         </Text>
       </GridItem>
       <GridItem display="flex" alignItems="center" justifyContent="center">
-        <Button size="sm" variant="link" onClick={() => onRemove(data.id, data.size)}>
+        <Button size="sm" variant="link" onClick={() => onRemove(data.productId, data.size)}>
           Delete
         </Button>
       </GridItem>
@@ -120,7 +123,7 @@ const CartItem: React.FC<CartItemProps> = ({ isMobile, data, onRemove, onQuantit
           <Text noOfLines={2} color="primary.600">
             {productInfo?.name}
           </Text>
-          <Button size="sm" variant="link" onClick={() => onRemove(data.id, data.size)}>
+          <Button size="sm" variant="link" onClick={() => onRemove(data.productId, data.size)}>
             <SmallCloseIcon h={5} w={5} />
           </Button>
         </Flex>

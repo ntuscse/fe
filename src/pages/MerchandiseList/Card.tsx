@@ -4,17 +4,17 @@ import { Link } from "react-router-dom";
 import routes from "../../utils/constants/routes";
 
 type card = {
-  itemId: string;
+  productId: string;
   imgSrc: string;
   text: string;
   price: number;
   sizeRange: string;
 };
 
-const Card = ({ itemId, imgSrc, text, price, sizeRange }: card) => {
+const Card = ({ productId, imgSrc, text, price, sizeRange }: card) => {
   return (
     <GridItem role="group" cursor="pointer" mt={4}>
-      <Link to={`${routes.MERCHANDISE_LIST}/${itemId}`}>
+      <Link to={`${routes.MERCHANDISE_LIST}/${productId}`}>
         <Box
           boxShadow="sm"
           maxW="sm"

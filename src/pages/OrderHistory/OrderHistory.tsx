@@ -22,7 +22,6 @@ export const OrderHistory: FC = () => {
   // Fetch and check if cart item is valid.
   const { isLoading, isRefetching } = useQuery([QueryKeys.ORDERS], () => api.getOrderHistory("jacob"), {
     onSuccess: (data: OrderType[]) => {
-      console.log(orderList);
       setOrderList(data);
     },
   });
