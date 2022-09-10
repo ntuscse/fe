@@ -317,7 +317,6 @@ export const Cart: FC = () => {
           <Text fontSize={["xs", "sm"]}>
             An email will be sent to you closer to the collection date. Our collection venue is at 50 Nanyang Ave, #32
             Block N4 #02a, Singapore 639798
-            {JSON.stringify(cartState)}
           </Text>
         </CartCard>
       </GridItem>
