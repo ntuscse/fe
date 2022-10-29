@@ -8,6 +8,7 @@ Amplify.configure({
     aws_user_pools_web_client_id: process.env.REACT_APP_AWS_COGNITO_USER_POOLS_WEB_CLIENT_ID,
 })
 
+
 class CognitoClient {
     public static async signUp(email: string, password: string, familyName: string, givenName: string, phoneNumber: string): Promise<void> {
         const userAttributes = {
