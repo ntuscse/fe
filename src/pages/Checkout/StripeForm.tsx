@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Elements, PaymentElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
-import { Button } from "@chakra-ui/react";
+import { Button, useToast } from "@chakra-ui/react";
 import { CartActionType, useCartStore } from "../../context/cart";
 
 type StripeFormProps = {
@@ -18,7 +18,7 @@ const PaymentForm = () => {
   const cartContext = useCartStore();
   const { dispatch: cartDispatch } = cartContext;
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
+  const toast = useToast();
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     // We don't want to let default form submission happen here,
     // which would refresh the page.
@@ -31,15 +31,21 @@ const PaymentForm = () => {
       elements,
       redirect: "if_required",
       confirmParams: {
-        return_url: "http://localhost:3000/", // TODO: Change to order item page.
+        return_url: "http://localhost:3000/", // TODO: Change to order item page
       },
-    });
+    })
     setIsLoading(false);
     if (result.error) {
       // Show error to your customer (for example, payment details incomplete)
-      alert(result?.error.message);
+      toast({
+        title:'Error',
+        description:(result?.error.message),
+        status:'error',
+        isClosable: true,
+      });
     } else {
       cartDispatch({ type: CartActionType.RESET_CART });
+
     }
   };
   return (
