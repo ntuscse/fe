@@ -25,7 +25,7 @@ export const Checkout: FC = () => {
   const noOfItems = cartState.items.length;
 
   // Fetch and check if cart item is valid.
-  const { mutate: initCheckout } = useMutation(() => api.postCheckoutCart(cartState.items, cartState.voucher), {
+  const { mutate: initCheckout } = useMutation(() => api.postCheckoutCart(cartState.billingEmail, cartState.items, cartState.voucher), {
     onMutate: () => {
       setIsLoading(true);
     },

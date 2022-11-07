@@ -95,14 +95,14 @@ export class Api {
     }
   }
 
-  async postCheckoutCart(items: CartItemType[], promoCode: string | null) {
+  async postCheckoutCart(email: string, items: CartItemType[], promoCode: string | null) {
     try {
       if (CUSTOM_MOCK_DATA) {
         await fakeDelay(QUERY_DELAY_TIME);
         // return orderList.filter((order) => order.userId === userId) ?? [];
       }
 
-      const res = await this.post(`/cart/checkout`, { items, promoCode: promoCode ?? "" });
+      const res = await this.post(`/cart/checkout`, { email, items, promoCode: promoCode ?? "" });
       return res;
     } catch (e: any) {
       throw new Error(e);
