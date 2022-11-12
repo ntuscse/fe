@@ -10,119 +10,136 @@ import {
   InputLeftAddon,
   InputRightAddon,
   InputGroup,
-  Divider,
+  Box,
 } from "@chakra-ui/react";
 
 import { SmallCloseIcon } from "@chakra-ui/icons";
-import { CartItemType } from "../../typings/cart";
+import { CartItemType, ProductInfoType } from "../../typings/cart";
 
 export type CartItemProps = {
   isMobile: boolean;
   data: CartItemType;
-  onRemove: (itemId: string, size: string) => void;
-  onQuantityChange: (itemId: string, size: string, qty: number) => void;
+  productInfo: ProductInfoType;
+  onRemove: (productId: string, size: string) => void;
+  onQuantityChange: (productId: string, size: string, qty: number) => void;
 };
 
-const CartItem: React.FC<CartItemProps> = (props: CartItemProps) => {
-  const { isMobile, data, onRemove, onQuantityChange } = props;
+const MIN_ITEM_CNT = 1;
+const MAX_ITEM_CNT = 99;
 
-  const flexItemConfig = {
-    alignItems: "center",
-    h: isMobile ? "auto" : 100,
-    justifyContent: isMobile ? "start" : "center",
-  };
-
+const CartItem: React.FC<CartItemProps> = ({ isMobile, data, onRemove, onQuantityChange, productInfo }) => {
   const handleQtyChangeCounter = (isAdd: boolean = true) => {
     const value = isAdd ? 1 : -1;
-    if (!isAdd && data.quantity === 1) {
-      onRemove(data.id, data.size);
+    if (!isAdd && data.quantity === MIN_ITEM_CNT) {
+      onRemove(data.productId, data.size);
       return;
     }
-    onQuantityChange(data.id, data.size, data.quantity + value);
+    if (isAdd && data.quantity === MAX_ITEM_CNT) return;
+    onQuantityChange(data.productId, data.size, data.quantity + value);
   };
 
   const handleQtyChangeInput = (e: React.FormEvent<EventTarget>): void => {
     const target = e.target as HTMLInputElement;
     if (Number.isNaN(parseInt(target.value, 10))) {
-      onQuantityChange(data.id, data.size, 1);
+      onQuantityChange(data.productId, data.size, MIN_ITEM_CNT);
     } else {
       const value = parseInt(target.value, 10);
       if (value <= 0) {
-        onRemove(data.id, data.size);
+        onRemove(data.productId, data.size);
+      } else if (value > MAX_ITEM_CNT) {
+        onQuantityChange(data.productId, data.size, MAX_ITEM_CNT);
+      } else {
+        onQuantityChange(data.productId, data.size, value);
       }
-      onQuantityChange(data.id, data.size, value);
     }
   };
+  const unitPrice = productInfo?.price?.toFixed(2) ?? 0;
+  const subTotalPrice = ((productInfo?.price ?? 0) * data.quantity).toFixed(2);
 
-  return (
-    <>
-      <Flex my="4" justifyContent="center">
-        <Image width="100" height="100" objectFit="cover" src={data.imgUrl} />
-        <Grid templateColumns={!isMobile ? "3fr repeat(3, 1fr)" : "1fr"}>
-          <GridItem pl="4">
-            <Flex h={isMobile ? "auto" : 100} alignItems="center">
-              <Text fontSize={isMobile ? "xs" : "md"}>
-                {data.itemName}
-                <br />
-                Size: {data.size}
-              </Text>
-            </Flex>
-          </GridItem>
-          <GridItem pl="4">
-            <Flex {...flexItemConfig}>
-              <Text fontSize={isMobile ? "xs" : "md"}>
-                {isMobile && "Unit Price:"} ${data.price.toFixed(2)}
-              </Text>
-            </Flex>
-          </GridItem>
-          <GridItem pl="4">
-            <Flex {...flexItemConfig}>
-              <InputGroup size="xs">
-                <InputLeftAddon
-                  style={{ cursor: "pointer" }}
-                  onClick={() => handleQtyChangeCounter(false)}
-                >
-                  -
-                </InputLeftAddon>
-                <Input
-                  pattern="[0-9]*"
-                  type="tel"
-                  textAlign="center"
-                  value={data.quantity}
-                  placeholder="Item Count"
-                  onChange={handleQtyChangeInput}
-                />
-                <InputRightAddon
-                  style={{ cursor: "pointer" }}
-                  onClick={() => handleQtyChangeCounter(true)}
-                >
-                  +
-                </InputRightAddon>
-              </InputGroup>
-            </Flex>
-          </GridItem>
-          <GridItem pl="4">
-            <Flex {...flexItemConfig}>
-              <Text fontSize={isMobile ? "xs" : "md"}>
-                {isMobile && "Subtotal:"} $
-                {(data.price * data.quantity).toFixed(2)}
-              </Text>
-            </Flex>
-          </GridItem>
-        </Grid>
-        <Flex alignItems={isMobile ? "start" : "center"}>
-          <Button
-            size="sm"
-            variant="link"
-            onClick={() => onRemove(data.id, data.size)}
-          >
-            {isMobile ? <SmallCloseIcon h={5} w={5} /> : "Delete"}
+  const quantityInput = (
+    <InputGroup size="xs">
+      <InputLeftAddon style={{ cursor: "pointer" }} onClick={() => handleQtyChangeCounter(false)}>
+        -
+      </InputLeftAddon>
+      <Input
+        type="tel"
+        pattern="[0-9]*"
+        textAlign="center"
+        value={data.quantity}
+        placeholder="Item Count"
+        onChange={handleQtyChangeInput}
+      />
+      <InputRightAddon style={{ cursor: "pointer" }} onClick={() => handleQtyChangeCounter(true)}>
+        +
+      </InputRightAddon>
+    </InputGroup>
+  );
+  const desktopView = (
+    <Grid templateColumns="3fr repeat(4, 1fr)" rowGap={2}>
+      <GridItem display="flex">
+        <Box boxShadow="sm" maxWidth={[125, 100]}>
+          <Image w="100%" borderRadius="md" src={productInfo?.image} fallbackSrc="https://via.placeholder.com/100" />
+        </Box>
+        <Flex flexDir="column" fontWeight="600" fontSize={["sm", "md"]} ml={2}>
+          <Text color="primary.600" noOfLines={2}>
+            {productInfo?.name}
+          </Text>
+          <Flex color="grey">
+            <Flex>Size:</Flex>
+            <Text ml={1} textTransform="uppercase">
+              {data.size}
+            </Text>
+          </Flex>
+        </Flex>
+      </GridItem>
+      <GridItem display="flex" alignItems="center" justifyContent="center">
+        <Text fontSize={["sm", "md"]} fontWeight={500}>
+          ${unitPrice}
+        </Text>
+      </GridItem>
+      <GridItem display="flex" alignItems="center" justifyContent="center">
+        {quantityInput}
+      </GridItem>
+      <GridItem display="flex" alignItems="center" justifyContent="center">
+        <Text fontSize={["sm", "md"]} fontWeight={500}>
+          ${subTotalPrice}
+        </Text>
+      </GridItem>
+      <GridItem display="flex" alignItems="center" justifyContent="center">
+        <Button size="sm" variant="link" onClick={() => onRemove(data.productId, data.size)}>
+          Delete
+        </Button>
+      </GridItem>
+    </Grid>
+  );
+
+  const mobileView = (
+    <Flex flex={1} justifyContent="center">
+      <Box boxShadow="sm" borderRadius={5} maxW={150}>
+        <Image w="100%" borderRadius={5} src={productInfo?.image} fallbackSrc="https://via.placeholder.com/100" />
+      </Box>
+      <Flex flexDir="column" fontWeight="600" fontSize={["xs", "sm"]} ml={4} gap={2}>
+        <Flex justifyContent="space-between" gap={2}>
+          <Text noOfLines={2} color="primary.600">
+            {productInfo?.name}
+          </Text>
+          <Button size="sm" variant="link" onClick={() => onRemove(data.productId, data.size)}>
+            <SmallCloseIcon h={5} w={5} />
           </Button>
         </Flex>
+        <Flex color="grey">
+          Size:
+          <Text ml={1} textTransform="uppercase">
+            {data.size}
+          </Text>
+        </Flex>
+        <Text fontWeight={500}>Unit Price: ${unitPrice}</Text>
+        {quantityInput}
+        <Text fontWeight={500}>Subtotal: ${subTotalPrice}</Text>
       </Flex>
-      <Divider />
-    </>
+    </Flex>
   );
+  return <Flex my="4">{!isMobile ? desktopView : mobileView}</Flex>;
 };
 
 export default CartItem;

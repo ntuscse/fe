@@ -8,19 +8,24 @@ import "swiper/css/lazy";
 import "./App.css";
 import { ChakraProvider } from "@chakra-ui/react";
 import { BrowserRouter } from "react-router-dom";
-import { CartProvider } from "./context/cart";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Routes from "./routes";
 import chakraTheme from "./config/theme";
+import { CartProvider } from "./context/cart";
+
+const queryClient = new QueryClient({ defaultOptions: { queries: { refetchOnWindowFocus: false } } });
 
 const App = () => {
   return (
-    <ChakraProvider theme={chakraTheme}>
-      <BrowserRouter>
-        <CartProvider>
-          <Routes />
-        </CartProvider>
-      </BrowserRouter>
-    </ChakraProvider>
+    <QueryClientProvider client={queryClient}>
+      <ChakraProvider theme={chakraTheme}>
+        <BrowserRouter>
+          <CartProvider>
+            <Routes />
+          </CartProvider>
+        </BrowserRouter>
+      </ChakraProvider>
+    </QueryClientProvider>
   );
 };
 

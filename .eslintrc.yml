@@ -16,9 +16,7 @@ plugins:
   - react
   - "@typescript-eslint"
 rules:
-  "no-shadow": "off"
   "@typescript-eslint/no-unused-vars": 1
-  "@typescript-eslint/no-shadow": ["error"]
   "@typescript-eslint/consistent-type-definitions": ["error", "type"]
   "react/jsx-filename-extension": [1, { "extensions": [".tsx"] }]
   react/function-component-definition: 0
@@ -27,6 +25,10 @@ rules:
   no-restricted-exports: 0
   no-unused-vars: 1
   "react/jsx-props-no-spreading": 0
+  "no-shadow": "off"
+  "@typescript-eslint/no-shadow": ["error"]
+  "react/require-default-props": 0
+  "object-curly-spacing": ["error", "always"]
   "import/extensions":
     - "error"
     - "ignorePackages"

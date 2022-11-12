@@ -9,21 +9,19 @@ type Routes = {
   CHECKOUT: string;
   ORDER_SUMMARY: string;
   ORDER_HISTORY: string;
-  MERCH_DETAIL: string;
 };
 
-const routes: Routes = {
+export const routes: Routes = {
   HOME: "/",
   SIGN_UP: "/sign-up",
   CONFIRM_SIGN_UP: "/confirm-sign-up",
   SIGN_IN: "/sign-in",
   FORGOT_PASSWORD: "/forgot-password",
-  MERCHANDISE_LIST: "/merchandise-list",
+  MERCHANDISE_LIST: "/merchandise",
   CART: "/cart",
   CHECKOUT: "/checkout",
-  ORDER_SUMMARY: "/summary",
+  ORDER_SUMMARY: "/order-summary",
   ORDER_HISTORY: "/order-history",
-  MERCH_DETAIL: "/merch",
 };
 
 export default routes;

@@ -1,15 +1,13 @@
 import React from "react";
 import { Box } from "@chakra-ui/react";
-import { theme } from "../../config/theme";
 
-type BoxOptionType = {
+type SizeOptionType = {
   active: boolean;
-  // eslint-disable-next-line react/require-default-props
   disabled?: boolean;
   onClick: (param: any) => void;
 };
 
-export const BoxOption: React.FC<BoxOptionType> = (props) => {
+export const SizeOption: React.FC<SizeOptionType> = (props) => {
   const { active = false, disabled = false, onClick, children } = props;
   return (
     <Box
@@ -22,11 +20,13 @@ export const BoxOption: React.FC<BoxOptionType> = (props) => {
       fontWeight={500}
       lineHeight={10}
       opacity={disabled ? 0.4 : 1}
+      pointerEvents={disabled ? "none" : "all"}
       cursor={disabled ? "not-allowed" : "pointer"}
-      border={`1px solid ${theme.colors.secondary[500]}`}
-      color={active ? "#FFF" : theme.colors.secondary[500]}
-      backgroundColor={active ? theme.colors.secondary[500] : "#FFF"}
-      _active={{ color: "#FFF", backgroundColor: theme.colors.secondary[500] }}
+      borderWidth={1}
+      borderColor="secondary.400"
+      color={active ? "#FFF" : "secondary.400"}
+      backgroundColor={active ? "red.600" : "#FFF"}
+      _active={{ color: "#FFF", backgroundColor: "secondary.500" }}
     >
       {children}
     </Box>

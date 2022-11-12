@@ -1,0 +1,127 @@
+import { orderList } from "../data/mock/orderList";
+import { productList } from "../data/mock/product";
+import { CartItemType } from "../typings/cart";
+import { fakeDelay } from "../utils/functions/random";
+
+const QUERY_DELAY_TIME = 1000;
+const CUSTOM_MOCK_DATA = false;
+
+export class Api {
+  private API_ORIGIN: string;
+
+  constructor() {
+    this.API_ORIGIN = "https://api.dev.ntuscse.com";
+  }
+
+  // http methods
+  async get(urlPath: string): Promise<Record<string, any>> {
+    const response = await fetch(`${this.API_ORIGIN}${urlPath}`);
+    return response.json();
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  async post(urlPath: string, data: any): Promise<any> {
+    const response = await fetch(`${this.API_ORIGIN}${urlPath}`, {
+      method: "POST", // *GET, POST, PUT, DELETE, etc.
+      mode: "cors", // no-cors, *cors, same-origin
+      cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+      credentials: "same-origin", // include, *same-origin, omit
+      headers: {
+        "Content-Type": "application/json",
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      redirect: "follow", // manual, *follow, error
+      referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+      body: JSON.stringify(data), // body data type must match
+    });
+    return response.json();
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  async getProducts() {
+    try {
+      if (CUSTOM_MOCK_DATA) {
+        await fakeDelay(QUERY_DELAY_TIME);
+        return productList;
+      }
+      const res = await this.get("/products");
+      console.log("product-list", res);
+      return res?.products ?? [];
+    } catch (e: any) {
+      throw new Error(e);
+    }
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  async getProduct(productId: string) {
+    try {
+      if (!CUSTOM_MOCK_DATA) {
+        await fakeDelay(QUERY_DELAY_TIME);
+        return productList.find((product) => product.id === productId);
+      }
+      const res = await this.get(`/product/${productId}`);
+      console.log("res", res);
+      return res.json();
+    } catch (e: any) {
+      throw new Error(e);
+    }
+  }
+
+  async getOrder(userId: string, orderId: string) {
+    try {
+      if (CUSTOM_MOCK_DATA) {
+        await fakeDelay(QUERY_DELAY_TIME);
+        return orderList.find((order) => order.userId === userId && order.orderId === orderId);
+      }
+      const res = await this.get(`/order-summary/${orderId}`);
+      console.log("Order Summary response:", res);
+      return res.json();
+    } catch (e: any) {
+      throw new Error(e);
+    }
+  }
+
+  async getOrderHistory(userId: string) {
+    try {
+      if (CUSTOM_MOCK_DATA) {
+        await fakeDelay(QUERY_DELAY_TIME);
+        return orderList.filter((order) => order.userId === userId) ?? [];
+      }
+      const res = await this.get(`/order-history/${userId}`);
+      console.log("Order Summary response:", res);
+      return res.json();
+    } catch (e: any) {
+      throw new Error(e);
+    }
+  }
+
+  async postCheckoutCart(items: CartItemType[], promoCode: string | null) {
+    try {
+      if (CUSTOM_MOCK_DATA) {
+        await fakeDelay(QUERY_DELAY_TIME);
+        // return orderList.filter((order) => order.userId === userId) ?? [];
+      }
+
+      const res = await this.post(`/cart/checkout`, { items, promoCode: promoCode ?? "" });
+      return res;
+    } catch (e: any) {
+      throw new Error(e);
+    }
+  }
+
+  calcCartPrice = async (items: CartItemType[], promoCode: string | null) => {
+    try {
+      if (CUSTOM_MOCK_DATA) {
+        await fakeDelay(QUERY_DELAY_TIME);
+        // return orderList.filter((order) => order.userId === userId) ?? [];
+      }
+
+      const res = await this.post(`/cart/quotation`, { items, promoCode: promoCode ?? "" });
+      return res;
+    } catch (e: any) {
+      throw new Error(e);
+    }
+  };
+}
+
+export const api = new Api();

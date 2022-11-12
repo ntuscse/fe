@@ -1,5 +1,5 @@
 import React from "react";
-import { Flex, Grid, GridItem, Image, Text, Divider } from "@chakra-ui/react";
+import { Flex, Grid, GridItem, Image, Text, Divider, Box } from "@chakra-ui/react";
 import { OrderItemType } from "../typings/order";
 
 export type OrderItemProps = {
@@ -18,40 +18,40 @@ const OrderItem: React.FC<OrderItemProps> = (props: OrderItemProps) => {
 
   return (
     <>
-      <Flex my="4" justifyContent="left">
-        <Image width="100" height="100" objectFit="cover" src={data.imgUrl} />
-        <Grid
-          flex={1}
-          templateColumns={!isMobile ? "3fr repeat(3, 1fr)" : "3fr"}
-        >
+      <Flex my="4" justifyContent="center">
+        <Box boxShadow="sm" borderRadius={5} maxW={isMobile ? 150 : 100}>
+          <Image w="100%" borderRadius={5} src={data?.image} fallbackSrc="https://via.placeholder.com/100" />
+        </Box>
+        <Grid flex={1} templateColumns={!isMobile ? "3fr repeat(3, 1fr)" : "1fr"} rowGap={2}>
           <GridItem pl="4">
-            <Flex h={isMobile ? "auto" : 100} alignItems="center">
-              <Text fontSize={isMobile ? "xs" : "md"}>
-                {data.itemName}
-                <br />
-                Size: {data.size}
+            <Flex h={isMobile ? "auto" : 100} flexDir="column" fontWeight="600" fontSize={isMobile ? "sm" : "md"}>
+              <Text color="primary.600">{data?.name}</Text>
+              <Flex color="grey">
+                Size:
+                <Text ml={1} textTransform="uppercase">
+                  {data.size}
+                </Text>
+              </Flex>
+            </Flex>
+          </GridItem>
+          <GridItem pl="4">
+            <Flex {...flexItemConfig}>
+              <Text fontSize={isMobile ? "sm" : "md"} fontWeight={500}>
+                {isMobile && "Unit Price:"} ${data?.price?.toFixed(2) ?? 0}
               </Text>
             </Flex>
           </GridItem>
           <GridItem pl="4">
             <Flex {...flexItemConfig}>
-              <Text fontSize={isMobile ? "xs" : "md"}>
-                {isMobile && "Unit Price:"} ${data.price.toFixed(2)}
+              <Text fontSize={isMobile ? "sm" : "md"} fontWeight={500}>
+                {isMobile && "Quantity:"} x{data?.quantity ?? 0}
               </Text>
             </Flex>
           </GridItem>
           <GridItem pl="4">
             <Flex {...flexItemConfig}>
-              <Text fontSize={isMobile ? "xs" : "md"}>
-                {isMobile && "Quantity:"} {`x${data.quantity}`}
-              </Text>
-            </Flex>
-          </GridItem>
-          <GridItem pl="4">
-            <Flex {...flexItemConfig}>
-              <Text fontSize={isMobile ? "xs" : "md"}>
-                {isMobile && "Subtotal:"} $
-                {(data.price * data.quantity).toFixed(2)}
+              <Text fontSize={isMobile ? "sm" : "md"} fontWeight={500}>
+                {isMobile && "Subtotal:"} ${(data.price * data.quantity).toFixed(2)}
               </Text>
             </Flex>
           </GridItem>

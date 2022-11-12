@@ -1,8 +1,8 @@
 import { Route, Routes as ReactRoutes } from "react-router-dom";
-import ConfirmSignUp from "./pages/ConfirmSignUp";
+import ConfirmSignUp from "./pages/ConfirmSignUp/ConfirmSignUp";
 import Home from "./pages/Home";
-import SignIn from "./pages/SignIn";
-import SignUp from "./pages/SignUp";
+import SignIn from "./pages/SignIn/SignIn";
+import SignUp from "./pages/Signup/SignUp";
 import MerchandiseList from "./pages/MerchandiseList";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
@@ -10,6 +10,7 @@ import OrderSummary from "./pages/OrderSummary";
 import OrderHistory from "./pages/OrderHistory";
 import MerchDetail from "./pages/MerchDetail";
 import routes from "./utils/constants/routes";
+import Error404 from "./pages/Error404";
 
 const Routes = () => (
   <ReactRoutes>
@@ -20,13 +21,10 @@ const Routes = () => (
     <Route path={routes.MERCHANDISE_LIST} element={<MerchandiseList />} />
     <Route path={routes.CART} element={<Cart />} />
     <Route path={routes.CHECKOUT} element={<Checkout />} />
-    <Route path={routes.ORDER_SUMMARY} element={<OrderSummary />} />
+    <Route path={`${routes.ORDER_SUMMARY}/:slug`} element={<OrderSummary />} />
     <Route path={routes.ORDER_HISTORY} element={<OrderHistory />} />
-    <Route path={routes.ORDER_HISTORY} element={<OrderHistory />} />
-    <Route
-      path={`${routes.MERCH_DETAIL}/:merchSlug`}
-      element={<MerchDetail />}
-    />
+    <Route path={`${routes.MERCHANDISE_LIST}/:slug`} element={<MerchDetail />} />
+    <Route path="*" element={<Error404 />} />
   </ReactRoutes>
 );
 

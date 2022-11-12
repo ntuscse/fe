@@ -48,7 +48,7 @@ function Footer() {
           <FooterLink href="/">Resources</FooterLink>
         </Grid>
       </Box>
-      <Image src="./images/vercellogo.svg" w={48} objectFit="contain" my={5} />
+      <Image src="/images/vercellogo.svg" w={48} objectFit="contain" my={5} />
     </Flex>
   );
 }
