@@ -1,19 +1,9 @@
-import { Link, Image, Grid, GridItem, Flex, Box } from "@chakra-ui/react";
+import { Image, Grid, GridItem, Flex, Box } from "@chakra-ui/react";
 import { ReactNode } from "react";
 
 type FooterLinkProps = {
   children: ReactNode;
   href: string;
-};
-
-const FooterLink = ({ children, href }: FooterLinkProps) => {
-  return (
-    <GridItem justifySelf="center">
-      <Link href={href} color="primary" fontSize={{ base: "md", xl: "lg" }}>
-        {children}
-      </Link>
-    </GridItem>
-  );
 };
 
 function Footer() {
@@ -27,14 +17,7 @@ function Footer() {
           justifyContent="center"
           my={5}
           flexDirection="row"
-          templateColumns={{
-            base: "repeat(3, 1fr)",
-            lg: "repeat(3, 1fr) 64px repeat(3, 1fr)",
-          }}
         >
-          <FooterLink href="/">NTU Website</FooterLink>
-          <FooterLink href="/">SCSE Office</FooterLink>
-          <FooterLink href="/">About Us</FooterLink>
           <GridItem
             colStart={{ base: 1, lg: "auto" }}
             colEnd={{ base: 4, lg: "auto" }}
@@ -43,9 +26,6 @@ function Footer() {
           >
             <Image src="/images/SCSE-Logo.png" alt="SCSE Logo" boxSize={14} />
           </GridItem>
-          <FooterLink href="/">Contact Us</FooterLink>
-          <FooterLink href="/merchandise-list">Merchandise</FooterLink>
-          <FooterLink href="/">Resources</FooterLink>
         </Grid>
       </Box>
       <Image src="/images/vercellogo.svg" w={48} objectFit="contain" my={5} />
