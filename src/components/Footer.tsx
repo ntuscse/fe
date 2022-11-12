@@ -17,12 +17,6 @@ function Footer() {
           justifyContent="center"
           my={5}
           flexDirection="row"
-          /*
-          templateColumns={{
-            base: "repeat(3, 1fr)",
-            lg: "repeat(3, 1fr) 64px repeat(3, 1fr)",
-          }} 
-          */
         >
           <GridItem
             colStart={{ base: 1, lg: "auto" }}
