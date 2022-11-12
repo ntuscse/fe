@@ -101,17 +101,6 @@ const Header = () => {
               {cartLength > 0 && <Badge>{cartLength > 99 ? "99+" : cartLength}</Badge>}
             </Flex>
           </RouterLink>
-          {/* TODO: Sign Out */}
-          {!isAuthenticated && (
-            <>
-              <Button to="/sign-in" as={RouterLink} variant="outline" px={12}>
-                Sign in
-              </Button>
-              <Button to="/sign-up" as={RouterLink} variant="solid">
-                Create an Account
-              </Button>
-            </>
-          )}
         </HStack>
       </Hide>
     </Flex>
