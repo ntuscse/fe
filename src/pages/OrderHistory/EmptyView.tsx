@@ -8,7 +8,7 @@ const HistoryEmptyView: FC = () => {
     <Center minH="50vh" width="100%">
       <Flex flexDirection="column" gap={8} alignItems="center">
         <Heading fontSize="2xl"> You have no past purchases</Heading>
-        <Link to={routes.MERCHANDISE_LIST}>
+        <Link to={routes.HOME}>
           <Button>Continue Shopping</Button>
         </Link>
       </Flex>

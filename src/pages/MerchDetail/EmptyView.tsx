@@ -5,7 +5,7 @@ import routes from "../../utils/constants/routes";
 const MerchEmptyView: React.FC = () => {
   useEffect(() => {
     setTimeout(() => {
-      window.location.href = routes.MERCHANDISE_LIST;
+      window.location.href = routes.HOME;
     }, 3000);
   }, []);
 

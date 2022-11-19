@@ -233,7 +233,7 @@ export const Cart: FC = () => {
               CHECK OUT
             </Button>
 
-            <Link to={routes.MERCHANDISE_LIST}>
+            <Link to={routes.HOME}>
               <Button width="100%" variant="outline">
                 CONTINUE SHOPPING
               </Button>
