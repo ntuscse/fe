@@ -38,7 +38,7 @@ export const OrderSummary: FC = () => {
     <>
       <Heading size="xl">THANK YOU</Heading>
       <Text>Thank you for your purchase. We have received your order.</Text>
-      <Link to={routes.MERCHANDISE_LIST}>
+      <Link to={routes.HOME}>
         <Button borderRadius={0} size="sm">
           CONTINUE SHOPPING
         </Button>
