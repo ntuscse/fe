@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import {
-  Box,
+  // Box,
   Flex,
   Heading,
   Text,
@@ -19,14 +19,14 @@ import { SizeOption } from "./SizeOption";
 import { CartAction, CartActionType, useCartStore } from "../../context/cart";
 import MerchSkeleton from "./Skeleton";
 import MerchEmptyView from "./EmptyView";
-import { ProductSizeTypes, ProductType } from "../../typings/product";
+import { ProductType } from "../../typings/product";
 import Page from "../../components/Page";
 import { QueryKeys } from "../../utils/constants/queryKeys";
 import { api } from "../../services/api";
 import SizeDialog from "./SizeDialog";
 
 // All Sizes - Disable those are unavailable.
-const ALL_SIZES: ProductSizeTypes[] = ["3xs", "xxs", "xs", "s", "m", "l", "xl", "2xl", "3xl"];
+// const ALL_SIZES: ProductSizeTypes[] = ["3XS", "2XS", "XS", "S", "M", "L", "XL", "2XL", "3XL"];
 
 const GroupTitle = ({ children }: any) => (
   <Heading fontSize="md" mb={2} color="grey" textTransform="uppercase">
@@ -121,13 +121,13 @@ export const MerchDetail: React.FC = () => {
         </Button>
       </Flex>
       <Flex gap={[4, 4]} flexWrap="wrap">
-        {ALL_SIZES.map((size, idx) => {
+        {product?.sizes?.map((size, idx) => {
           return (
             <SizeOption
               key={idx.toString()}
               active={selectedSize === size}
               onClick={() => setSelectedSize(size)}
-              disabled={isDisabled || !product?.sizes.includes(size)}
+              // disabled={isDisabled || !product?.sizes?.includes(size)}
             >
               <Text textTransform="uppercase" fontSize={{ base: "sm", md: "md" }}>
                 {size}
@@ -176,23 +176,23 @@ export const MerchDetail: React.FC = () => {
     </Flex>
   );
 
-  const renderDescription = (
-    <Flex flexDirection="column" gap={2}>
-      <GroupTitle>Description</GroupTitle>
-      <Box whiteSpace="pre-line" fontSize={{ base: "sm", md: "md" }}>
-        {`Keep cool all summer in these versatile pants, the neat shape slims the legs and flatters the bottom. A great staple garment to add to your wardrobe. The luxurious washed linen is comfortable, breathable and soft. The 7/8 Length leg can be worn rolled up to a crop pant. Style with our Broderie Anglaise or Fray Top.\n
-  \n
-  *100% European Linen\n*Contrast stripe lined pockets\n*Stitched inseam pockets\n`
-          .split("\n")
-          ?.map((line, idx) => {
-            if (line) {
-              return line.trim().startsWith("*") ? <li key={idx.toString()}>{line.trim().substring(1)}</li> : line;
-            }
-            return <br key={idx.toString()} />;
-          })}
-      </Box>
-    </Flex>
-  );
+  // const renderDescription = (
+  //   <Flex flexDirection="column" gap={2}>
+  //     <GroupTitle>Description</GroupTitle>
+  //     <Box whiteSpace="pre-line" fontSize={{ base: "sm", md: "md" }}>
+  //       {`Keep cool all summer in these versatile pants, the neat shape slims the legs and flatters the bottom. A great staple garment to add to your wardrobe. The luxurious washed linen is comfortable, breathable and soft. The 7/8 Length leg can be worn rolled up to a crop pant. Style with our Broderie Anglaise or Fray Top.\n
+  // \n
+  // *100% European Linen\n*Contrast stripe lined pockets\n*Stitched inseam pockets\n`
+  //         .split("\n")
+  //         ?.map((line, idx) => {
+  //           if (line) {
+  //             return line.trim().startsWith("*") ? <li key={idx.toString()}>{line.trim().substring(1)}</li> : line;
+  //           }
+  //           return <br key={idx.toString()} />;
+  //         })}
+  //     </Box>
+  //   </Flex>
+  // );
 
   const renderMerchDetails = () => {
     return (
@@ -207,8 +207,8 @@ export const MerchDetail: React.FC = () => {
           {renderQuantitySection}
           <Divider my={6} />
           {purchaseButtons}
-          <Divider my={6} />
-          {renderDescription}
+          {/* <Divider my={6} /> */}
+          {/* {renderDescription} */}
         </GridItem>
         <SizeDialog onClose={onClose} isOpen={isOpen} />
       </Grid>

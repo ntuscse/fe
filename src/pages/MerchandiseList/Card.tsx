@@ -3,15 +3,15 @@ import { Box, Image, Text, GridItem, Flex } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import routes from "../../utils/constants/routes";
 
-type card = {
+type CardProps = {
   productId: string;
-  imgSrc: string;
+  imgSrc?: string;
   text: string;
   price: number;
   sizeRange: string;
 };
 
-const Card = ({ productId, imgSrc, text, price, sizeRange }: card) => {
+const Card = ({ productId, imgSrc, text, price, sizeRange }: CardProps) => {
   return (
     <GridItem role="group" cursor="pointer" mt={4}>
       <Link to={`${routes.PRODUCT}/${productId}`}>
