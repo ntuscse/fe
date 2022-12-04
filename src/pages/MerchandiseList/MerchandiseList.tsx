@@ -22,9 +22,6 @@ export const MerchandiseList = () => {
 
   return (
     <Page>
-      <Text textAlign="center" textStyle={["h6", "h5"]} textColor="primary.600" mb={10}>
-        SCSE Merchandise
-      </Text>
       <Flex justifyContent="space-between" my={5} alignItems="center">
         <Heading fontSize={["md", "2xl"]} textColor={["primary.600", "black"]}>
           New Drop

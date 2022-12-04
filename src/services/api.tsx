@@ -55,13 +55,13 @@ export class Api {
   // eslint-disable-next-line class-methods-use-this
   async getProduct(productId: string) {
     try {
-      if (!CUSTOM_MOCK_DATA) {
+      if (CUSTOM_MOCK_DATA) {
         await fakeDelay(QUERY_DELAY_TIME);
         return productList.find((product) => product.id === productId);
       }
-      const res = await this.get(`/product/${productId}`);
-      console.log("res", res);
-      return res.json();
+      const res = await this.get(`/products/${productId}`);
+      console.log("product res", res);
+      return res;
     } catch (e: any) {
       throw new Error(e);
     }

@@ -14,7 +14,7 @@ type card = {
 const Card = ({ productId, imgSrc, text, price, sizeRange }: card) => {
   return (
     <GridItem role="group" cursor="pointer" mt={4}>
-      <Link to={`${routes.HOME}/${productId}`}>
+      <Link to={`${routes.PRODUCT}/${productId}`}>
         <Box
           boxShadow="sm"
           maxW="sm"
