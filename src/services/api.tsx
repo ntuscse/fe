@@ -2,6 +2,7 @@ import { orderList } from "../data/mock/orderList";
 import { productList } from "../data/mock/product";
 import { CartItemType } from "../typings/cart";
 import { fakeDelay } from "../utils/functions/random";
+import { ProductType } from "../typings/product";
 
 const QUERY_DELAY_TIME = 1000;
 const CUSTOM_MOCK_DATA = false;
@@ -38,7 +39,7 @@ export class Api {
   }
 
   // eslint-disable-next-line class-methods-use-this
-  async getProducts() {
+  async getProducts(): Promise<ProductType[]> {
     try {
       if (CUSTOM_MOCK_DATA) {
         await fakeDelay(QUERY_DELAY_TIME);
@@ -95,21 +96,21 @@ export class Api {
     }
   }
 
-  async postCheckoutCart(items: CartItemType[], promoCode: string | null) {
+  async postCheckoutCart(items: CartItemType[], email: string, promoCode: string | null) {
     try {
       if (CUSTOM_MOCK_DATA) {
         await fakeDelay(QUERY_DELAY_TIME);
         // return orderList.filter((order) => order.userId === userId) ?? [];
       }
 
-      const res = await this.post(`/cart/checkout`, { items, promoCode: promoCode ?? "" });
+      const res = await this.post(`/cart/checkout`, { items, promoCode: promoCode ?? "", email });
       return res;
     } catch (e: any) {
       throw new Error(e);
     }
   }
 
-  calcCartPrice = async (items: CartItemType[], promoCode: string | null) => {
+  async postQuotation(items: CartItemType[], promoCode: string | null) {
     try {
       if (CUSTOM_MOCK_DATA) {
         await fakeDelay(QUERY_DELAY_TIME);

@@ -12,14 +12,15 @@ import {
   InputGroup,
   Box,
 } from "@chakra-ui/react";
-
 import { SmallCloseIcon } from "@chakra-ui/icons";
 import { CartItemType, ProductInfoType } from "../../typings/cart";
+import { ProductType } from "../../typings/product";
 
 export type CartItemProps = {
   isMobile: boolean;
   data: CartItemType;
-  productInfo: ProductInfoType;
+  productInfo?: ProductType;
+  isLoading: boolean;
   onRemove: (productId: string, size: string) => void;
   onQuantityChange: (productId: string, size: string, qty: number) => void;
 };
@@ -78,7 +79,7 @@ const CartItem: React.FC<CartItemProps> = ({ isMobile, data, onRemove, onQuantit
     <Grid templateColumns="3fr repeat(4, 1fr)" rowGap={2}>
       <GridItem display="flex">
         <Box boxShadow="sm" maxWidth={[125, 100]}>
-          <Image w="100%" borderRadius="md" src={productInfo?.image} fallbackSrc="https://via.placeholder.com/100" />
+          <Image w="100%" borderRadius="md" src={productInfo?.images?.[0]} fallbackSrc="https://via.placeholder.com/100" />
         </Box>
         <Flex flexDir="column" fontWeight="600" fontSize={["sm", "md"]} ml={2}>
           <Text color="primary.600" noOfLines={2}>
@@ -86,8 +87,14 @@ const CartItem: React.FC<CartItemProps> = ({ isMobile, data, onRemove, onQuantit
           </Text>
           <Flex color="grey">
             <Flex>Size:</Flex>
-            <Text ml={1} textTransform="uppercase">
+            <Text ml={1}>
               {data.size}
+            </Text>
+          </Flex>
+          <Flex color="grey">
+            <Flex>Color:</Flex>
+            <Text ml={1}>
+              {data.colorway}
             </Text>
           </Flex>
         </Flex>
@@ -116,10 +123,10 @@ const CartItem: React.FC<CartItemProps> = ({ isMobile, data, onRemove, onQuantit
   const mobileView = (
     <Flex flex={1} justifyContent="center">
       <Box boxShadow="sm" borderRadius={5} maxW={150}>
-        <Image w="100%" borderRadius={5} src={productInfo?.image} fallbackSrc="https://via.placeholder.com/100" />
+        <Image w="100%" borderRadius={5} src={productInfo?.images?.[0]} fallbackSrc="https://via.placeholder.com/100" />
       </Box>
       <Flex flexDir="column" fontWeight="600" fontSize={["xs", "sm"]} ml={4} gap={2}>
-        <Flex justifyContent="space-between" gap={2}>
+        <Flex justifyContent="space-between" gap={1}>
           <Text noOfLines={2} color="primary.600">
             {productInfo?.name}
           </Text>
@@ -127,11 +134,17 @@ const CartItem: React.FC<CartItemProps> = ({ isMobile, data, onRemove, onQuantit
             <SmallCloseIcon h={5} w={5} />
           </Button>
         </Flex>
-        <Flex color="grey">
-          Size:
-          <Text ml={1} textTransform="uppercase">
-            {data.size}
-          </Text>
+        <Flex color="grey" direction="column">
+          <Flex>
+            Size:{" "}
+            <Text textTransform="uppercase">
+              {data.size}
+            </Text>
+          </Flex>
+          <Box>
+          Color:{" "}
+            {data.colorway}
+          </Box>
         </Flex>
         <Text fontWeight={500}>Unit Price: ${unitPrice}</Text>
         {quantityInput}

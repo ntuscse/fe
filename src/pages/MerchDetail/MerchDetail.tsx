@@ -42,6 +42,7 @@ export const MerchDetail: React.FC = () => {
   const [quantity, setQuantity] = useState<number>(1);
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
+  const [selectedColorway, setSelectedColorway] = useState<string | null>(null);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -49,6 +50,7 @@ export const MerchDetail: React.FC = () => {
     onSuccess: (data: ProductType) => {
       setIsDisabled(!(data?.isAvailable === true));
       setSelectedSize(data?.sizes?.[0] ?? null);
+      setSelectedColorway(data?.colorways?.[0] ?? null);
     },
   });
 
@@ -85,6 +87,7 @@ export const MerchDetail: React.FC = () => {
         productId,
         quantity,
         size: selectedSize ?? product?.sizes?.[0] ?? "",
+        colorway: selectedColorway ?? ""
       },
     };
     cartDispatch(payload);
@@ -131,6 +134,32 @@ export const MerchDetail: React.FC = () => {
             >
               <Text textTransform="uppercase" fontSize={{ base: "sm", md: "md" }}>
                 {size}
+              </Text>
+            </SizeOption>
+          );
+        })}
+      </Flex>
+    </Flex>
+  );
+
+  const renderColorwaySection = (
+    <Flex flexDirection="column" mt={4}>
+      <Flex justifyContent="space-between" alignItems="center" mb={2} display="flex">
+        <GroupTitle>Colors</GroupTitle>
+      </Flex>
+      <Flex gap={[4, 4]} flexWrap="wrap">
+        {product?.colorways?.map((colorway, idx) => {
+          return (
+            <SizeOption
+              key={idx.toString()}
+              active={selectedColorway === colorway}
+              onClick={() => setSelectedColorway(colorway)}
+              width="auto"
+              px={4}
+              // disabled={isDisabled || !product?.sizes?.includes(size)}
+            >
+              <Text textTransform="uppercase" fontSize={{ base: "sm", md: "md" }}>
+                {colorway}
               </Text>
             </SizeOption>
           );
@@ -204,6 +233,7 @@ export const MerchDetail: React.FC = () => {
           {ProductNameSection}
           <Divider mt={4} mb={6} />
           {renderSizeSection}
+          {renderColorwaySection}
           {renderQuantitySection}
           <Divider my={6} />
           {purchaseButtons}

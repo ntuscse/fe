@@ -8,6 +8,7 @@ export type ProductType = {
   price: number;
   images?: string[];
   sizes?: string[];
+  colorways?: string[];
   productCategory?: ProductCategoryType;
   isAvailable?: boolean;
 };

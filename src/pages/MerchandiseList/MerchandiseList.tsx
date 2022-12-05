@@ -13,7 +13,7 @@ export const MerchandiseList = () => {
   const { data: products, isLoading } = useQuery([QueryKeys.PRODUCTS], () => api.getProducts(), {});
   const categories = products?.map((product: ProductType) => product?.productCategory);
   const uniqueCategories = categories
-    ?.filter((c: string, idx: number) => categories.indexOf(c) === idx)
+    ?.filter((c, idx) => categories.indexOf(c) === idx)
     .filter(Boolean);
 
   const handleCategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -37,7 +37,7 @@ export const MerchandiseList = () => {
           value={selectedCategory}
           onChange={handleCategoryChange}
         >
-          {uniqueCategories?.map((category: string, idx: number) => (
+          {uniqueCategories?.map((category, idx) => (
             <option key={idx.toString()} value={category}>
               {category}
             </option>
