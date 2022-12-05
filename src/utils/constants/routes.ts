@@ -1,5 +1,6 @@
 type Routes = {
   HOME: string;
+  PRODUCT: string;
   SIGN_UP: string;
   CONFIRM_SIGN_UP: string;
   SIGN_IN: string;
@@ -12,6 +13,7 @@ type Routes = {
 
 export const routes: Routes = {
   HOME: "/",
+  PRODUCT: "/product",
   SIGN_UP: "/sign-up",
   CONFIRM_SIGN_UP: "/confirm-sign-up",
   SIGN_IN: "/sign-in",

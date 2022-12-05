@@ -13,6 +13,7 @@ import LoadingScreen from "../../components/LoadingScreen";
 import Page from "../../components/Page";
 import routes from "../../utils/constants/routes";
 import HistoryEmptyView from "./EmptyView";
+import { displayPrice } from "../../utils/functions/currency";
 
 export const OrderHistory: FC = () => {
   // Check if break point hit.
@@ -61,7 +62,7 @@ export const OrderHistory: FC = () => {
                 <Flex mt={4} gap="8px" alignItems="flex-end" flexDirection="column" fontSize={{ base: "xs", md: "sm" }}>
                   <Box display="flex" gap="4px">
                     <Text fontWeight={500}>Order Total:</Text>
-                    {`$${order?.billing?.total?.toFixed(2)}`}
+                    {displayPrice(order?.billing?.total)}
                   </Box>
                   <Link to={`${routes.ORDER_SUMMARY}/${orderId}`}>
                     <Text fontWeight={500}>View detail</Text>

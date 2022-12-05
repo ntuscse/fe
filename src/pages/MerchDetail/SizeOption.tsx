@@ -1,14 +1,14 @@
 import React from "react";
-import { Box } from "@chakra-ui/react";
+import { Box, BoxProps } from "@chakra-ui/react";
 
-type SizeOptionType = {
+type SizeOptionType = BoxProps & {
   active: boolean;
   disabled?: boolean;
   onClick: (param: any) => void;
 };
 
 export const SizeOption: React.FC<SizeOptionType> = (props) => {
-  const { active = false, disabled = false, onClick, children } = props;
+  const { active = false, disabled = false, children } = props;
   return (
     <Box
       display="inline-block"
@@ -16,7 +16,6 @@ export const SizeOption: React.FC<SizeOptionType> = (props) => {
       width="40px"
       height="40px"
       textAlign="center"
-      onClick={onClick}
       fontWeight={500}
       lineHeight={10}
       opacity={disabled ? 0.4 : 1}
@@ -27,6 +26,7 @@ export const SizeOption: React.FC<SizeOptionType> = (props) => {
       color={active ? "#FFF" : "secondary.400"}
       backgroundColor={active ? "red.600" : "#FFF"}
       _active={{ color: "#FFF", backgroundColor: "secondary.500" }}
+      {...props}
     >
       {children}
     </Box>

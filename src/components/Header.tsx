@@ -36,7 +36,7 @@ const Header = () => {
         <RouterLink to={routes.HOME}>
           <Flex alignItems="center">
             <Image src="/images/SCSE-Logo.png" alt="SCSE Logo" boxSize={14} />
-            <Heading ml={1}>SCSE CLUB</Heading>
+            <Heading ml={1}>SCSE MERCH</Heading>
           </Flex>
         </RouterLink>
       </HStack>

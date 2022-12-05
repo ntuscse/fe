@@ -15,7 +15,7 @@ import {
   FormHelperText,
 } from "@chakra-ui/react";
 import { Link, useNavigate } from "react-router-dom";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import Joi from "joi";
 import _ from "lodash";
 import { LinkIcon } from "@chakra-ui/icons";
@@ -30,6 +30,8 @@ import { CartItemType, CartPriceType, CartResponseDto, ProductInfoMapType } from
 import Page from "../../components/Page";
 import routes from "../../utils/constants/routes";
 import CartCard from "../../components/CartCard";
+import { QueryKeys } from "../../utils/constants/queryKeys";
+import { displayPrice } from "../../utils/functions/currency";
 
 type ValidationType = {
   error: boolean;
@@ -52,7 +54,7 @@ export const Cart: FC = () => {
   const [reroute, setReroute] = useState<boolean>(false);
 
   // Email input for billing.
-  const [billingEmail, setBillingEmail] = useState<string>("");
+  // const [billingEmail, setBillingEmail] = useState<string>("");
   const [validation, setValidation] = useState<ValidationType>({ isLoading: false, error: false });
 
   // Calculation of pricing
@@ -60,7 +62,9 @@ export const Cart: FC = () => {
   const [priceInfo, setPriceInfo] = useState<CartPriceType>(initCartPrice);
 
   // For mapping between cart item and info
-  const [productInfo, setProductInfo] = useState<ProductInfoMapType>({});
+  // const [productInfo, setProductInfo] = useState<ProductInfoMapType>({});
+  const { data: products, isLoading: isProductsQueryLoading } = useQuery([QueryKeys.PRODUCTS], () => api.getProducts(), {});
+
 
   // Voucher section
   const [voucherInput, setVoucherInput] = useState("");
@@ -80,7 +84,7 @@ export const Cart: FC = () => {
 
   // Initialise Cart page
   const { mutate: initCartPage, isLoading: isCartLoading } = useMutation(
-    () => api.calcCartPrice(cartState.items, cartState.voucher),
+    () => api.postQuotation(cartState.items, cartState.voucher),
     {
       onSuccess: (data: CartResponseDto) => {
         // Validate cart product id is correct
@@ -98,13 +102,13 @@ export const Cart: FC = () => {
             };
           }
         });
-        setProductInfo(tempProductInfo);
+        // setProductInfo(tempProductInfo);
       },
     }
   );
 
   // Calculate price - Used when updating / removing of items.
-  const { mutate: calcCartPrice } = useMutation(() => api.calcCartPrice(cartState.items, cartState.voucher), {
+  const { mutate: calcCartPrice } = useMutation(() => api.postQuotation(cartState.items, cartState.voucher), {
     onSuccess: (data: CartResponseDto) => {
       setPriceInfo(data.price);
     },
@@ -115,7 +119,7 @@ export const Cart: FC = () => {
 
   // Apply voucher -
   const { mutate: applyVoucher, isLoading: voucherLoading } = useMutation(
-    () => api.calcCartPrice(cartState.items, voucherInput),
+    () => api.postQuotation(cartState.items, voucherInput),
     {
       onMutate: () => {
         setPriceLoading(true);
@@ -173,8 +177,8 @@ export const Cart: FC = () => {
   const handleToCheckout = async () => {
     setValidation({ isLoading: true, error: false });
     try {
-      await emailValidator.validateAsync(billingEmail);
-      cartDispatch({ type: CartActionType.UPDATE_BILLING_EMAIL, payload: billingEmail });
+      await emailValidator.validateAsync(cartState.billingEmail);
+      cartDispatch({ type: CartActionType.UPDATE_BILLING_EMAIL, payload: cartState.billingEmail });
       setReroute(true);
     } catch (error: any) {
       setValidation({ isLoading: false, error: true });
@@ -199,16 +203,16 @@ export const Cart: FC = () => {
           <Flex flexDir="column" gap={[2, 3]}>
             <Flex justifyContent="space-between" fontSize={["sm", "md"]}>
               <Text>Item(s) subtotal</Text>
-              <Text>{priceInfo.subtotal.toFixed(2)}</Text>
+              <Text>{displayPrice(priceInfo.subtotal)}</Text>
             </Flex>
             <Flex justifyContent="space-between" fontSize={["sm", "md"]}>
               <Text>Voucher Discount</Text>
-              <Text noOfLines={1}>{priceInfo.discount.toFixed(2)}</Text>
+              <Text noOfLines={1}>{displayPrice(priceInfo.discount)}</Text>
             </Flex>
             <Divider />
             <Flex justifyContent="space-between" fontSize={["sm", "md"]} fontWeight={600}>
               <Text>Total</Text>
-              <Text>{priceInfo.grandTotal.toFixed(2)}</Text>
+              <Text>{displayPrice(priceInfo.grandTotal)}</Text>
             </Flex>
           </Flex>
           <Divider />
@@ -216,10 +220,16 @@ export const Cart: FC = () => {
             <Input
               required
               placeholder="Billing email address"
-              value={billingEmail}
+              value={cartState.billingEmail}
               id="email"
               type="text"
-              onChange={(event) => setBillingEmail(event.target.value)}
+              onChange={(event) => {
+                cartDispatch({
+                  type: CartActionType.UPDATE_BILLING_EMAIL,
+                  payload: event.target.value,
+                });
+              }}
+              variant="outline"
             />
             <Text fontSize="sm" color="red">
               {validation.error && "*Invalid email format"}
@@ -228,7 +238,7 @@ export const Cart: FC = () => {
               width="100%"
               onClick={handleToCheckout}
               isLoading={validation.isLoading}
-              disabled={billingEmail.length === 0 || validation.isLoading}
+              disabled={cartState.billingEmail.length === 0 || validation.isLoading}
             >
               CHECK OUT
             </Button>
@@ -301,7 +311,8 @@ export const Cart: FC = () => {
             <CartItem
               key={item.productId + item.size}
               data={item}
-              productInfo={productInfo?.[item.productId]}
+              productInfo={products?.find(product => product.id === item.productId)}
+              isLoading={isProductsQueryLoading}
               isMobile={isMobile}
               onRemove={handleRemoveItem}
               onQuantityChange={onQuantityChange}
@@ -311,7 +322,7 @@ export const Cart: FC = () => {
         ))}
       </GridItem>
       <GridItem colSpan={2} px={[0, 4]}>
-        {VoucherSection}
+        {/* {VoucherSection} */}
         {PriceInfoSection}
         <CartCard title="Collection Details" mt={[2, 4]}>
           <Text fontSize={["xs", "sm"]}>

@@ -2,6 +2,7 @@ import { orderList } from "../data/mock/orderList";
 import { productList } from "../data/mock/product";
 import { CartItemType } from "../typings/cart";
 import { fakeDelay } from "../utils/functions/random";
+import { ProductType } from "../typings/product";
 
 const QUERY_DELAY_TIME = 1000;
 const CUSTOM_MOCK_DATA = false;
@@ -38,7 +39,7 @@ export class Api {
   }
 
   // eslint-disable-next-line class-methods-use-this
-  async getProducts() {
+  async getProducts(): Promise<ProductType[]> {
     try {
       if (CUSTOM_MOCK_DATA) {
         await fakeDelay(QUERY_DELAY_TIME);
@@ -55,13 +56,13 @@ export class Api {
   // eslint-disable-next-line class-methods-use-this
   async getProduct(productId: string) {
     try {
-      if (!CUSTOM_MOCK_DATA) {
+      if (CUSTOM_MOCK_DATA) {
         await fakeDelay(QUERY_DELAY_TIME);
         return productList.find((product) => product.id === productId);
       }
-      const res = await this.get(`/product/${productId}`);
-      console.log("res", res);
-      return res.json();
+      const res = await this.get(`/products/${productId}`);
+      console.log("product res", res);
+      return res;
     } catch (e: any) {
       throw new Error(e);
     }
@@ -95,21 +96,21 @@ export class Api {
     }
   }
 
-  async postCheckoutCart(items: CartItemType[], promoCode: string | null) {
+  async postCheckoutCart(items: CartItemType[], email: string, promoCode: string | null) {
     try {
       if (CUSTOM_MOCK_DATA) {
         await fakeDelay(QUERY_DELAY_TIME);
         // return orderList.filter((order) => order.userId === userId) ?? [];
       }
 
-      const res = await this.post(`/cart/checkout`, { items, promoCode: promoCode ?? "" });
+      const res = await this.post(`/cart/checkout`, { items, promoCode: promoCode ?? "", email });
       return res;
     } catch (e: any) {
       throw new Error(e);
     }
   }
 
-  calcCartPrice = async (items: CartItemType[], promoCode: string | null) => {
+  async postQuotation(items: CartItemType[], promoCode: string | null) {
     try {
       if (CUSTOM_MOCK_DATA) {
         await fakeDelay(QUERY_DELAY_TIME);

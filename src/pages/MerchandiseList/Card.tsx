@@ -2,19 +2,20 @@ import { ArrowForwardIcon } from "@chakra-ui/icons";
 import { Box, Image, Text, GridItem, Flex } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import routes from "../../utils/constants/routes";
+import { displayPrice } from "../../utils/functions/currency";
 
-type card = {
+type CardProps = {
   productId: string;
-  imgSrc: string;
+  imgSrc?: string;
   text: string;
   price: number;
   sizeRange: string;
 };
 
-const Card = ({ productId, imgSrc, text, price, sizeRange }: card) => {
+const Card = ({ productId, imgSrc, text, price, sizeRange }: CardProps) => {
   return (
     <GridItem role="group" cursor="pointer" mt={4}>
-      <Link to={`${routes.HOME}/${productId}`}>
+      <Link to={`${routes.PRODUCT}/${productId}`}>
         <Box
           boxShadow="sm"
           maxW="sm"
@@ -33,7 +34,7 @@ const Card = ({ productId, imgSrc, text, price, sizeRange }: card) => {
               fontSize={["sm", "md"]}
             >
               <Text noOfLines={2}>{text}</Text>
-              <Text align="center">${price.toFixed(2)}</Text>
+              <Text align="center">{displayPrice(price)}</Text>
             </Flex>
             <Flex textColor="gray.400" justifyContent="space-between" mt={1} alignItems="center">
               <Text fontWeight={600} textTransform="uppercase" fontSize={["xs", "sm"]}>

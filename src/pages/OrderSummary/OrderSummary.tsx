@@ -11,6 +11,7 @@ import Error404 from "../Error404";
 import Page from "../../components/Page";
 import routes from "../../utils/constants/routes";
 import LoadingScreen from "../../components/LoadingScreen";
+import { displayPrice } from "../../utils/functions/currency";
 
 type OrderHistoryType = Record<string, boolean>;
 
@@ -81,11 +82,11 @@ export const OrderSummary: FC = () => {
             <Text>Total:</Text>
           </Flex>
           <Flex flexDir="column" textAlign="end">
-            <Text fontSize="md"> ${orderState?.billing?.subtotal?.toFixed(2)}</Text>
+            <Text fontSize="md"> {displayPrice(orderState?.billing?.subtotal ?? 0)}</Text>
             <Text fontSize="md">
-              {`$${((orderState?.billing?.subtotal ?? 0) - (orderState?.billing?.total ?? 0)).toFixed(2)}`}
+              {displayPrice((orderState?.billing?.subtotal ?? 0) - (orderState?.billing?.total ?? 0))}
             </Text>
-            <Text fontSize="md">${orderState?.billing.total?.toFixed(2)}</Text>
+            <Text fontSize="md">{displayPrice(orderState?.billing.total ?? 0)}</Text>
           </Flex>
         </Flex>
       </Flex>

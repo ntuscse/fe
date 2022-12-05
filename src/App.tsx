@@ -9,6 +9,7 @@ import "./App.css";
 import { ChakraProvider } from "@chakra-ui/react";
 import { BrowserRouter } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import Routes from "./routes";
 import chakraTheme from "./config/theme";
 import { CartProvider } from "./context/cart";
@@ -25,6 +26,7 @@ const App = () => {
           </CartProvider>
         </BrowserRouter>
       </ChakraProvider>
+      <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );
 };

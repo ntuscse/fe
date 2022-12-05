@@ -66,6 +66,8 @@ const Controllerer = ({ length }: { length: number }) => {
     setCurIndex(index);
   };
 
+  if (length < 2) return null
+
   return (
     <Flex justifyContent="space-between">
       <ChevronLeftIcon w={8} h={8} cursor="pointer" onClick={slideLeft} />

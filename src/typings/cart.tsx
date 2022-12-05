@@ -1,6 +1,7 @@
 export type CartItemType = {
   productId: string;
   size: string;
+  colorway: string;
   quantity: number;
 };
 
@@ -14,7 +15,6 @@ export type CartStateType = {
   items: CartItemType[];
   billingEmail: string;
 };
-
 export type ProductInfoType = {
   name: string;
   image: string;
