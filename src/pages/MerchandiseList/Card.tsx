@@ -2,7 +2,7 @@ import { ArrowForwardIcon } from "@chakra-ui/icons";
 import { Box, Image, Text, GridItem, Flex } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import routes from "../../utils/constants/routes";
-import {displayPrice} from "../../utils/functions/currency";
+import { displayPrice } from "../../utils/functions/currency";
 
 type CardProps = {
   productId: string;

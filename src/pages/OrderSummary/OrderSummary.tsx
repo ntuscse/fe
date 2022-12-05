@@ -11,7 +11,7 @@ import Error404 from "../Error404";
 import Page from "../../components/Page";
 import routes from "../../utils/constants/routes";
 import LoadingScreen from "../../components/LoadingScreen";
-import {displayPrice} from "../../utils/functions/currency";
+import { displayPrice } from "../../utils/functions/currency";
 
 type OrderHistoryType = Record<string, boolean>;
 

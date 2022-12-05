@@ -1,7 +1,7 @@
 import React from "react";
 import { Flex, Grid, GridItem, Image, Text, Divider, Box } from "@chakra-ui/react";
 import { OrderItemType } from "../typings/order";
-import {displayPrice} from "../utils/functions/currency";
+import { displayPrice } from "../utils/functions/currency";
 
 export type OrderItemProps = {
   isMobile: boolean;

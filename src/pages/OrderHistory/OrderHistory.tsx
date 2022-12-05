@@ -13,7 +13,7 @@ import LoadingScreen from "../../components/LoadingScreen";
 import Page from "../../components/Page";
 import routes from "../../utils/constants/routes";
 import HistoryEmptyView from "./EmptyView";
-import {displayPrice} from "../../utils/functions/currency";
+import { displayPrice } from "../../utils/functions/currency";
 
 export const OrderHistory: FC = () => {
   // Check if break point hit.

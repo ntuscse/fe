@@ -11,7 +11,7 @@ import routes from "../../utils/constants/routes";
 import CheckoutSkeleton from "./Skeleton";
 import StripeForm from "./StripeForm";
 import { QueryKeys } from "../../utils/constants/queryKeys";
-import {displayPrice} from "../../utils/functions/currency";
+import { displayPrice } from "../../utils/functions/currency";
 
 export const Checkout: FC = () => {
   // Cart Context Hook.
@@ -96,14 +96,14 @@ export const Checkout: FC = () => {
         <Divider mt={[4, 8]} mb={[2, 4]} />
         <Flex justifyContent="flex-end" mt={2} fontWeight={500} fontSize={["sm", "md", "l"]} gap={2} color="gray.700">
           <Flex flexDir="column">
-            <Text>Subtotal:</Text>
-            <Text>Discount:</Text>
-            <Text>Grand total:</Text>
+            {/*<Text>Subtotal:</Text>*/}
+            {/*<Text>Discount:</Text>*/}
+            <Text fontSize="lg">Grand total:</Text>
           </Flex>
           <Flex flexDir="column" textAlign="end">
-            <Text>{displayPrice(checkoutState?.price?.subtotal ?? 0)}</Text>
-            <Text>{displayPrice(checkoutState?.price?.discount ?? 0)}</Text>
-            <Text>{displayPrice(checkoutState?.price?.grandTotal ?? 0)}</Text>
+            {/*<Text>{displayPrice(checkoutState?.price?.subtotal ?? 0)}</Text>*/}
+            {/*<Text>{displayPrice(checkoutState?.price?.discount ?? 0)}</Text>*/}
+            <Text fontSize="lg">{displayPrice(checkoutState?.price?.grandTotal ?? 0)}</Text>
           </Flex>
         </Flex>
       </Box>

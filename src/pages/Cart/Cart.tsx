@@ -31,7 +31,7 @@ import Page from "../../components/Page";
 import routes from "../../utils/constants/routes";
 import CartCard from "../../components/CartCard";
 import { QueryKeys } from "../../utils/constants/queryKeys";
-import {displayPrice} from "../../utils/functions/currency";
+import { displayPrice } from "../../utils/functions/currency";
 
 type ValidationType = {
   error: boolean;
