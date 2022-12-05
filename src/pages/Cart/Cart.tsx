@@ -31,6 +31,7 @@ import Page from "../../components/Page";
 import routes from "../../utils/constants/routes";
 import CartCard from "../../components/CartCard";
 import { QueryKeys } from "../../utils/constants/queryKeys";
+import {displayPrice} from "../../utils/functions/currency";
 
 type ValidationType = {
   error: boolean;
@@ -202,16 +203,16 @@ export const Cart: FC = () => {
           <Flex flexDir="column" gap={[2, 3]}>
             <Flex justifyContent="space-between" fontSize={["sm", "md"]}>
               <Text>Item(s) subtotal</Text>
-              <Text>{priceInfo.subtotal.toFixed(2)}</Text>
+              <Text>{displayPrice(priceInfo.subtotal)}</Text>
             </Flex>
             <Flex justifyContent="space-between" fontSize={["sm", "md"]}>
               <Text>Voucher Discount</Text>
-              <Text noOfLines={1}>{priceInfo.discount.toFixed(2)}</Text>
+              <Text noOfLines={1}>{displayPrice(priceInfo.discount)}</Text>
             </Flex>
             <Divider />
             <Flex justifyContent="space-between" fontSize={["sm", "md"]} fontWeight={600}>
               <Text>Total</Text>
-              <Text>{priceInfo.grandTotal.toFixed(2)}</Text>
+              <Text>{displayPrice(priceInfo.grandTotal)}</Text>
             </Flex>
           </Flex>
           <Divider />

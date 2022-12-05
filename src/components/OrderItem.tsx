@@ -1,6 +1,7 @@
 import React from "react";
 import { Flex, Grid, GridItem, Image, Text, Divider, Box } from "@chakra-ui/react";
 import { OrderItemType } from "../typings/order";
+import {displayPrice} from "../utils/functions/currency";
 
 export type OrderItemProps = {
   isMobile: boolean;
@@ -37,7 +38,7 @@ const OrderItem: React.FC<OrderItemProps> = (props: OrderItemProps) => {
           <GridItem pl="4">
             <Flex {...flexItemConfig}>
               <Text fontSize={isMobile ? "sm" : "md"} fontWeight={500}>
-                {isMobile && "Unit Price:"} ${data?.price?.toFixed(2) ?? 0}
+                {isMobile && "Unit Price:"} ${displayPrice(data?.price ?? 0)}
               </Text>
             </Flex>
           </GridItem>
@@ -51,7 +52,7 @@ const OrderItem: React.FC<OrderItemProps> = (props: OrderItemProps) => {
           <GridItem pl="4">
             <Flex {...flexItemConfig}>
               <Text fontSize={isMobile ? "sm" : "md"} fontWeight={500}>
-                {isMobile && "Subtotal:"} ${(data.price * data.quantity).toFixed(2)}
+                {isMobile && "Subtotal:"} {displayPrice(data.price * data.quantity)}
               </Text>
             </Flex>
           </GridItem>

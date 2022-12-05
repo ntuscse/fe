@@ -15,6 +15,7 @@ import {
 import { SmallCloseIcon } from "@chakra-ui/icons";
 import { CartItemType, ProductInfoType } from "../../typings/cart";
 import { ProductType } from "../../typings/product";
+import {displayPrice} from "../../utils/functions/currency";
 
 export type CartItemProps = {
   isMobile: boolean;
@@ -54,8 +55,8 @@ const CartItem: React.FC<CartItemProps> = ({ isMobile, data, onRemove, onQuantit
       }
     }
   };
-  const unitPrice = productInfo?.price?.toFixed(2) ?? 0;
-  const subTotalPrice = ((productInfo?.price ?? 0) * data.quantity).toFixed(2);
+  const unitPrice = displayPrice(productInfo?.price ?? 0);
+  const subTotalPrice = displayPrice((productInfo?.price ?? 0) * data.quantity);
 
   const quantityInput = (
     <InputGroup size="xs">

@@ -11,6 +11,7 @@ import routes from "../../utils/constants/routes";
 import CheckoutSkeleton from "./Skeleton";
 import StripeForm from "./StripeForm";
 import { QueryKeys } from "../../utils/constants/queryKeys";
+import {displayPrice} from "../../utils/functions/currency";
 
 export const Checkout: FC = () => {
   // Cart Context Hook.
@@ -76,7 +77,7 @@ export const Checkout: FC = () => {
                   <Text fontWeight={500} noOfLines={2}>
                     {product?.name}
                   </Text>
-                  <Text fontWeight={500}>${subtotal.toFixed(2)}</Text>
+                  <Text fontWeight={500}>${displayPrice(subtotal)}</Text>
                 </Flex>
                 <Flex justifyContent="space-between" color="gray.600" alignItems="center">
                   <Flex alignItems="center">
@@ -85,7 +86,7 @@ export const Checkout: FC = () => {
                       <Text textTransform="uppercase">{item.size}</Text>
                     </Badge>
                   </Flex>
-                  <Text>${product?.price.toFixed(2)} each</Text>
+                  <Text>${displayPrice(product?.price ?? 0)} each</Text>
                 </Flex>
               </Flex>
             </Flex>
@@ -100,9 +101,9 @@ export const Checkout: FC = () => {
             <Text>Grand total:</Text>
           </Flex>
           <Flex flexDir="column" textAlign="end">
-            <Text> ${checkoutState?.price?.subtotal.toFixed(2)}</Text>
-            <Text> ${checkoutState?.price?.discount.toFixed(2)}</Text>
-            <Text> ${checkoutState?.price?.grandTotal.toFixed(2)}</Text>
+            <Text> ${displayPrice(checkoutState?.price?.subtotal ?? 0)}</Text>
+            <Text> ${displayPrice(checkoutState?.price?.discount ?? 0)}</Text>
+            <Text> ${displayPrice(checkoutState?.price?.grandTotal ?? 0)}</Text>
           </Flex>
         </Flex>
       </Box>

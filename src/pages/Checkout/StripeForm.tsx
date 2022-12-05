@@ -16,7 +16,7 @@ const PaymentForm = () => {
   const stripe = useStripe();
   const elements = useElements();
   const cartContext = useCartStore();
-  const { dispatch: cartDispatch } = cartContext;
+  const { dispatch: cartDispatch, state: cartState } = cartContext;
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -31,6 +31,7 @@ const PaymentForm = () => {
       elements,
       redirect: "if_required",
       confirmParams: {
+        receipt_email: cartState.billingEmail,
         return_url: "http://localhost:3000/", // TODO: Change to order item page.
       },
     });

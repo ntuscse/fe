@@ -24,6 +24,7 @@ import Page from "../../components/Page";
 import { QueryKeys } from "../../utils/constants/queryKeys";
 import { api } from "../../services/api";
 import SizeDialog from "./SizeDialog";
+import { displayPrice } from "../../utils/functions/currency";
 
 // All Sizes - Disable those are unavailable.
 // const ALL_SIZES: ProductSizeTypes[] = ["3XS", "2XS", "XS", "S", "M", "L", "XL", "2XL", "3XL"];
@@ -110,7 +111,8 @@ export const MerchDetail: React.FC = () => {
         )}
       </Heading>
       <Text fontSize="xl" fontWeight={600} color="primary.600">
-        ${product?.price?.toFixed(2)}
+        {/* ${product?.price?.toFixed(2)} */}
+        {displayPrice(product?.price ?? 0)}
       </Text>
     </Flex>
   );
