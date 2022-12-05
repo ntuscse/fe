@@ -38,7 +38,7 @@ const OrderItem: React.FC<OrderItemProps> = (props: OrderItemProps) => {
           <GridItem pl="4">
             <Flex {...flexItemConfig}>
               <Text fontSize={isMobile ? "sm" : "md"} fontWeight={500}>
-                {isMobile && "Unit Price:"} ${displayPrice(data?.price ?? 0)}
+                {isMobile && "Unit Price:"} {displayPrice(data?.price ?? 0)}
               </Text>
             </Flex>
           </GridItem>

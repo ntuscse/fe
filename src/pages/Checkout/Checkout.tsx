@@ -77,7 +77,7 @@ export const Checkout: FC = () => {
                   <Text fontWeight={500} noOfLines={2}>
                     {product?.name}
                   </Text>
-                  <Text fontWeight={500}>${displayPrice(subtotal)}</Text>
+                  <Text fontWeight={500}>{displayPrice(subtotal)}</Text>
                 </Flex>
                 <Flex justifyContent="space-between" color="gray.600" alignItems="center">
                   <Flex alignItems="center">
@@ -86,7 +86,7 @@ export const Checkout: FC = () => {
                       <Text textTransform="uppercase">{item.size}</Text>
                     </Badge>
                   </Flex>
-                  <Text>${displayPrice(product?.price ?? 0)} each</Text>
+                  <Text>{displayPrice(product?.price ?? 0)} each</Text>
                 </Flex>
               </Flex>
             </Flex>
@@ -101,9 +101,9 @@ export const Checkout: FC = () => {
             <Text>Grand total:</Text>
           </Flex>
           <Flex flexDir="column" textAlign="end">
-            <Text> ${displayPrice(checkoutState?.price?.subtotal ?? 0)}</Text>
-            <Text> ${displayPrice(checkoutState?.price?.discount ?? 0)}</Text>
-            <Text> ${displayPrice(checkoutState?.price?.grandTotal ?? 0)}</Text>
+            <Text>{displayPrice(checkoutState?.price?.subtotal ?? 0)}</Text>
+            <Text>{displayPrice(checkoutState?.price?.discount ?? 0)}</Text>
+            <Text>{displayPrice(checkoutState?.price?.grandTotal ?? 0)}</Text>
           </Flex>
         </Flex>
       </Box>

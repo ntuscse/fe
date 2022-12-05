@@ -62,7 +62,7 @@ export const OrderHistory: FC = () => {
                 <Flex mt={4} gap="8px" alignItems="flex-end" flexDirection="column" fontSize={{ base: "xs", md: "sm" }}>
                   <Box display="flex" gap="4px">
                     <Text fontWeight={500}>Order Total:</Text>
-                    {`$${displayPrice(order?.billing?.total)}`}
+                    {displayPrice(order?.billing?.total)}
                   </Box>
                   <Link to={`${routes.ORDER_SUMMARY}/${orderId}`}>
                     <Text fontWeight={500}>View detail</Text>

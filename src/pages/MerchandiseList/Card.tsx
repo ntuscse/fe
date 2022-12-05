@@ -34,7 +34,7 @@ const Card = ({ productId, imgSrc, text, price, sizeRange }: CardProps) => {
               fontSize={["sm", "md"]}
             >
               <Text noOfLines={2}>{text}</Text>
-              <Text align="center">${displayPrice(price)}</Text>
+              <Text align="center">{displayPrice(price)}</Text>
             </Flex>
             <Flex textColor="gray.400" justifyContent="space-between" mt={1} alignItems="center">
               <Text fontWeight={600} textTransform="uppercase" fontSize={["xs", "sm"]}>

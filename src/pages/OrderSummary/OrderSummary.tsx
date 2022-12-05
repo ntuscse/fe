@@ -82,7 +82,7 @@ export const OrderSummary: FC = () => {
             <Text>Total:</Text>
           </Flex>
           <Flex flexDir="column" textAlign="end">
-            <Text fontSize="md"> ${displayPrice(orderState?.billing?.subtotal ?? 0)}</Text>
+            <Text fontSize="md"> {displayPrice(orderState?.billing?.subtotal ?? 0)}</Text>
             <Text fontSize="md">
               {displayPrice((orderState?.billing?.subtotal ?? 0) - (orderState?.billing?.total ?? 0))}
             </Text>
