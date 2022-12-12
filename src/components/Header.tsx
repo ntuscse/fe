@@ -31,7 +31,7 @@ const Header = () => {
   }, []);
 
   return (
-    <Flex py={4} px={{ base: 4, md: 4, lg: 16 }} align="center">
+    <Flex pos="sticky" zIndex={2} bg="#dedee0" top={0} py={4} px={{ base: 4, md: 4, lg: 16 }} align="center">
       <HStack spacing={2}>
         <RouterLink to={routes.HOME}>
           <Flex alignItems="center">
