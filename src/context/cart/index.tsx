@@ -14,6 +14,7 @@ export enum CartActionType {
   REMOVE_ITEM = "remove_item",
   VALID_VOUCHER = "valid_voucher",
   REMOVE_VOUCHER = "remove_voucher",
+  UPDATE_NAME = "update_name",
   UPDATE_BILLING_EMAIL = "update_billing_email",
 }
 
@@ -33,6 +34,7 @@ export type CartAction =
   | { type: CartActionType.REMOVE_ITEM; payload: { productId: string; size: string } }
   | { type: CartActionType.VALID_VOUCHER; payload: string }
   | { type: CartActionType.REMOVE_VOUCHER; payload: null }
+  | { type: CartActionType.UPDATE_NAME; payload: string }
   | { type: CartActionType.UPDATE_BILLING_EMAIL; payload: string };
 
 const CartContext = React.createContext<ContextType>(null);
@@ -40,6 +42,7 @@ const CartContext = React.createContext<ContextType>(null);
 const initState: CartStateType = {
   items: [],
   voucher: "",
+  name: "",
   billingEmail: "",
 };
 
@@ -96,6 +99,11 @@ export const cartReducer = (state: CartStateType, action: CartAction) => {
       return { ...state, voucher: "" };
     }
 
+    case CartActionType.UPDATE_NAME: {
+      console.log(action.payload);
+      return { ...state, name: action.payload };
+    }   
+
     case CartActionType.UPDATE_BILLING_EMAIL: {
       console.log(action.payload);
       return { ...state, billingEmail: action.payload };
@@ -115,7 +123,7 @@ export const useCartStore = () => {
   return context;
 };
 
-const initStorageCart: CartStateType = { voucher: "", billingEmail: "", items: [] };
+const initStorageCart: CartStateType = { voucher: "", name: "", billingEmail: "", items: [] };
 
 export const CartProvider: React.FC = ({ children }) => {
   const [state, dispatch] = useReducer(cartReducer, initState);
@@ -125,6 +133,7 @@ export const CartProvider: React.FC = ({ children }) => {
     const cartState: CartStateType = initState;
     const storedCartData: CartStateType = JSON.parse(localStorage.getItem("cart") as string) ?? initStorageCart;
     cartState.items = storedCartData.items;
+    cartState.name = storedCartData.name;
     cartState.billingEmail = storedCartData.billingEmail;
     dispatch({ type: CartActionType.INITALIZE, payload: cartState });
   }, []);

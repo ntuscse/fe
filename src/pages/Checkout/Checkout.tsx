@@ -65,6 +65,7 @@ export const Checkout: FC = () => {
             <Text fontSize={["md", "l"]}>{`${noOfItems} item(s) Edit`}</Text>
           </Link>
         </Flex>
+        <Text fontSize="sm">{`Name: ${cartState.name}`}</Text>
         <Text fontSize="sm">{`Billing email: ${cartState.billingEmail}`}</Text>
         {cartState.items?.map((item) => {
           const product = products?.find(({ id }) => id === item.productId);
