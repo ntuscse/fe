@@ -1,5 +1,6 @@
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import {
+  Box,
   Badge,
   Flex,
   Heading,
@@ -52,10 +53,14 @@ const Header = () => {
       </Show>
       <Hide below="xl">
         <HStack spacing={5} alignItems="center">
-          <RouterLink to={routes.HOME}>Home</RouterLink>
+          <Box px={2} py={1} borderRadius={7}
+          _hover={{ bg: "#465945", transition: "0.5s", color: "white" }}>
+            <RouterLink to={routes.HOME}>Home</RouterLink>
+          </Box>
           <RouterLink to={routes.CART}>
             <Flex alignItems="center" gap={1}>
-              <Icon as={AiOutlineShoppingCart} w={5} h={5} />
+              <Icon as={AiOutlineShoppingCart} w={8} h={8}
+              _hover={{ fill: "#465945", transition: "0.5s" }} />
               {cartLength > 0 && <Badge>{cartLength > 99 ? "99+" : cartLength}</Badge>}
             </Flex>
           </RouterLink>
