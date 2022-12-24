@@ -54,6 +54,7 @@ const PaymentForm = () => {
       // TODO: CURRENTLY HARDCODED ONLY 1 ORDER, CHANGE IN THE FUTURE WHEN BACKEND IMPLEMENTED
       // TODO: MIGRATE INTO HELPER FUNCTION UNDER API 'setOrderPaymentSucess'
       // TODO: remove userId as we do not have a login
+      // TODO: order ID to be generated iteratively with api call
       const checkoutCart = await api.postCheckoutCart(cartState.items, cartState.billingEmail, cartState.voucher)
       const currentOrder = {
         orderId: "1234",
