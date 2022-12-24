@@ -6,6 +6,7 @@ import { ProductType } from "../typings/product";
 
 const QUERY_DELAY_TIME = 1000;
 const CUSTOM_MOCK_DATA = false;
+const CUSTOM_STRIPE_DATA = true;
 
 export class Api {
   private API_ORIGIN: string;
@@ -73,6 +74,10 @@ export class Api {
       if (CUSTOM_MOCK_DATA) {
         await fakeDelay(QUERY_DELAY_TIME);
         return orderList.find((order) => order.userId === userId && order.orderId === orderId);
+      }
+      if (CUSTOM_STRIPE_DATA){
+        await fakeDelay(QUERY_DELAY_TIME);
+        return JSON.parse(localStorage.getItem("order-history") as string)[0] ?? {}
       }
       const res = await this.get(`/order-summary/${orderId}`);
       console.log("Order Summary response:", res);
