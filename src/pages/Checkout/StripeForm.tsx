@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 import { CartActionType, useCartStore } from "../../context/cart";
 import routes from "../../utils/constants/routes";
 import { OrderStatusType } from "../../typings/order";
-import { CartItemType } from "../../typings/cart";
 import { api } from "../../services/api";
 
 
@@ -14,7 +13,6 @@ import { api } from "../../services/api";
 type StripeFormProps = {
   clientSecret: string;
 };
-type OrderHistoryType = Record<string, boolean>;
 // Make sure to call `loadStripe` outside of a component’s render to avoid
 // recreating the `Stripe` object on every render.
 const stripePromise = loadStripe(`${process.env.REACT_APP_PUBLISHABLE_STRIPE_KEY}`);
@@ -57,8 +55,6 @@ const PaymentForm = () => {
       // TODO: MIGRATE INTO HELPER FUNCTION UNDER API 'setOrderPaymentSucess'
       // TODO: remove userId as we do not have a login
       const checkoutCart = await api.postCheckoutCart(cartState.items, cartState.billingEmail, cartState.voucher)
-      console.log(checkoutCart)
-      console.log(cartContext)
       const currentOrder = {
         orderId: "1234",
         items: checkoutCart.items,
