@@ -219,6 +219,21 @@ export const Cart: FC = () => {
           <Flex flexDirection="column" rowGap={2}>
             <Input
               required
+              placeholder="Name"
+              value={cartState.name}
+              id="name"
+              type="text"
+              onChange={(event) => {
+                cartDispatch({
+                  type: CartActionType.UPDATE_NAME,
+                  payload: event.target.value,
+                });
+              }}
+              variant="outline"
+            />
+
+            <Input
+              required
               placeholder="Billing email address"
               value={cartState.billingEmail}
               id="email"
@@ -234,11 +249,12 @@ export const Cart: FC = () => {
             <Text fontSize="sm" color="red">
               {validation.error && "*Invalid email format"}
             </Text>
+
             <Button
               width="100%"
               onClick={handleToCheckout}
               isLoading={validation.isLoading}
-              disabled={cartState.billingEmail.length === 0 || validation.isLoading}
+              disabled={cartState.billingEmail.length === 0 || cartState.name.length === 0 || validation.isLoading}
             >
               CHECK OUT
             </Button>
