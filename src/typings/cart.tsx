@@ -13,6 +13,7 @@ export type CartItemType = {
 export type CartStateType = {
   voucher: string | null;
   items: CartItemType[];
+  name: string;
   billingEmail: string;
 };
 export type ProductInfoType = {
