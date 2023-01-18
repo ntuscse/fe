@@ -38,7 +38,6 @@ const PaymentForm = () => {
       redirect: "if_required",
       confirmParams: {
         receipt_email: cartState.billingEmail,
-       // return_url: "http://localhost:3000/", // this return URL is from the stripe website
       },
     });
     setIsLoading(false);
