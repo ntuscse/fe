@@ -55,18 +55,10 @@ const PaymentForm = () => {
       // TODO: remove userId as we do not have a login
       // TODO: order ID to be generated iteratively with api call
       const checkoutCart = await api.postCheckoutCart(cartState.items, cartState.billingEmail, cartState.voucher)
-      setIsLoading(true);
       const payload : CartAction = {
-       type: CartActionType.INITALIZE, payload: {
-          items: [],
-          voucher: "",
-          name: "",
-          billingEmail: "",
-         }
+       type: CartActionType.RESET_CART
       }
-
       cartDispatch(payload);
-      setIsLoading(false);
       const currentOrder = {
         orderId: "1234",
         items: checkoutCart.items,
