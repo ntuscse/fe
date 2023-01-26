@@ -102,7 +102,7 @@ const CartItem: React.FC<CartItemProps> = ({ isMobile, data, onRemove, onQuantit
       </GridItem>
       <GridItem display="flex" alignItems="center" justifyContent="center">
         <Text fontSize={["sm", "md"]} fontWeight={500}>
-          ${unitPrice}
+          {unitPrice}
         </Text>
       </GridItem>
       <GridItem display="flex" alignItems="center" justifyContent="center">
@@ -110,7 +110,7 @@ const CartItem: React.FC<CartItemProps> = ({ isMobile, data, onRemove, onQuantit
       </GridItem>
       <GridItem display="flex" alignItems="center" justifyContent="center">
         <Text fontSize={["sm", "md"]} fontWeight={500}>
-          ${subTotalPrice}
+          {subTotalPrice}
         </Text>
       </GridItem>
       <GridItem display="flex" alignItems="center" justifyContent="center">
@@ -147,9 +147,9 @@ const CartItem: React.FC<CartItemProps> = ({ isMobile, data, onRemove, onQuantit
             {data.colorway}
           </Box>
         </Flex>
-        <Text fontWeight={500}>Unit Price: ${unitPrice}</Text>
+        <Text fontWeight={500}>Unit Price: {unitPrice}</Text>
         {quantityInput}
-        <Text fontWeight={500}>Subtotal: ${subTotalPrice}</Text>
+        <Text fontWeight={500}>Subtotal: {subTotalPrice}</Text>
       </Flex>
     </Flex>
   );
