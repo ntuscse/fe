@@ -54,6 +54,7 @@ const PaymentForm = () => {
       // TODO: MIGRATE INTO HELPER FUNCTION UNDER API 'setOrderPaymentSucess'
       // TODO: remove userId as we do not have a login
       // TODO: order ID to be generated iteratively with api call
+      setIsLoading(true);
       const checkoutCart = await api.postCheckoutCart(cartState.items, cartState.billingEmail, cartState.voucher)
       const payload : CartAction = {
        type: CartActionType.RESET_CART
@@ -70,6 +71,7 @@ const PaymentForm = () => {
         orderDate: new Date(Date.now()).toLocaleDateString("en-SG"),
         lastUpdate: new Date(Date.now()).toLocaleDateString("en-SG"),
       }
+      setIsLoading(false);
       localStorage.setItem("order-history",JSON.stringify([currentOrder]));
       navigate(`${routes.ORDER_SUMMARY}/${currentOrder.orderId}`);
 
