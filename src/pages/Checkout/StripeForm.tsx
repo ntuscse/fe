@@ -3,7 +3,7 @@ import { Elements, PaymentElement, useStripe, useElements } from "@stripe/react-
 import { loadStripe } from "@stripe/stripe-js";
 import { Button , useToast } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-import { CartActionType, useCartStore } from "../../context/cart";
+import { CartAction,CartActionType, useCartStore } from "../../context/cart";
 import routes from "../../utils/constants/routes";
 import { OrderStatusType } from "../../typings/order";
 import { api } from "../../services/api";
@@ -55,6 +55,18 @@ const PaymentForm = () => {
       // TODO: remove userId as we do not have a login
       // TODO: order ID to be generated iteratively with api call
       const checkoutCart = await api.postCheckoutCart(cartState.items, cartState.billingEmail, cartState.voucher)
+      setIsLoading(true);
+      const payload : CartAction = {
+       type: CartActionType.INITALIZE, payload: {
+          items: [],
+          voucher: "",
+          name: "",
+          billingEmail: "",
+         }
+      }
+
+      cartDispatch(payload);
+      setIsLoading(false);
       const currentOrder = {
         orderId: "1234",
         items: checkoutCart.items,
@@ -66,9 +78,9 @@ const PaymentForm = () => {
         orderDate: new Date(Date.now()).toLocaleDateString("en-SG"),
         lastUpdate: new Date(Date.now()).toLocaleDateString("en-SG"),
       }
-      localStorage.setItem("order-history",JSON.stringify([currentOrder]))
-      navigate(`${routes.ORDER_SUMMARY}/${currentOrder.orderId}`)
-      cartDispatch({ type: CartActionType.RESET_CART });
+      localStorage.setItem("order-history",JSON.stringify([currentOrder]));
+      navigate(`${routes.ORDER_SUMMARY}/${currentOrder.orderId}`);
+
 
     }
   };
