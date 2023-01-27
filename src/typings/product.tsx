@@ -6,8 +6,9 @@ export type ProductType = {
   id: string;
   name: string;
   price: number;
-  stock: Map<string, number>;
   images?: string[];
+  sizes?: string[];
   colorways?: string[];
   productCategory?: ProductCategoryType;
+  isAvailable?: boolean;
 };
