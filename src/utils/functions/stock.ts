@@ -1,6 +1,7 @@
 import { ProductType } from "../../typings/product"
 
 export const getQty = (product: ProductType, colorway: string, size: string): number => {
+    // returns remaining stock for specified colorway and size
     const colorwayIndex = product.colorways.indexOf(colorway);
     const sizeIndex = product.sizes.indexOf(size);
     if (colorwayIndex !== -1 && sizeIndex !== -1) {
@@ -10,6 +11,7 @@ export const getQty = (product: ProductType, colorway: string, size: string): nu
 }
 
 export const displayStock = (product: ProductType, colorway: string, size: string): string => {
+    // returns string describing remaining stock 
     const colorwayIndex = product.colorways.indexOf(colorway);
     const sizeIndex = product.sizes.indexOf(size);
     if (colorwayIndex !== -1 && sizeIndex !== -1) {
@@ -24,6 +26,8 @@ export const displayStock = (product: ProductType, colorway: string, size: strin
 }
 
 export const isColorwayAvailable = (product: ProductType, colorway: string): boolean => {
+    // returns true if colorway is available in any size
+    // returns false if colorway is out of stock in all sizes
     const index = product.colorways.indexOf(colorway);
     if (index === -1) { // no such colorway
         return false;
@@ -35,17 +39,9 @@ export const isColorwayAvailable = (product: ProductType, colorway: string): boo
     return (totalQty > 0);
 } 
 
-export const getAvailableSizesIndex = (product: ProductType, colorway: string): number[] => {
-    const colorwayIndex = product.colorways.indexOf(colorway);
-    if (colorwayIndex === -1) { // no such colorway
-        return [];
-    }
-    const colorwayStock = product.stock[colorwayIndex];
-    const availSizeIndex = colorwayStock.map((e, i) => e > 0 ? i : -1).filter(index => index !== -1);
-    return availSizeIndex;
-} 
-
 export const isSizeAvailable = (product: ProductType, size: string): boolean => {
+    // returns true if size is available in any colorway
+    // returns false if size is out of stock in all colorways
     const index = product.sizes.indexOf(size);
     if (index === -1) { // no such size
         return false;
@@ -57,16 +53,6 @@ export const isSizeAvailable = (product: ProductType, size: string): boolean => 
     return (totalQty > 0);
 } 
 
-export const getAvailableColorwayIndex = (product: ProductType, size: string): number[] => {
-    const sizeIndex = product.sizes.indexOf(size);
-    if (sizeIndex === -1) { // no such colorway
-        return [];
-    }
-    const colorwayStock = product.stock.map(d => d[sizeIndex]);
-    const availColorwayIndex = colorwayStock.map((e, i) => e > 0 ? i : -1).filter(index => index !== -1);
-    return availColorwayIndex;
-} 
-
 export const getDefaultSize = (product: ProductType): string => {
     const index = product.sizes.findIndex((size) => isSizeAvailable(product, size));
     if (index !== -1) {
@@ -76,7 +62,12 @@ export const getDefaultSize = (product: ProductType): string => {
 }
 
 export const getDefaultColorway = (product: ProductType, size: string): string => {
-    const availColorwayIndex = getAvailableColorwayIndex(product, size);
+    const sizeIndex = product.sizes.indexOf(size);
+    if (sizeIndex === -1) { // no such size
+        return "";
+    }
+    const colorwayStock = product.stock.map(d => d[sizeIndex]);
+    const availColorwayIndex = colorwayStock.map((qty, idx) => qty > 0 ? idx : -1).filter(idx => idx !== -1);
     if (availColorwayIndex.length > 0) {
         return product.colorways[availColorwayIndex[0]];
     }
@@ -86,5 +77,5 @@ export const getDefaultColorway = (product: ProductType, size: string): string =
 export const getDefaults = (product: ProductType): [string, string] => {
     const size = getDefaultSize(product);
     const colorway = getDefaultColorway(product, size); 
-    return [size, colorway];
+    return [colorway, size];
 }

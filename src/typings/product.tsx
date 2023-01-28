@@ -13,5 +13,5 @@ export type ProductType = {
   colorways: string[];
   images?: string[];
   productCategory?: ProductCategoryType;
-  isAvailable?: boolean;
+  isAvailable: boolean;
 };
