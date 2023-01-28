@@ -16,6 +16,7 @@ import { SmallCloseIcon } from "@chakra-ui/icons";
 import { CartItemType, ProductInfoType } from "../../typings/cart";
 import { ProductType } from "../../typings/product";
 import { displayPrice } from "../../utils/functions/currency";
+import { getQtyInStock } from "../../utils/functions/stock";
 
 export type CartItemProps = {
   isMobile: boolean;
@@ -27,9 +28,9 @@ export type CartItemProps = {
 };
 
 const MIN_ITEM_CNT = 1;
-const MAX_ITEM_CNT = 99;
 
 const CartItem: React.FC<CartItemProps> = ({ isMobile, data, onRemove, onQuantityChange, productInfo }) => {
+  const MAX_ITEM_CNT = productInfo ? getQtyInStock(productInfo, data.colorway, data.size) : 1;
   const handleQtyChangeCounter = (isAdd: boolean = true) => {
     const value = isAdd ? 1 : -1;
     if (!isAdd && data.quantity === MIN_ITEM_CNT) {
@@ -71,7 +72,7 @@ const CartItem: React.FC<CartItemProps> = ({ isMobile, data, onRemove, onQuantit
         placeholder="Item Count"
         onChange={handleQtyChangeInput}
       />
-      <InputRightAddon style={{ cursor: "pointer" }} onClick={() => handleQtyChangeCounter(true)}>
+      <InputRightAddon style={(data.quantity < MAX_ITEM_CNT) ? { cursor: "pointer" } : { cursor: "not-allowed", opacity: 0.4 }} onClick={() => handleQtyChangeCounter(true)}>
         +
       </InputRightAddon>
     </InputGroup>
@@ -88,7 +89,7 @@ const CartItem: React.FC<CartItemProps> = ({ isMobile, data, onRemove, onQuantit
           </Text>
           <Flex color="grey">
             <Flex>Size:</Flex>
-            <Text ml={1}>
+            <Text ml={1} textTransform="uppercase">
               {data.size}
             </Text>
           </Flex>

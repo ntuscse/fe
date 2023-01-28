@@ -103,7 +103,6 @@ export const MerchDetail: React.FC = () => {
       },
     };
     cartDispatch(payload);
-    // updateMaxQuantity(selectedColorway ?? "", selectedSize ?? ""); // TODO remove?
     setMaxQuantity(maxQuantity - quantity);
     setQuantity(1);
     setIsDisabled(false);
