@@ -11,6 +11,7 @@ import {
   InputRightAddon,
   InputGroup,
   Box,
+  Center,
 } from "@chakra-ui/react";
 import { SmallCloseIcon } from "@chakra-ui/icons";
 import { CartItemType, ProductInfoType } from "../../typings/cart";
@@ -60,22 +61,29 @@ const CartItem: React.FC<CartItemProps> = ({ isMobile, data, onRemove, onQuantit
   const subTotalPrice = displayPrice((productInfo?.price ?? 0) * data.quantity);
 
   const quantityInput = (
-    <InputGroup size="xs">
-      <InputLeftAddon style={{ cursor: "pointer" }} onClick={() => handleQtyChangeCounter(false)}>
-        -
-      </InputLeftAddon>
-      <Input
-        type="tel"
-        pattern="[0-9]*"
-        textAlign="center"
-        value={data.quantity}
-        placeholder="Item Count"
-        onChange={handleQtyChangeInput}
-      />
-      <InputRightAddon style={(data.quantity < MAX_ITEM_CNT) ? { cursor: "pointer" } : { cursor: "not-allowed", opacity: 0.4 }} onClick={() => handleQtyChangeCounter(true)}>
-        +
-      </InputRightAddon>
-    </InputGroup>
+    <Flex flexDirection="column" gap={1}>
+      <InputGroup size="xs">
+        <InputLeftAddon style={{ cursor: "pointer" }} onClick={() => handleQtyChangeCounter(false)}>
+          -
+        </InputLeftAddon>
+        <Input
+          type="tel"
+          pattern="[0-9]*"
+          textAlign="center"
+          value={data.quantity}
+          placeholder="Item Count"
+          onChange={handleQtyChangeInput}
+        />
+        <InputRightAddon style={(data.quantity < MAX_ITEM_CNT) ? { cursor: "pointer" } : { cursor: "not-allowed", opacity: 0.4 }} onClick={() => handleQtyChangeCounter(true)}>
+          +
+        </InputRightAddon>
+      </InputGroup>
+      <Center>
+        <Text fontSize="xs" fontWeight={300} color="primary.400"> 
+            In stock: {MAX_ITEM_CNT}
+        </Text> 
+      </Center>
+    </Flex>
   );
   const desktopView = (
     <Grid templateColumns="3fr repeat(4, 1fr)" rowGap={2}>
