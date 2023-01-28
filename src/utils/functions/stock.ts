@@ -1,6 +1,6 @@
 import { ProductType } from "../../typings/product"
 
-export const getQty = (product: ProductType, colorway: string, size: string): number => {
+export const getQtyInStock = (product: ProductType, colorway: string, size: string): number => {
     // returns remaining stock for specified colorway and size
     const colorwayIndex = product.colorways.indexOf(colorway);
     const sizeIndex = product.sizes.indexOf(size);
