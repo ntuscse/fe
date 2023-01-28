@@ -5,7 +5,7 @@ import { fakeDelay } from "../utils/functions/random";
 import { ProductType } from "../typings/product";
 
 const QUERY_DELAY_TIME = 1000;
-const CUSTOM_MOCK_DATA = false;
+const CUSTOM_MOCK_DATA = true;
 const CUSTOM_STRIPE_DATA = true;
 
 export class Api {

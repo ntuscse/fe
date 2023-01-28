@@ -4,12 +4,11 @@ import SizeDialog from "../pages/MerchDetail/SizeDialog";
 
 export type ProductCategoryType = string;
 
-export enum ProductTypeStockIndex {color, size};
 export type ProductType = {
   id: string;
   name: string;
   price: number;
-  stock: number[][]; // stock[color][size] = qty
+  stock: number[][]; // stock[colorway][size] = qty
   sizes: string[];
   colorways: string[];
   images?: string[];

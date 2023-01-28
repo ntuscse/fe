@@ -12,6 +12,7 @@ import {
   GridItem,
   Badge,
   useDisclosure,
+  Center,
 } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import MerchCarousel from "./MerchCarousel";
@@ -25,6 +26,7 @@ import { QueryKeys } from "../../utils/constants/queryKeys";
 import { api } from "../../services/api";
 import SizeDialog from "./SizeDialog";
 import { displayPrice } from "../../utils/functions/currency";
+import { displayStock, getDefaults, getDefaultSize, getQty } from "../../utils/functions/stock";
 
 // All Sizes - Disable those are unavailable.
 // const ALL_SIZES: ProductSizeTypes[] = ["3XS", "2XS", "XS", "S", "M", "L", "XL", "2XL", "3XL"];
@@ -44,27 +46,30 @@ export const MerchDetail: React.FC = () => {
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [selectedColorway, setSelectedColorway] = useState<string | null>(null);
+  const [maxQuantity, setMaxQuantity] = useState<number>(0);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const { data: product, isLoading } = useQuery([QueryKeys.PRODUCT, productId], () => api.getProduct(productId), {
     onSuccess: (data: ProductType) => {
       setIsDisabled(!(data?.isAvailable === true));
-      setSelectedSize(data?.sizes?.[0] ?? null);
-      setSelectedColorway(data?.colorways?.[0] ?? null);
+      const [size, color] = getDefaults(data);
+      setSelectedSize((size !== "") ? size : null); // TODO: null, null, 0 ???
+      setSelectedColorway((color !== "") ? color : null); 
+      setMaxQuantity(getQty(data, color ?? "", size ?? ""));
     },
   });
 
   //* In/decrement quantity
-  const handleQtyChangeCounter = (isAdd: boolean = true) => {
+  const handleQtyChangeCounter = (isAdd: boolean = true) => { // TODO: qty = 1, max = 0 ?
     const value = isAdd ? 1 : -1;
     if (!isAdd && quantity === 1) return;
-    if (isAdd && quantity === 99) return;
+    if (isAdd && quantity >= maxQuantity) return;
     setQuantity(quantity + value);
   };
 
   //* Manual input quantity.
-  const handleQtyChangeInput = (e: React.FormEvent<EventTarget>): void => {
+  const handleQtyChangeInput = (e: React.FormEvent<EventTarget>): void => { 
     const target = e.target as HTMLInputElement;
     if (Number.isNaN(parseInt(target.value, 10))) {
       setQuantity(1);
@@ -73,8 +78,8 @@ export const MerchDetail: React.FC = () => {
     const value = parseInt(target.value, 10);
     if (value <= 0) {
       setQuantity(1);
-    } else if (value > 99) {
-      setQuantity(99);
+    } else if (value > maxQuantity) { // TODO: qty = 1, max = 0 ?
+      setQuantity(maxQuantity);
     } else {
       setQuantity(value);
     }
@@ -87,8 +92,8 @@ export const MerchDetail: React.FC = () => {
       payload: {
         productId,
         quantity,
-        size: selectedSize ?? product?.sizes?.[0] ?? "",
-        colorway: selectedColorway ?? ""
+        size: selectedSize ?? (product ? getDefaultSize(product) :  ""),
+        colorway: selectedColorway ?? "" // (product ? getDefaultColorway(product, size) :  "") // TODO
       },
     };
     cartDispatch(payload);
@@ -131,8 +136,16 @@ export const MerchDetail: React.FC = () => {
             <SizeOption
               key={idx.toString()}
               active={selectedSize === size}
-              onClick={() => setSelectedSize(size)}
-              // disabled={isDisabled || !product?.sizes?.includes(size)}
+              onClick={() => {
+                setSelectedSize(size);
+                const max = (product && selectedColorway) ? getQty(product, selectedColorway, size) : 0;
+                setMaxQuantity(max);
+                if (quantity > max) {
+                  setQuantity(max); // TODO or set = 1 ?
+                }
+              }}
+              // disabled={isDisabled || !(product ? isSizeAvailable(product, size): false)} //TODO issue if multiple colours
+              disabled={isDisabled || ((product && selectedColorway) ? (getQty(product, selectedColorway, size) === 0) : false)} //TODO issue if multiple colours
             >
               <Text textTransform="uppercase" fontSize={{ base: "sm", md: "md" }}>
                 {size}
@@ -155,10 +168,18 @@ export const MerchDetail: React.FC = () => {
             <SizeOption
               key={idx.toString()}
               active={selectedColorway === colorway}
-              onClick={() => setSelectedColorway(colorway)}
+              onClick={() => {
+                setSelectedColorway(colorway);
+                const max = (product && selectedSize) ? getQty(product, colorway, selectedSize) : 0;
+                setMaxQuantity(max);
+                if (quantity > max) {
+                  setQuantity(max); // TODO or set = 1 ?
+                }
+              }}
               width="auto"
               px={4}
-              // disabled={isDisabled || !product?.sizes?.includes(size)}
+              // disabled={isDisabled || !(product ? isColorwayAvailable(product, colorway): false)} // TODO issue if multiple sizes
+              disabled={isDisabled || ((product && selectedSize) ? (getQty(product, colorway, selectedSize) === 0) : false)} //TODO issue if multiple colours
             >
               <Text textTransform="uppercase" fontSize={{ base: "sm", md: "md" }}>
                 {colorway}
@@ -174,13 +195,13 @@ export const MerchDetail: React.FC = () => {
     <Flex flexDirection="column" mt={8}>
       <GroupTitle>Quantity</GroupTitle>
       <Flex gap={4}>
-        <SizeOption disabled={isDisabled} active={false} onClick={() => handleQtyChangeCounter(false)}>
+        <SizeOption disabled={isDisabled || quantity === 1} active={false} onClick={() => handleQtyChangeCounter(false)}>
           -
         </SizeOption>
         <Input
           type="tel"
           pattern="[0-9]*"
-          max={99}
+          max={maxQuantity} 
           textAlign="center"
           value={quantity}
           borderRadius={0}
@@ -189,9 +210,14 @@ export const MerchDetail: React.FC = () => {
           disabled={isDisabled}
           onChange={handleQtyChangeInput}
         />
-        <SizeOption disabled={isDisabled} active={false} onClick={() => handleQtyChangeCounter(true)}>
+        <SizeOption disabled={isDisabled || quantity === maxQuantity} active={false} onClick={() => handleQtyChangeCounter(true)}>
           +
         </SizeOption>
+        <Center>
+          <Text fontSize="m" fontWeight={500} color="primary.600"> 
+            {(product && selectedColorway && selectedSize) ? displayStock(product, selectedColorway, selectedSize) : ""}
+          </Text> 
+        </Center>
       </Flex>
     </Flex>
   );
