@@ -26,7 +26,7 @@ import { QueryKeys } from "../../utils/constants/queryKeys";
 import { api } from "../../services/api";
 import SizeDialog from "./SizeDialog";
 import { displayPrice } from "../../utils/functions/currency";
-import { displayStock, getQtyInStock, isColorwayAvailable, isSizeAvailable } from "../../utils/functions/stock";
+import { displayStock, getQtyInStock, isColorwayAvailable, isOutOfStock, isSizeAvailable } from "../../utils/functions/stock";
 import { displayQtyInCart, getQtyInCart } from "../../utils/functions/cart";
 
 // All Sizes - Disable those are unavailable.
@@ -92,14 +92,17 @@ export const MerchDetail: React.FC = () => {
   }
 
   const handleAddToCart = () => {
+    if (!selectedSize || !selectedColorway) {
+      return;
+    }
     setIsDisabled(true);
     const payload: CartAction = {
       type: CartActionType.ADD_ITEM,
       payload: {
         productId,
         quantity,
-        colorway: selectedColorway ?? "", // TODO ? 
-        size: selectedSize ?? "", // TODO ?
+        colorway: selectedColorway, 
+        size: selectedSize, 
       },
     };
     cartDispatch(payload);
@@ -118,8 +121,13 @@ export const MerchDetail: React.FC = () => {
       <Heading color="primary.600" fontSize={["xl", "2xl", "3xl", "4xl"]}>
         {product?.name}
         {!product?.isAvailable && (
-          <Badge color="grey" ml={4} variant="outline" display="inline">
+          <Badge color="grey" ml={4} fontSize="md" variant="outline" display="inline">
             unavailable
+          </Badge>
+        )}
+        {product && isOutOfStock(product) && (
+          <Badge color="grey" ml={4} fontSize="md" variant="outline" display="inline">
+            out of stock
           </Badge>
         )}
       </Heading>
@@ -209,7 +217,7 @@ export const MerchDetail: React.FC = () => {
                   false
                 ) ||
                 ((product && selectedSize) ? 
-                  (getQtyInStock(product, colorway, selectedSize) === 0) : // colorway is not available for all sizes
+                  (getQtyInStock(product, colorway, selectedSize) === 0) : // colorway is not available for selected size
                   false
                 ) 
               } 
