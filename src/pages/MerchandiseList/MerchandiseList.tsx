@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Flex, Divider, Text, Select, Heading, Grid } from "@chakra-ui/react";
+import { Flex, Divider, Select, Heading, Grid } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import Card from "./Card";
 import Page from "../../components/Page";
@@ -7,6 +7,7 @@ import { QueryKeys } from "../../utils/constants/queryKeys";
 import { api } from "../../services/api";
 import { ProductType } from "../../typings/product";
 import ProductListSkeleton from "./Skeleton";
+import { isOutOfStock } from "../../utils/functions/stock";
 
 export const MerchandiseList = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("");
@@ -66,6 +67,8 @@ export const MerchandiseList = () => {
                 price={item?.price}
                 imgSrc={item?.images?.[0]}
                 sizeRange={`${item?.sizes?.[0]} - ${item.sizes?.[item.sizes.length - 1]}`}
+                isAvailable={item.isAvailable}
+                isOutOfStock={isOutOfStock(item)}
               />
             ))}
         </Grid>

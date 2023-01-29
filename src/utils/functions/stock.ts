@@ -25,6 +25,13 @@ export const displayStock = (product: ProductType, colorway: string, size: strin
     return "ERROR: invalid color/size selected";
 }
 
+export const isOutOfStock = (product: ProductType): boolean => {
+    // returns true if product is out of stock in all colorways and sizes
+    const totalQty = product.stock.reduce((a,b) => { return a.concat(b) }) // flatten array
+                                    .reduce((a,b) => { return a + b }); // sum elements
+    return (totalQty <= 0);
+} 
+
 export const isColorwayAvailable = (product: ProductType, colorway: string): boolean => {
     // returns true if colorway is available in any size
     // returns false if colorway is out of stock in all sizes
