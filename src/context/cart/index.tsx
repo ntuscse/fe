@@ -49,7 +49,7 @@ const initState: CartStateType = {
 export const cartReducer = (state: CartStateType, action: CartAction) => {
   switch (action.type) {
     case CartActionType.RESET_CART: {
-      return { ...JSON.parse(JSON.stringify(initState)) };
+      return JSON.parse(JSON.stringify(initState));
     }
     case CartActionType.INITALIZE: {
       return { ...state, ...action.payload };
