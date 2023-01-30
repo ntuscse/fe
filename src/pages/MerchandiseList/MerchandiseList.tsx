@@ -56,6 +56,7 @@ export const MerchandiseList = () => {
         >
           {products
             ?.filter((product: ProductType) => {
+              if (!product?.isAvailable) return false;
               if (selectedCategory === "") return true;
               return product?.productCategory === selectedCategory;
             })
@@ -67,7 +68,6 @@ export const MerchandiseList = () => {
                 price={item?.price}
                 imgSrc={item?.images?.[0]}
                 sizeRange={`${item?.sizes?.[0]} - ${item.sizes?.[item.sizes.length - 1]}`}
-                isAvailable={item.isAvailable}
                 isOutOfStock={isOutOfStock(item)}
               />
             ))}

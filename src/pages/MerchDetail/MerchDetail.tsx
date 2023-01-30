@@ -92,7 +92,7 @@ export const MerchDetail: React.FC = () => {
   }
 
   const handleAddToCart = () => {
-    if (!selectedSize || !selectedColorway) {
+    if (!selectedColorway || !selectedSize) {
       return;
     }
     setIsDisabled(true);

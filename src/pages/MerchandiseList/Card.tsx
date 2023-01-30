@@ -10,11 +10,10 @@ type CardProps = {
   text: string;
   price: number;
   sizeRange: string;
-  isAvailable?: boolean;
   isOutOfStock?: boolean;
 };
 
-const Card = ({ productId, imgSrc, text, price, sizeRange, isAvailable, isOutOfStock }: CardProps) => {
+const Card = ({ productId, imgSrc, text, price, sizeRange, isOutOfStock }: CardProps) => {
   return (
     <GridItem role="group" cursor="pointer" mt={4}>
       <Link to={`${routes.PRODUCT}/${productId}`}>
@@ -38,7 +37,7 @@ const Card = ({ productId, imgSrc, text, price, sizeRange, isAvailable, isOutOfS
               <Text noOfLines={2}>{text}</Text>
               <Text align="center">{displayPrice(price)}</Text>
             </Flex>
-            {isAvailable && !isOutOfStock && (
+            {!isOutOfStock && (
             <Flex textColor="gray.400" justifyContent="space-between" mt={1} alignItems="center">
               <Text fontWeight={600} textTransform="uppercase" fontSize={["xs", "sm"]}>
                 {sizeRange}
@@ -46,18 +45,13 @@ const Card = ({ productId, imgSrc, text, price, sizeRange, isAvailable, isOutOfS
               <ArrowForwardIcon />
             </Flex>
             )}
-            <Flex justifyContent="left" mt={1} alignItems="center">
-                {!isAvailable && (
-                  <Badge color="grey" mr={2} fontSize="xs" variant="outline" display="inline">
-                    unavailable
-                  </Badge>
-                )}
-                {isOutOfStock && (
-                  <Badge color="grey" mr={2} variant="outline" display="inline">
-                    out of stock
-                  </Badge>
-                )}
-            </Flex>
+            {isOutOfStock && (
+              <Flex justifyContent="left" mt={1} alignItems="center">
+                <Badge color="grey" mr={2} variant="outline" display="inline">
+                  out of stock
+                </Badge>
+              </Flex>
+            )}
           </Box>
         </Box>
       </Link>
