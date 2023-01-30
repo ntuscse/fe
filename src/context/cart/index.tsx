@@ -49,7 +49,7 @@ const initState: CartStateType = {
 export const cartReducer = (state: CartStateType, action: CartAction) => {
   switch (action.type) {
     case CartActionType.RESET_CART: {
-      return { ...initState };
+      return JSON.parse(JSON.stringify(initState));
     }
     case CartActionType.INITALIZE: {
       return { ...state, ...action.payload };
@@ -100,12 +100,10 @@ export const cartReducer = (state: CartStateType, action: CartAction) => {
     }
 
     case CartActionType.UPDATE_NAME: {
-      console.log(action.payload);
       return { ...state, name: action.payload };
     }   
 
     case CartActionType.UPDATE_BILLING_EMAIL: {
-      console.log(action.payload);
       return { ...state, billingEmail: action.payload };
     }
 
@@ -130,7 +128,7 @@ export const CartProvider: React.FC = ({ children }) => {
   const value = useMemo(() => ({ state, dispatch }), [state]);
 
   useEffect(() => {
-    const cartState: CartStateType = initState;
+    const cartState: CartStateType = JSON.parse(JSON.stringify(initState));
     const storedCartData: CartStateType = JSON.parse(localStorage.getItem("cart") as string) ?? initStorageCart;
     cartState.items = storedCartData.items;
     cartState.name = storedCartData.name;
