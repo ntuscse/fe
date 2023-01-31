@@ -1,5 +1,14 @@
 import { FC, useState } from "react";
-import { Button, Flex, Heading, Text, useBreakpointValue, Divider, Image, Badge } from "@chakra-ui/react";
+import {
+  Button,
+  Flex,
+  Heading,
+  Text,
+  useBreakpointValue,
+  Divider,
+  Image,
+  Badge,
+} from "@chakra-ui/react";
 import { Link, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import OrderItem from "../../components/OrderItem";
@@ -17,23 +26,30 @@ type OrderHistoryType = Record<string, boolean>;
 
 export const OrderSummary: FC = () => {
   // Check if break point hit.
-  const isMobile: boolean = useBreakpointValue({ base: true, md: false }) || false;
+  const isMobile: boolean =
+    useBreakpointValue({ base: true, md: false }) || false;
   const { slug: orderSlug = "" } = useParams();
   const [showThankYou, setShowThankYou] = useState<boolean>(false);
   const [orderState, setOrderState] = useState<OrderType | null>(null);
+  // TODO: Fetch subtotal and total from server.
+  const [total, setTotal] = useState(0);
   // Fetch and check if cart item is valid.
-  const { isLoading } = useQuery([QueryKeys.ORDER, orderSlug], () => api.getOrder("jacob", orderSlug), {
-    onSuccess: (data: OrderType) => {
-      setOrderState(data);
-      // Check if first time visiting -> means came from checkout -> show thank you message.
-      const orderHistory: OrderHistoryType = JSON.parse(localStorage.getItem("order-history") as string) ?? {};
-      if (!(data?.orderId in orderHistory)) {
+  const { isLoading } = useQuery(
+    [QueryKeys.ORDER, orderSlug],
+    () => api.getOrder("jacob", orderSlug),
+    {
+      onSuccess: (data: OrderType) => {
+        console.log(data);
+        setOrderState(data);
+        setTotal(
+          data.orderItems.reduce((acc, item) => {
+            return item.price * item.quantity + acc;
+          }, 0)
+        );
         setShowThankYou(true);
-      }
-      orderHistory[data?.orderId] = true;
-      localStorage.setItem("order-history", JSON.stringify(orderHistory));
-    },
-  });
+      },
+    }
+  );
 
   const renderThankYouMessage = () => (
     <>
@@ -54,24 +70,39 @@ export const OrderSummary: FC = () => {
         {showThankYou && renderThankYouMessage()}
       </Flex>
 
-      <Flex p={6} borderWidth="1px" borderRadius="lg" overflow="hidden" flexDir="column">
+      <Flex
+        p={6}
+        borderWidth="1px"
+        borderRadius="lg"
+        overflow="hidden"
+        flexDir="column"
+      >
         <Flex justifyContent="space-between">
           <Flex flexDir="column">
             <Flex alignItems="center" gap={4}>
               <Heading size="md">Order Number</Heading>
-              <Badge width="fit-content">{renderOrderStatus(orderState?.status ?? OrderStatusType.DELAY)}</Badge>
+              <Badge width="fit-content">
+                {renderOrderStatus(orderState?.status ?? OrderStatusType.DELAY)}
+              </Badge>
             </Flex>
             <Heading size="lg" mt={2}>
-              {orderState?.orderId}
+              {orderState?.orderID}
             </Heading>
           </Flex>
           <Flex flexDir="column" fontSize="sm" color="grey">
-            <Text>Order data: {orderState?.orderDate}</Text>
+            <Text>
+              Order date:{" "}
+              {orderState
+                ? new Date(`${orderState.orderDateTime}Z`).toLocaleString(
+                    "en-sg"
+                  )
+                : ""}
+            </Text>
             <Text>Last update: {orderState?.lastUpdate}</Text>
           </Flex>
         </Flex>
         <Divider my={4} />
-        {orderState?.items.map((item) => (
+        {orderState?.orderItems.map((item) => (
           <OrderItem data={item} isMobile={isMobile} />
         ))}
 
@@ -82,23 +113,43 @@ export const OrderSummary: FC = () => {
             <Text>Total:</Text>
           </Flex>
           <Flex flexDir="column" textAlign="end">
-            <Text fontSize="md"> {displayPrice(orderState?.billing?.subtotal ?? 0)}</Text>
+            <Text fontSize="md"> {displayPrice(total)}</Text>
             <Text fontSize="md">
-              {displayPrice((orderState?.billing?.subtotal ?? 0) - (orderState?.billing?.total ?? 0))}
+              {displayPrice(
+                (orderState?.billing?.subtotal ?? 0) -
+                  (orderState?.billing?.total ?? 0)
+              )}
             </Text>
-            <Text fontSize="md">{displayPrice(orderState?.billing.total ?? 0)}</Text>
+            <Text fontSize="md">{displayPrice(total)}</Text>
           </Flex>
         </Flex>
       </Flex>
 
-      <Flex mt={6} alignItems="center" py={3} borderRadius="lg" borderWidth="1px" flexDirection="column" rowGap={4}>
+      <Flex
+        mt={6}
+        alignItems="center"
+        py={3}
+        borderRadius="lg"
+        borderWidth="1px"
+        flexDirection="column"
+        rowGap={4}
+      >
         {/* TODO: QR Code generator based on Param. */}
         <Image
           maxWidth={40}
-          src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/QR_code_for_mobile_English_Wikipedia.svg/1200px-QR_code_for_mobile_English_Wikipedia.svg.png"
+          src={
+            orderState
+              ? `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://dev.merch.ntuscse.com/order-summary/${orderState?.orderID}`
+              : ""
+          }
         />
-        <Text fontWeight="bold">Please bring this QR code to the SCSE Lounge to collect your order.</Text>
-        <Text>For any assistance, please contact our email address: merch@ntuscse.com</Text>
+        <Text fontWeight="bold">
+          Please bring this QR code to the SCSE Lounge to collect your order.
+        </Text>
+        <Text>
+          For any assistance, please contact our email address:
+          merch@ntuscse.com
+        </Text>
       </Flex>
     </>
   );
