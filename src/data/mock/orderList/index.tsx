@@ -3,8 +3,8 @@ import { OrderStatusType, OrderType } from "../../../typings/order";
 export const orderList: OrderType[] = [
   {
     userId: "jacob",
-    orderId: "1234567891023456",
-    items: [
+    orderID: "1234567891023456",
+    orderItems: [
       {
         id: "1",
         image:
@@ -30,14 +30,14 @@ export const orderList: OrderType[] = [
       subtotal: 125.0,
       total: 110.0,
     },
-    orderDate: new Date(1280981217 * 1000).toLocaleDateString("en-SG"),
+    orderDateTime: new Date(1280981217 * 1000).toLocaleDateString("en-SG"),
     lastUpdate: new Date(1610981217 * 1000).toLocaleDateString("en-SG"),
   },
   {
     userId: "jacob",
 
-    orderId: "1234567891023455",
-    items: [
+    orderID: "1234567891023455",
+    orderItems: [
       {
         id: "1",
         image:
@@ -62,14 +62,14 @@ export const orderList: OrderType[] = [
       subtotal: 125.0,
       total: 151210.0,
     },
-    orderDate: new Date(73636123123 * 1000).toLocaleDateString("en-SG"),
+    orderDateTime: new Date(73636123123 * 1000).toLocaleDateString("en-SG"),
     lastUpdate: new Date(83636123123 * 1000).toLocaleDateString("en-SG"),
   },
 
   {
     userId: "jacob",
-    orderId: "1234567891023456",
-    items: [
+    orderID: "1234567891023456",
+    orderItems: [
       {
         id: "1",
         image:
@@ -94,7 +94,7 @@ export const orderList: OrderType[] = [
       subtotal: 1525.0,
       total: 320.0,
     },
-    orderDate: new Date(1210981217 * 1000).toLocaleDateString("en-SG"),
+    orderDateTime: new Date(1210981217 * 1000).toLocaleDateString("en-SG"),
     lastUpdate: new Date(1210981217 * 1000).toLocaleDateString("en-SG"),
   },
 ];

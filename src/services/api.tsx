@@ -6,7 +6,7 @@ import { ProductType } from "../typings/product";
 
 const QUERY_DELAY_TIME = 1000;
 const CUSTOM_MOCK_DATA = false;
-const CUSTOM_STRIPE_DATA = true;
+const CUSTOM_STRIPE_DATA = false;
 
 export class Api {
   private API_ORIGIN: string;
@@ -73,15 +73,19 @@ export class Api {
     try {
       if (CUSTOM_MOCK_DATA) {
         await fakeDelay(QUERY_DELAY_TIME);
-        return orderList.find((order) => order.userId === userId && order.orderId === orderId);
+        return orderList.find(
+          (order) => order.userId === userId && order.orderID === orderId
+        );
       }
-      if (CUSTOM_STRIPE_DATA){
+      if (CUSTOM_STRIPE_DATA) {
         await fakeDelay(QUERY_DELAY_TIME);
-        return JSON.parse(localStorage.getItem("order-history") as string)[0] ?? {}
+        return (
+          JSON.parse(localStorage.getItem("order-history") as string)[0] ?? {}
+        );
       }
-      const res = await this.get(`/order-summary/${orderId}`);
+      const res = await this.get(`/orders/${orderId}`);
       console.log("Order Summary response:", res);
-      return res.json();
+      return res;
     } catch (e: any) {
       throw new Error(e);
     }
@@ -93,7 +97,7 @@ export class Api {
         await fakeDelay(QUERY_DELAY_TIME);
         return orderList.filter((order) => order.userId === userId) ?? [];
       }
-      const res = await this.get(`/order-history/${userId}`);
+      const res = await this.get(`/orders/${userId}`);
       console.log("Order Summary response:", res);
       return res.json();
     } catch (e: any) {
@@ -101,14 +105,22 @@ export class Api {
     }
   }
 
-  async postCheckoutCart(items: CartItemType[], email: string, promoCode: string | null) {
+  async postCheckoutCart(
+    items: CartItemType[],
+    email: string,
+    promoCode: string | null
+  ) {
     try {
       if (CUSTOM_MOCK_DATA) {
         await fakeDelay(QUERY_DELAY_TIME);
         // return orderList.filter((order) => order.userId === userId) ?? [];
       }
 
-      const res = await this.post(`/cart/checkout`, { items, promoCode: promoCode ?? "", email });
+      const res = await this.post(`/cart/checkout`, {
+        items,
+        promoCode: promoCode ?? "",
+        email,
+      });
       return res;
     } catch (e: any) {
       throw new Error(e);
@@ -122,12 +134,15 @@ export class Api {
         // return orderList.filter((order) => order.userId === userId) ?? [];
       }
 
-      const res = await this.post(`/cart/quotation`, { items, promoCode: promoCode ?? "" });
+      const res = await this.post(`/cart/quotation`, {
+        items,
+        promoCode: promoCode ?? "",
+      });
       return res;
     } catch (e: any) {
       throw new Error(e);
     }
-  };
+  }
 }
 
 export const api = new Api();

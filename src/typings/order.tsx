@@ -24,10 +24,10 @@ export type OrderBillingType = {
 
 export type OrderType = {
   userId: string;
-  orderId: string;
-  items: OrderItemType[];
+  orderID: string;
+  orderItems: OrderItemType[];
   status: OrderStatusType;
   billing: OrderBillingType;
-  orderDate: string | Date;
-  lastUpdate: string | Date;
+  orderDateTime: string | Date;
+  lastUpdate: string | Date | undefined;
 };
