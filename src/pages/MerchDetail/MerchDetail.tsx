@@ -12,6 +12,7 @@ import {
   GridItem,
   Badge,
   useDisclosure,
+  Center,
 } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import MerchCarousel from "./MerchCarousel";
@@ -25,6 +26,8 @@ import { QueryKeys } from "../../utils/constants/queryKeys";
 import { api } from "../../services/api";
 import SizeDialog from "./SizeDialog";
 import { displayPrice } from "../../utils/functions/currency";
+import { displayStock, getQtyInStock, isColorwayAvailable, isOutOfStock, isSizeAvailable } from "../../utils/functions/stock";
+import { displayQtyInCart, getQtyInCart } from "../../utils/functions/cart";
 
 // All Sizes - Disable those are unavailable.
 // const ALL_SIZES: ProductSizeTypes[] = ["3XS", "2XS", "XS", "S", "M", "L", "XL", "2XL", "3XL"];
@@ -37,34 +40,33 @@ const GroupTitle = ({ children }: any) => (
 
 export const MerchDetail: React.FC = () => {
   // Context hook.
-  const { dispatch: cartDispatch } = useCartStore();
+  const { state: cartState, dispatch: cartDispatch } = useCartStore();
   const { slug: productId = "" } = useParams();
 
   const [quantity, setQuantity] = useState<number>(1);
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [selectedColorway, setSelectedColorway] = useState<string | null>(null);
+  const [maxQuantity, setMaxQuantity] = useState<number>(1); 
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const { data: product, isLoading } = useQuery([QueryKeys.PRODUCT, productId], () => api.getProduct(productId), {
     onSuccess: (data: ProductType) => {
       setIsDisabled(!(data?.isAvailable === true));
-      setSelectedSize(data?.sizes?.[0] ?? null);
-      setSelectedColorway(data?.colorways?.[0] ?? null);
     },
   });
 
   //* In/decrement quantity
-  const handleQtyChangeCounter = (isAdd: boolean = true) => {
+  const handleQtyChangeCounter = (isAdd: boolean = true) => { 
     const value = isAdd ? 1 : -1;
     if (!isAdd && quantity === 1) return;
-    if (isAdd && quantity === 99) return;
+    if (isAdd && quantity >= maxQuantity) return;
     setQuantity(quantity + value);
   };
 
   //* Manual input quantity.
-  const handleQtyChangeInput = (e: React.FormEvent<EventTarget>): void => {
+  const handleQtyChangeInput = (e: React.FormEvent<EventTarget>): void => { 
     const target = e.target as HTMLInputElement;
     if (Number.isNaN(parseInt(target.value, 10))) {
       setQuantity(1);
@@ -73,25 +75,39 @@ export const MerchDetail: React.FC = () => {
     const value = parseInt(target.value, 10);
     if (value <= 0) {
       setQuantity(1);
-    } else if (value > 99) {
-      setQuantity(99);
+    } else if (value > maxQuantity) { 
+      setQuantity(maxQuantity);
     } else {
       setQuantity(value);
     }
   };
 
+  const updateMaxQuantity = (colorway: string, size: string) => {
+    if (product) {
+      const stockQty = getQtyInStock(product, colorway, size);
+      const cartQty = getQtyInCart(cartState.items, product.id, colorway, size);
+      const max = (stockQty > cartQty) ? stockQty - cartQty : 0;
+      setMaxQuantity(max);
+    }
+  }
+
   const handleAddToCart = () => {
+    if (!selectedColorway || !selectedSize) {
+      return;
+    }
     setIsDisabled(true);
     const payload: CartAction = {
       type: CartActionType.ADD_ITEM,
       payload: {
         productId,
         quantity,
-        size: selectedSize ?? product?.sizes?.[0] ?? "",
-        colorway: selectedColorway ?? ""
+        colorway: selectedColorway, 
+        size: selectedSize, 
       },
     };
     cartDispatch(payload);
+    setMaxQuantity(maxQuantity - quantity);
+    setQuantity(1);
     setIsDisabled(false);
   };
 
@@ -105,13 +121,17 @@ export const MerchDetail: React.FC = () => {
       <Heading color="primary.600" fontSize={["xl", "2xl", "3xl", "4xl"]}>
         {product?.name}
         {!product?.isAvailable && (
-          <Badge color="grey" ml={4} variant="outline" display="inline">
+          <Badge color="grey" ml={4} fontSize="md" variant="outline" display="inline">
             unavailable
+          </Badge>
+        )}
+        {product && isOutOfStock(product) && (
+          <Badge color="grey" ml={4} fontSize="md" variant="outline" display="inline">
+            out of stock
           </Badge>
         )}
       </Heading>
       <Text fontSize="xl" fontWeight={600} color="primary.600">
-        {/* ${product?.price?.toFixed(2)} */}
         {displayPrice(product?.price ?? 0)}
       </Text>
     </Flex>
@@ -131,8 +151,29 @@ export const MerchDetail: React.FC = () => {
             <SizeOption
               key={idx.toString()}
               active={selectedSize === size}
-              onClick={() => setSelectedSize(size)}
-              // disabled={isDisabled || !product?.sizes?.includes(size)}
+              onClick={() => {
+                setQuantity(1);
+                if (size !== selectedSize) {
+                  setSelectedSize(size);
+                  if (selectedColorway) {
+                    updateMaxQuantity(selectedColorway, size)
+                  }
+                }
+                else {
+                  setSelectedSize(null);
+                }
+              }}
+              disabled={
+                isDisabled || 
+                (product ? 
+                  (!isSizeAvailable(product, size)) : // size is not available for all colorways
+                  false
+                ) ||
+                ((product && selectedColorway) ? 
+                  (getQtyInStock(product, selectedColorway, size) === 0) : // size is not available for selected colorway
+                  false
+                ) 
+              } 
             >
               <Text textTransform="uppercase" fontSize={{ base: "sm", md: "md" }}>
                 {size}
@@ -155,10 +196,31 @@ export const MerchDetail: React.FC = () => {
             <SizeOption
               key={idx.toString()}
               active={selectedColorway === colorway}
-              onClick={() => setSelectedColorway(colorway)}
+              onClick={() => {
+                setQuantity(1);
+                if (colorway !== selectedColorway) {
+                  setSelectedColorway(colorway);
+                  if (selectedSize) {
+                    updateMaxQuantity(colorway, selectedSize)
+                  }
+                }
+                else {
+                  setSelectedColorway(null);
+                }
+              }}
               width="auto"
               px={4}
-              // disabled={isDisabled || !product?.sizes?.includes(size)}
+              disabled={
+                isDisabled || 
+                (product ? 
+                  (!isColorwayAvailable(product, colorway)) : // colorway is not available for all sizes
+                  false
+                ) ||
+                ((product && selectedSize) ? 
+                  (getQtyInStock(product, colorway, selectedSize) === 0) : // colorway is not available for selected size
+                  false
+                ) 
+              } 
             >
               <Text textTransform="uppercase" fontSize={{ base: "sm", md: "md" }}>
                 {colorway}
@@ -174,34 +236,47 @@ export const MerchDetail: React.FC = () => {
     <Flex flexDirection="column" mt={8}>
       <GroupTitle>Quantity</GroupTitle>
       <Flex gap={4}>
-        <SizeOption disabled={isDisabled} active={false} onClick={() => handleQtyChangeCounter(false)}>
+        <SizeOption disabled={isDisabled || !(selectedColorway && selectedSize) || quantity <= 1} active={false} onClick={() => handleQtyChangeCounter(false)}>
           -
         </SizeOption>
         <Input
           type="tel"
           pattern="[0-9]*"
-          max={99}
+          max={maxQuantity} 
           textAlign="center"
           value={quantity}
           borderRadius={0}
           maxWidth={100}
           placeholder="Item Count"
-          disabled={isDisabled}
+          disabled={isDisabled || !(selectedColorway && selectedSize) }
           onChange={handleQtyChangeInput}
         />
-        <SizeOption disabled={isDisabled} active={false} onClick={() => handleQtyChangeCounter(true)}>
+        <SizeOption disabled={isDisabled || !(selectedColorway && selectedSize) || quantity >= maxQuantity} active={false} onClick={() => handleQtyChangeCounter(true)}>
           +
         </SizeOption>
+        <Center>
+          <Text fontSize="m" fontWeight={500} color="primary.600"> 
+            {(product && selectedColorway && selectedSize && (product.isAvailable === true)) ? displayStock(product, selectedColorway, selectedSize) : ""}
+          </Text> 
+        </Center>
+      </Flex>
+      <Flex flexDirection="column" mt={2}>
+        <Text fontSize="m" fontWeight={300} color="primary.400"> 
+          {(product && selectedColorway && selectedSize) ? displayQtyInCart(cartState.items, product.id, selectedColorway, selectedSize) : ""}
+        </Text> 
+        <Text fontSize="m" fontWeight={300} color="primary.400"> 
+          {(product && selectedColorway && selectedSize && (maxQuantity === 0)) ? "You have reached the maximum purchase quantity."  : ""}
+        </Text> 
       </Flex>
     </Flex>
   );
 
   const purchaseButtons = (
     <Flex gap={4} flexWrap="wrap">
-      <Button flex={1} borderRadius={0} variant="outline" onClick={handleAddToCart} disabled={isDisabled}>
+      <Button flex={1} borderRadius={0} variant="outline" onClick={handleAddToCart} disabled={isDisabled || !(selectedColorway && selectedSize) || (maxQuantity === 0)}>
         ADD TO CART
       </Button>
-      <Button flex={1} borderRadius={0} onClick={handleBuyNow} disabled={isDisabled}>
+      <Button flex={1} borderRadius={0} onClick={handleBuyNow} disabled={isDisabled || !(selectedColorway && selectedSize) || (maxQuantity === 0)}>
         BUY NOW
       </Button>
     </Flex>
