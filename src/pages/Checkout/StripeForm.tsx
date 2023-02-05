@@ -60,22 +60,8 @@ const PaymentForm = () => {
        type: CartActionType.RESET_CART
       }
       cartDispatch(payload);
-      const currentOrder = {
-        orderId: "1234",
-        items: checkoutCart.items,
-        status: OrderStatusType.RECEIVED,
-        billing: {
-          subtotal: checkoutCart.price.subtotal,
-          total: checkoutCart.price.grandTotal,
-        },
-        orderDate: new Date(Date.now()).toLocaleDateString("en-SG"),
-        lastUpdate: new Date(Date.now()).toLocaleDateString("en-SG"),
-      }
       setIsLoading(false);
-      localStorage.setItem("order-history",JSON.stringify([currentOrder]));
-      navigate(`${routes.ORDER_SUMMARY}/${currentOrder.orderId}`);
-
-
+      navigate(`${routes.ORDER_SUMMARY}/${checkoutCart.orderId}`);
     }
   };
   return (

@@ -35,14 +35,14 @@ export const OrderHistory: FC = () => {
         </Flex>
         <Divider my={8} />
         {orderList?.map((order: OrderType) => {
-          const orderItems = order?.items || [];
-          const { orderId, orderDate, lastUpdate } = order ?? {};
+          const orderItems = order?.orderItems || [];
+          const { orderID, orderDateTime, lastUpdate } = order ?? {};
           const orderHeader = (
             <Flex justifyContent="space-between" fontSize={{ base: "xs", md: "sm" }}>
               <Flex gap="5px" flexDirection={{ base: "column", md: "row" }} fontWeight={500}>
-                <Text>Order ID: {orderId}</Text>
+                <Text>Order ID: {orderID}</Text>
                 {!isMobile && <Text>|</Text>}
-                <Text>Order Date: {orderDate}</Text>
+                <Text>Order Date: {orderDateTime}</Text>
                 {!isMobile && <Text>|</Text>}
                 <Text>Last Update: {lastUpdate}</Text>
               </Flex>
@@ -64,7 +64,7 @@ export const OrderHistory: FC = () => {
                     <Text fontWeight={500}>Order Total:</Text>
                     {displayPrice(order?.billing?.total)}
                   </Box>
-                  <Link to={`${routes.ORDER_SUMMARY}/${orderId}`}>
+                  <Link to={`${routes.ORDER_SUMMARY}/${orderID}`}>
                     <Text fontWeight={500}>View detail</Text>
                   </Link>
                 </Flex>
