@@ -9,8 +9,9 @@ export const orderList: OrderType[] = [
         id: "1",
         image:
           "https://image.uniqlo.com/UQ/ST3/sg/imagesgoods/448391/item/sggoods_36_448391.jpg?width=1600&impolicy=quality_75",
-        name: "SCSE Sweater - Brown",
+        name: "SCSE Sweater",
         size: "m",
+        color: "Brown",
         price: 25.0,
         quantity: 3,
       },
@@ -19,8 +20,9 @@ export const orderList: OrderType[] = [
         image:
           "https://image.uniqlo.com/UQ/ST3/sg/imagesgoods/444545/item/sggoods_00_444545.jpg?width=1008&impolicy=quality_75",
 
-        name: "SCSE Shirt - Black",
+        name: "SCSE Shirt",
         size: "l",
+        color: "Black",
         price: 30.0,
         quantity: 2,
       },
@@ -42,8 +44,9 @@ export const orderList: OrderType[] = [
         id: "1",
         image:
           "https://image.uniqlo.com/UQ/ST3/sg/imagesgoods/457111/item/sggoods_00_457111.jpg?width=1008&impolicy=quality_75",
-        name: "SCSE Hoodie - White",
+        name: "SCSE Hoodie",
         size: "m",
+        color: "White",
         price: 25.0,
         quantity: 3,
       },
@@ -51,8 +54,9 @@ export const orderList: OrderType[] = [
         id: "2",
         image:
           "https://image.uniqlo.com/UQ/ST3/sg/imagesgoods/425974/item/sggoods_56_425974.jpg?width=1600&impolicy=quality_75",
-        name: "SCSE Shirt - Blue",
+        name: "SCSE Shirt",
         size: "l",
+        color: "Blue",
         price: 30.0,
         quantity: 2,
       },
@@ -74,8 +78,9 @@ export const orderList: OrderType[] = [
         id: "1",
         image:
           "https://image.uniqlo.com/UQ/ST3/sg/imagesgoods/448391/item/sggoods_36_448391.jpg?width=1600&impolicy=quality_75",
-        name: "SCSE Sweater - Brown",
+        name: "SCSE Sweater",
         size: "m",
+        color: "Brown",
         price: 25.0,
         quantity: 3,
       },
@@ -83,8 +88,9 @@ export const orderList: OrderType[] = [
         id: "2",
         image:
           "https://image.uniqlo.com/UQ/ST3/sg/imagesgoods/452344/item/sggoods_09_452344.jpg?width=1008&impolicy=quality_75",
-        name: "SCSE Shirt - Black",
+        name: "SCSE Shirt",
         size: "l",
+        color: "Black",
         price: 30.0,
         quantity: 2,
       },

@@ -33,6 +33,12 @@ const OrderItem: React.FC<OrderItemProps> = (props: OrderItemProps) => {
                   {data.size}
                 </Text>
               </Flex>
+              <Flex color="grey">
+                Color:
+                <Text ml={1} textTransform="uppercase">
+                  {data.color}
+                </Text>
+              </Flex>
             </Flex>
           </GridItem>
           <GridItem pl="4">
