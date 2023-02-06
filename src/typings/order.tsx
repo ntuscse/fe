@@ -11,6 +11,7 @@ export type OrderItemType = {
   id: string;
   image: string;
   size: string;
+  color: string;
   price: number;
   quantity: number;
   name: string;
