@@ -144,7 +144,8 @@ export const OrderSummary: FC = () => {
           }
         />
         <Text fontWeight="bold">
-          Please bring this QR code to the SCSE Lounge to collect your order.
+          Please screenshot this QR code and show it at SCSE Lounge to collect your order. 
+          Alternatively, show the email receipt you have received.
         </Text>
         <Text>
           For any assistance, please contact our email address:
