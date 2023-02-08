@@ -12,7 +12,7 @@ export class Api {
   private API_ORIGIN: string;
 
   constructor() {
-    this.API_ORIGIN = "https://api.dev.ntuscse.com";
+    this.API_ORIGIN = process.env.API_ORIGIN || "";
   }
 
   // http methods
