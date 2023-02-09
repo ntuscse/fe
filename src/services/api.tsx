@@ -12,7 +12,10 @@ export class Api {
   private API_ORIGIN: string;
 
   constructor() {
-    this.API_ORIGIN = process.env.API_ORIGIN || "";
+    if (!process.env.REACT_APP_API_ORIGIN) {
+      throw new Error("API_ORIGIN environment variable is not set")
+    }
+    this.API_ORIGIN = process.env.REACT_APP_API_ORIGIN || "";
   }
 
   // http methods
