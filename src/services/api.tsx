@@ -13,7 +13,7 @@ export class Api {
 
   constructor() {
     if (!process.env.REACT_APP_API_ORIGIN) {
-      throw new Error("API_ORIGIN environment variable is not set")
+      throw new Error("REACT_APP_API_ORIGIN environment variable is not set")
     }
     this.API_ORIGIN = process.env.REACT_APP_API_ORIGIN || "";
   }
