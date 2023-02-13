@@ -25,7 +25,14 @@ const Card = ({ productId, imgSrc, text, price, sizeRange, isOutOfStock }: CardP
           overflow="hidden"
           _groupHover={{ boxShadow: "xl" }}
         >
-          <Image src={imgSrc} w="100%" maxHeight="300" fallbackSrc="https://via.placeholder.com/150" />
+          <Image 
+            src={imgSrc} 
+            boxSize='300px'
+            objectFit='contain'
+            // w="100%" 
+            // maxHeight="300" 
+            fallbackSrc="https://via.placeholder.com/300" 
+          />
           <Box p={2}>
             <Flex
               justifyContent="space-between"
