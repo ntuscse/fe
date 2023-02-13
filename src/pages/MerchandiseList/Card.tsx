@@ -27,10 +27,11 @@ const Card = ({ productId, imgSrc, text, price, sizeRange, isOutOfStock }: CardP
         >
           <Image 
             src={imgSrc} 
+            w="100%" 
+            maxHeight="300" 
             boxSize='300px'
             objectFit='contain'
-            align="center center"
-            fallbackSrc="https://via.placeholder.com/300" 
+            fallbackSrc="https://via.placeholder.com/100" 
           />
           <Box p={2}>
             <Flex
