@@ -31,7 +31,7 @@ const Card = ({ productId, imgSrc, text, price, sizeRange, isOutOfStock }: CardP
             maxHeight="300" 
             boxSize='300px'
             objectFit='contain'
-            fallbackSrc="https://via.placeholder.com/100" 
+            fallbackSrc="https://via.placeholder.com/300" 
           />
           <Box p={2}>
             <Flex
