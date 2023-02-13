@@ -72,7 +72,13 @@ export const Checkout: FC = () => {
           const subtotal = (product?.price ?? -1) * item.quantity;
           return (
             <Flex key={item.productId.toString()} mt={[4, 6]}>
-              <Image src={product?.images?.[0]} h={70} w={70} borderRadius="md" />
+              <Image 
+                src={product?.images?.[0]} 
+                fallbackSrc="https://via.placeholder.com/100" 
+                boxSize="70"
+                objectFit="contain"
+                borderRadius="md" 
+              />
               <Flex flexDirection="column" flex={1} ml={2}>
                 <Flex justifyContent="space-between" alignItems="flex-start">
                   <Text fontWeight={500} noOfLines={2}>

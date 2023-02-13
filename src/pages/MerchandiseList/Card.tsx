@@ -1,5 +1,5 @@
 import { ArrowForwardIcon } from "@chakra-ui/icons";
-import { Box, Image, Text, GridItem, Flex, Badge } from "@chakra-ui/react";
+import { Box, Image, Text, GridItem, Flex, Badge, AspectRatio, Center } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import routes from "../../utils/constants/routes";
 import { displayPrice } from "../../utils/functions/currency";
@@ -25,7 +25,14 @@ const Card = ({ productId, imgSrc, text, price, sizeRange, isOutOfStock }: CardP
           overflow="hidden"
           _groupHover={{ boxShadow: "xl" }}
         >
-          <Image src={imgSrc} w="100%" maxHeight="300" fallbackSrc="https://via.placeholder.com/150" />
+          <Center>
+            <Image 
+              src={imgSrc} 
+              fallbackSrc="https://via.placeholder.com/300" 
+              boxSize="300"
+              objectFit='contain'
+            />
+          </Center>
           <Box p={2}>
             <Flex
               justifyContent="space-between"
