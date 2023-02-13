@@ -13,8 +13,11 @@ export const SizeOption: React.FC<SizeOptionType> = (props) => {
     <Box
       display="inline-block"
       userSelect="none"
-      width="40px"
+      minWidth="40px"
+      maxWidth="120px"
       height="40px"
+      pl="10px"
+      pr="10px"
       textAlign="center"
       fontWeight={500}
       lineHeight={10}
