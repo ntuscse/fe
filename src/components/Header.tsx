@@ -10,6 +10,7 @@ import {
   Show,
   Hide,
   Icon,
+  Text, 
 } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 import { Link as RouterLink } from "react-router-dom";
@@ -54,15 +55,19 @@ const Header = () => {
       <Hide below="xl">
         <HStack spacing={5} alignItems="center">
           <Box px={2} py={1} borderRadius={7}
-          _hover={{ bg: "#465945", transition: "0.5s", color: "white" }}>  
-            <RouterLink to={routes.HOME}>Home</RouterLink>
+          _hover={{ bg: "#426899", transition: "0.5s", color: "white" }}>  
+            <RouterLink to={routes.HOME}>
+              <Text color="white">Home</Text>
+            </RouterLink>
           </Box>
           <RouterLink to={routes.CART}>
-            <Flex alignItems="center" gap={1}>
-              <Icon as={AiOutlineShoppingCart} w={8} h={8}
-              _hover={{ fill: "#465945", transition: "0.5s" }} />
-              {cartLength > 0 && <Badge>{cartLength > 99 ? "99+" : cartLength}</Badge>}
-            </Flex>
+            <Box px={2} py={1} borderRadius={7}
+            _hover={{ bg: "#426899", transition: "0.5s", color: "white" }}>  
+              <Flex alignItems="center" gap={1}>
+                <Icon as={AiOutlineShoppingCart} w={8} h={8} color="white"/>
+                {cartLength > 0 && <Badge bg="secondary.400" color="white">{cartLength > 99 ? "99+" : cartLength}</Badge>}
+              </Flex>
+            </Box>
           </RouterLink>
         </HStack>
       </Hide>
