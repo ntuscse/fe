@@ -89,7 +89,13 @@ const CartItem: React.FC<CartItemProps> = ({ isMobile, data, onRemove, onQuantit
     <Grid templateColumns="3fr repeat(4, 1fr)" rowGap={2}>
       <GridItem display="flex">
         <Box boxShadow="sm" maxWidth={[125, 100]}>
-          <Image w="100%" borderRadius="md" src={productInfo?.images?.[0]} fallbackSrc="https://via.placeholder.com/100" />
+          <Image 
+            src={productInfo?.images?.[0]} 
+            fallbackSrc="https://via.placeholder.com/100" 
+            boxSize="70"
+            objectFit="contain"
+            borderRadius="md" 
+          />
         </Box>
         <Flex flexDir="column" fontWeight="600" fontSize={["sm", "md"]} ml={2}>
           <Text color="primary.600" noOfLines={2}>
