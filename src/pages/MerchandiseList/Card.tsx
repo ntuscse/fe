@@ -29,6 +29,7 @@ const Card = ({ productId, imgSrc, text, price, sizeRange, isOutOfStock }: CardP
             src={imgSrc} 
             boxSize='300px'
             objectFit='contain'
+            align="center center"
             fallbackSrc="https://via.placeholder.com/300" 
           />
           <Box p={2}>
