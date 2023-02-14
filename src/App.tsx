@@ -13,6 +13,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import Routes from "./routes";
 import chakraTheme from "./config/theme";
 import { CartProvider } from "./context/cart";
+import {CheckoutProvider} from "./context/checkout";
 
 const queryClient = new QueryClient({ defaultOptions: { queries: { refetchOnWindowFocus: false } } });
 
@@ -22,7 +23,9 @@ const App = () => {
       <ChakraProvider theme={chakraTheme}>
         <BrowserRouter>
           <CartProvider>
-            <Routes />
+            <CheckoutProvider>
+              <Routes />
+            </CheckoutProvider>
           </CartProvider>
         </BrowserRouter>
       </ChakraProvider>

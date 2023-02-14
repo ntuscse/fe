@@ -51,6 +51,7 @@ export type CartResponseDto = {
 };
 
 export type CheckoutResponseDto = {
+  orderId: string;
   items: [
     {
       id: string;
@@ -73,6 +74,7 @@ export type CheckoutResponseDto = {
     paymentGateway: string;
     clientSecret: string;
   };
+  email: string;
 };
 
 export type ProductInfoMapType = Record<string, ProductInfoType>;
