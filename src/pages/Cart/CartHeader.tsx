@@ -9,7 +9,7 @@ const CartHeader = () => {
         </Heading>
         {["Unit Price", "Quantity", "Subtotal", "Action"].map((item, index) => (
           // eslint-disable-next-line react/no-array-index-key
-          <Heading textAlign="center" size="sm" key={index}>
+          <Heading textAlign="center" size="sm" key={index} data-testid="cart-header-2">
             {item}
           </Heading>
         ))}
