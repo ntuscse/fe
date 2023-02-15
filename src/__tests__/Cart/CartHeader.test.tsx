@@ -20,5 +20,3 @@ describe("Cart Header", () => {
 		]);
 	});
 });
-
-export {};

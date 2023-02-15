@@ -79,9 +79,9 @@ const CartItem: React.FC<CartItemProps> = ({ isMobile, data, onRemove, onQuantit
         </InputRightAddon>
       </InputGroup>
       <Center>
-        <Text fontSize="xs" fontWeight={300} color="primary.400"> 
+        <Text fontSize="xs" fontWeight={300} color="primary.400">
             In stock: {MAX_ITEM_CNT}
-        </Text> 
+        </Text>
       </Center>
     </Flex>
   );
@@ -110,7 +110,7 @@ const CartItem: React.FC<CartItemProps> = ({ isMobile, data, onRemove, onQuantit
         </Flex>
       </GridItem>
       <GridItem display="flex" alignItems="center" justifyContent="center">
-        <Text fontSize={["sm", "md"]} fontWeight={500}>
+        <Text fontSize={["sm", "md"]} fontWeight={500} data-testid="unit-price">
           {unitPrice}
         </Text>
       </GridItem>
