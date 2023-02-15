@@ -54,7 +54,7 @@
     "lint:fix": "eslint --fix --ext .js,.ts,.tsx .",
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "jest --setupFiles dotenv/config",
+    "test": "jest",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
