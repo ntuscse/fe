@@ -23,9 +23,10 @@ describe("Cart Item", () => {
             productId: "SCSE-1",
             size:"M",
             colorway:"Blue",
-            quantity:"1"
+            quantity: 1
         };
         render(<CartItem
+            isLoading={false}
             isMobile = {false}
             data = {tempData}
             onRemove = {mockedFunction}

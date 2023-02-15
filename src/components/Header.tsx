@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 import { Link as RouterLink } from "react-router-dom";
-import CognitoClient from "../utils/aws/cognito/cognitoClient";
+// import CognitoClient from "../utils/aws/cognito/cognitoClient";
 import routes from "../utils/constants/routes";
 import { useCartStore } from "../context/cart";
 import { CartItemType } from "../typings/cart";
@@ -25,11 +25,11 @@ const Header = () => {
   const { state: cartState } = cartContext;
   const cartLength = cartState.items.reduce((acc: number, cur: CartItemType) => acc + cur.quantity, 0);
 
-  useEffect(() => {
-    CognitoClient.isUserSignedIn().then((isSignedIn) => {
-      setIsAuthenticated(isSignedIn);
-    });
-  }, []);
+  // useEffect(() => {
+  //   CognitoClient.isUserSignedIn().then((isSignedIn) => {
+  //     setIsAuthenticated(isSignedIn);
+  //   });
+  // }, []);
 
   return (
     <Flex pos="sticky" zIndex={2} bg="#dedee0" top={0} py={4} px={{ base: 4, md: 4, lg: 16 }} align="center">
