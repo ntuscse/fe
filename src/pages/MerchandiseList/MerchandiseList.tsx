@@ -53,6 +53,7 @@ export const MerchandiseList = () => {
           templateColumns={{ base: "repeat(2, 1fr)", md: "repeat(3, 1fr)", lg: "repeat(4, 1fr)" }}
           columnGap={4}
           rowGap={2}
+          data-testid="merchandise-list-grid"
         >
           {products
             ?.filter((product: ProductType) => {

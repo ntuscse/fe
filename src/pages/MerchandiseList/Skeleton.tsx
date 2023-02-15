@@ -3,7 +3,7 @@ import { Grid, Skeleton, SkeletonText, GridItem } from "@chakra-ui/react";
 
 const ProductListSkeleton: React.FC = () => {
   return (
-    <Grid templateColumns={{ base: "repeat(2, 1fr)", lg: "repeat(4, 1fr)" }} columnGap={4} rowGap={2}>
+    <Grid templateColumns={{ base: "repeat(2, 1fr)", lg: "repeat(4, 1fr)" }} columnGap={4} rowGap={2} data-testid="merchandise-list-skeleton">
       {new Array(8).fill(null).map((item: any, index) => (
         <GridItem role="group" cursor="pointer" mt={4} key={index.toString()}>
           <Skeleton h={{ base: 250 }} width="100%" />
