@@ -49,17 +49,17 @@ const PaymentForm = () => {
         status:'error',
         isClosable: true,
       });
-	  return;
+      return;
     }
-	if (result.paymentIntent.status === "requires_payment_method") {
-	  toast({
+    if (result.paymentIntent.status === "requires_payment_method") {
+      toast({
         title:'Error',
         description: "Payment was not successful. Please try again.",
         status:'error',
         isClosable: true,
-	  });
-	  return;
-	}
+      });
+      return;
+    }
     setIsLoading(true);
     const checkoutCart = await api.postCheckoutCart(cartState.items, cartState.billingEmail, cartState.voucher)
     const payload : CartAction = {

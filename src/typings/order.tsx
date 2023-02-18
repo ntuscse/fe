@@ -1,10 +1,8 @@
 // eslint-disable-next-line no-shadow
 export enum OrderStatusType {
-  RECEIVED,
-  PROCESSING,
-  READY_TO_COLLECT,
-  DELAY,
-  COLLECTED,
+  PENDING_PAYMENT = 1,
+  PAYMENT_COMPLETED,
+  ORDER_COMPLETED,
 }
 
 export type OrderItemType = {
