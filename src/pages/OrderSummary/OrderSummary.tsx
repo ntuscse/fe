@@ -86,7 +86,7 @@ export const OrderSummary: FC = () => {
               </Badge>
             </Flex>
             <Heading size="lg" mt={2}>
-              {orderState?.orderID}
+              {orderState?.orderID.split("-")[0]}
             </Heading>
           </Flex>
           <Flex flexDir="column" fontSize="sm" color="grey">
