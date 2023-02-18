@@ -36,7 +36,7 @@ const OrderItem: React.FC<OrderItemProps> = (props: OrderItemProps) => {
               <Flex color="grey">
                 Color:
                 <Text ml={1} textTransform="uppercase">
-                  {data.color}
+                  {data.colorway}
                 </Text>
               </Flex>
             </Flex>
