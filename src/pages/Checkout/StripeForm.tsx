@@ -49,20 +49,25 @@ const PaymentForm = () => {
         status:'error',
         isClosable: true,
       });
-    } else {
-      // TODO: CURRENTLY HARDCODED ONLY 1 ORDER, CHANGE IN THE FUTURE WHEN BACKEND IMPLEMENTED
-      // TODO: MIGRATE INTO HELPER FUNCTION UNDER API 'setOrderPaymentSucess'
-      // TODO: remove userId as we do not have a login
-      // TODO: order ID to be generated iteratively with api call
-      setIsLoading(true);
-      const checkoutCart = await api.postCheckoutCart(cartState.items, cartState.billingEmail, cartState.voucher)
-      const payload : CartAction = {
-       type: CartActionType.RESET_CART
-      }
-      cartDispatch(payload);
-      setIsLoading(false);
-      navigate(`${routes.ORDER_SUMMARY}/${checkoutCart.orderId}`);
+	  return;
     }
+	if (result.paymentIntent.status === "requires_payment_method") {
+	  toast({
+        title:'Error',
+        description: "Payment was not successful. Please try again.",
+        status:'error',
+        isClosable: true,
+	  });
+	  return;
+	}
+    setIsLoading(true);
+    const checkoutCart = await api.postCheckoutCart(cartState.items, cartState.billingEmail, cartState.voucher)
+    const payload : CartAction = {
+     type: CartActionType.RESET_CART
+    }
+    cartDispatch(payload);
+    setIsLoading(false);
+    navigate(`${routes.ORDER_SUMMARY}/${checkoutCart.orderId}`);
   };
   return (
     <form onSubmit={handleSubmit}>
