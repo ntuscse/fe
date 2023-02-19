@@ -10,6 +10,7 @@ export type ProductType = {
   price: number;
   stock: number[][]; // stock[colorway][size] = qty
   sizes: string[];
+  sizeChart: string;
   colorways: string[];
   images?: string[];
   productCategory?: ProductCategoryType;
