@@ -86,6 +86,9 @@ export const Checkout: FC = () => {
                   </Text>
                   <Text fontWeight={500}>{displayPrice(subtotal)}</Text>
                 </Flex>
+                <Flex color="gray.600" alignItems="center">
+                    <Text fontSize="sm">{`Color: ${item.colorway}`}</Text>
+                </Flex>
                 <Flex justifyContent="space-between" color="gray.600" alignItems="center">
                   <Flex alignItems="center">
                     <Text fontSize="sm">{`Qty x${item.quantity}`}</Text>
