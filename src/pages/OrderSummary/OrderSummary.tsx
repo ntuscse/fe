@@ -8,6 +8,8 @@ import {
   Divider,
   Image,
   Badge,
+  Show,
+  Hide,
 } from "@chakra-ui/react";
 import { Link, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
@@ -77,33 +79,64 @@ export const OrderSummary: FC = () => {
         overflow="hidden"
         flexDir="column"
       >
-        <Flex justifyContent="space-between">
-          <Flex flexDir="column">
-            <Flex alignItems="center" gap={4}>
-              <Heading size="md">Order Number</Heading>
-              <Badge width="fit-content">
-                {renderOrderStatus(orderState?.status ?? OrderStatusType.DELAY)}
-              </Badge>
-            </Flex>
-            <Heading size="lg" mt={2}>
-              {orderState?.orderID.split("-")[0]}
-            </Heading>
-            <Flex alignItems="center">
-              <Text fontSize="sm">{orderState?.orderID}</Text>
+        <Show below="lg">
+          <Flex justifyContent="space-between">
+            <Flex flexDir="column">
+              <Flex alignItems="center" gap={4}>
+                <Heading size="md">Order Number</Heading>
+                <Badge width="fit-content">
+                  {renderOrderStatus(orderState?.status ?? OrderStatusType.DELAY)}
+                </Badge>
+              </Flex>
+              <Heading size="lg" mt={2}>
+                {orderState?.orderID.split("-")[0]}
+              </Heading>
+              <Flex alignItems="center">
+                <Text fontSize="sm">{orderState?.orderID}</Text>
+              </Flex>
+              <Text fontSize="sm" color="grey">
+                Order date:{" "}
+                {orderState
+                  ? new Date(`${orderState.orderDateTime}Z`).toLocaleString(
+                      "en-sg"
+                    )
+                  : ""}
+              </Text>
+              <Text fontSize="sm" color="grey">
+                Last update: {orderState?.lastUpdate}
+              </Text>
             </Flex>
           </Flex>
-          <Flex flexDir="column" fontSize="sm" color="grey">
-            <Text>
-              Order date:{" "}
-              {orderState
-                ? new Date(`${orderState.orderDateTime}Z`).toLocaleString(
-                    "en-sg"
-                  )
-                : ""}
-            </Text>
-            <Text>Last update: {orderState?.lastUpdate}</Text>
+        </Show>
+        <Hide below="lg">
+          <Flex justifyContent="space-between">
+            <Flex flexDir="column">
+              <Flex alignItems="center" gap={4}>
+                <Heading size="md">Order Number</Heading>
+                <Badge width="fit-content">
+                  {renderOrderStatus(orderState?.status ?? OrderStatusType.DELAY)}
+                </Badge>
+              </Flex>
+              <Heading size="lg" mt={2}>
+                {orderState?.orderID.split("-")[0]}
+              </Heading>
+              <Flex alignItems="center">
+                <Text fontSize="sm">{orderState?.orderID}</Text>
+              </Flex>
+            </Flex>
+            <Flex flexDir="column" fontSize="sm" color="grey">
+              <Text>
+                Order date:{" "}
+                {orderState
+                  ? new Date(`${orderState.orderDateTime}Z`).toLocaleString(
+                      "en-sg"
+                    )
+                  : ""}
+              </Text>
+              <Text>Last update: {orderState?.lastUpdate}</Text>
+            </Flex>
           </Flex>
-        </Flex>
+        </Hide>
         <Divider my={4} />
         {orderState?.orderItems.map((item) => (
           <OrderItem data={item} isMobile={isMobile} />
