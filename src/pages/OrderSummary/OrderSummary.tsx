@@ -79,19 +79,19 @@ export const OrderSummary: FC = () => {
         overflow="hidden"
         flexDir="column"
       >
-        <Show below="lg">
+        <Show below="md">
           <Flex justifyContent="space-between">
-            <Flex flexDir="column">
-              <Flex alignItems="center" gap={4}>
+            <Flex flexDir="column" w="100%">
+              <Flex alignItems="center" gap={6}>
                 <Heading size="md">Order Number</Heading>
                 <Badge width="fit-content">
                   {renderOrderStatus(orderState?.status ?? OrderStatusType.DELAY)}
                 </Badge>
               </Flex>
-              <Heading size="lg" mt={2}>
+              <Heading size="lg">
                 {orderState?.orderID.split("-")[0]}
               </Heading>
-              <Flex alignItems="center">
+              <Flex alignItems="center" mb={2}>
                 <Text fontSize="sm">{orderState?.orderID}</Text>
               </Flex>
               <Text fontSize="sm" color="grey">
@@ -108,16 +108,16 @@ export const OrderSummary: FC = () => {
             </Flex>
           </Flex>
         </Show>
-        <Hide below="lg">
+        <Hide below="md">
           <Flex justifyContent="space-between">
             <Flex flexDir="column">
-              <Flex alignItems="center" gap={4}>
+              <Flex alignItems="center" gap={6}>
                 <Heading size="md">Order Number</Heading>
                 <Badge width="fit-content">
                   {renderOrderStatus(orderState?.status ?? OrderStatusType.DELAY)}
                 </Badge>
               </Flex>
-              <Heading size="lg" mt={2}>
+              <Heading size="lg" mb={2}>
                 {orderState?.orderID.split("-")[0]}
               </Heading>
               <Flex alignItems="center">
