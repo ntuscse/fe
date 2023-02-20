@@ -1,4 +1,4 @@
-import React, {useContext, useMemo, useState} from "react";
+import React, { useContext, useMemo, useState } from "react";
 import { CheckoutResponseDto } from "../../typings/cart";
 
 type ContextType = {
