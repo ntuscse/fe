@@ -14,7 +14,7 @@ import {
 import { Link, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import OrderItem from "../../components/OrderItem";
-import { renderOrderStatus } from "../../utils/constants/order-status";
+import { renderOrderStatus, getOrderStatusColor } from "../../utils/constants/order-status";
 import { QueryKeys } from "../../utils/constants/queryKeys";
 import { api } from "../../services/api";
 import { OrderStatusType, OrderType } from "../../typings/order";
@@ -82,12 +82,15 @@ export const OrderSummary: FC = () => {
         <Show below="md">
           <Flex justifyContent="space-between">
             <Flex flexDir="column" w="100%">
-              <Flex alignItems="center" gap={6}>
-                <Heading size="md">Order Number</Heading>
-                <Badge width="fit-content">
-                  {renderOrderStatus(orderState?.status ?? OrderStatusType.DELAY)}
-                </Badge>
-              </Flex>
+              <Badge 
+                width="fit-content" 
+                fontSize="sm" 
+                mb={2} 
+                color={getOrderStatusColor(orderState?.status ?? OrderStatusType.DELAY)}
+              >
+                {renderOrderStatus(orderState?.status ?? OrderStatusType.DELAY)}
+              </Badge>
+              <Heading size="md">Order Number</Heading>
               <Heading size="lg">
                 {orderState?.orderID.split("-")[0]}
               </Heading>
@@ -113,7 +116,11 @@ export const OrderSummary: FC = () => {
             <Flex flexDir="column">
               <Flex alignItems="center" gap={6}>
                 <Heading size="md">Order Number</Heading>
-                <Badge width="fit-content">
+                <Badge 
+                  width="fit-content" 
+                  fontSize="sm" 
+                  color={getOrderStatusColor(orderState?.status ?? OrderStatusType.DELAY)}
+                >
                   {renderOrderStatus(orderState?.status ?? OrderStatusType.DELAY)}
                 </Badge>
               </Flex>
