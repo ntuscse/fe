@@ -3,7 +3,7 @@ import { Flex, Skeleton, Divider, GridItem, Grid } from "@chakra-ui/react";
 
 const MerchSkeleton: React.FC = () => {
   return (
-    <Grid templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(5, 1fr)" }}>
+    <Grid templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(5, 1fr)" }} data-testid="merch-list-skeleton">
       <GridItem colSpan={2} px={[0, 4]}>
         <Skeleton height="300px" width="100%" />
       </GridItem>

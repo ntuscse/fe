@@ -1,42 +1,57 @@
 import "../../matchMedia.mock"
-import { QueryClient } from "@tanstack/react-query"
 import {renderComponent} from "../../utils/testing";
 import MerchandiseList from "../../pages/MerchandiseList";
 import '@testing-library/jest-dom'
 import { waitForElementToBeRemoved } from "@testing-library/react";
 import { getProductsResponse } from "../../utils/fixtures/products";
-import { Api } from "../../services/api"
+import Api from "../../services/api"
 
-const queryClient = new QueryClient({ defaultOptions: { queries: { refetchOnWindowFocus: false } } });
 
-jest.mock("../../services/api", () => {
-    return jest.fn().mockImplementation(() => {
-        return {
-            getProducts: () => [] //getProductsResponse
-        }
-    })
-})
+// jest.mock("../../services/api", () => {
+//     return jest.fn().mockImplementation(() => {
+//         return {
+//             getProducts: () => [] //getProductsResponse
+//         }
+//     })
+// })
+
+jest.mock("../../services/api")
+
+
+// const api = new Api()
 
 // beforeEach(() => {
 //     Api.mockClear()
 // })
 
 describe("Merchandise List", () => {
-    test("should render", () => {
-        // const api = new Api();
+
+    beforeEach(() => {
+        const mockedGetProducts = jest.spyOn(Api.prototype, "getProducts");
+        mockedGetProducts.mockImplementation(() => Promise.resolve(getProductsResponse.products));
+    })
+
+
+    test("should render correct items", async () => {
         // api.getProducts.mockResolvedValue(getProductsResponse.products)
+        // (api.getProducts as jest.Mock).mockResolvedValue(getProductsResponse.products)
 
         const screen = renderComponent(<MerchandiseList />)
 
-        // screen.debug()
-
         // expect that the skeleton loading elements appear
         expect(screen.getByTestId("merchandise-list-skeleton")).toBeInTheDocument()
-
+        
         // expect that the skeleton elements disappear and real data is displayed
-        waitForElementToBeRemoved(screen.getByTestId("merchandise-list-skeleton"))
-
+        await waitForElementToBeRemoved(screen.getByTestId("merchandise-list-skeleton"))
+        
+        // screen.debug()
         expect(screen.getByTestId("merchandise-list-grid")).toBeInTheDocument()
 
+        // expect the options to be correctly rendered
+        const options = screen.getAllByRole("option").map(options => options.textContent)
+        expect(options).toEqual(
+            ["All Product Type", "Sticker", "T-shirt", "Lanyard", "Hoodie"]
+        )
+        
     })
 })

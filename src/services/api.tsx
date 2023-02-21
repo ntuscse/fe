@@ -8,7 +8,7 @@ const QUERY_DELAY_TIME = 1000;
 const CUSTOM_MOCK_DATA = false;
 const CUSTOM_STRIPE_DATA = false;
 
-export class Api {
+export default class Api {
   private API_ORIGIN: string;
 
   constructor() {
