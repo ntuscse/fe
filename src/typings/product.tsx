@@ -8,7 +8,7 @@ export type ProductType = {
   id: string;
   name: string;
   price: number;
-  stock: number[][]; // stock[colorway][size] = qty
+  stock: { [colorway: string]: { [sizeIndex: string]: number } }; // stock[colorway][size] = qty
   sizes: string[];
   colorways: string[];
   images?: string[];
