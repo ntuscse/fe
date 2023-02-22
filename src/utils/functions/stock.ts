@@ -5,7 +5,7 @@ export const getQtyInStock = (product: ProductType, colorway: string, size: stri
     const colorwayIndex = product.colorways.indexOf(colorway);
     const sizeIndex = product.sizes.indexOf(size);
     if (colorwayIndex !== -1 && sizeIndex !== -1) {
-        return product.stock[colorwayIndex][sizeIndex];
+        return product.stock[colorway][size];
     }
     return 0;
 }
@@ -15,7 +15,7 @@ export const displayStock = (product: ProductType, colorway: string, size: strin
     const colorwayIndex = product.colorways.indexOf(colorway);
     const sizeIndex = product.sizes.indexOf(size);
     if (colorwayIndex !== -1 && sizeIndex !== -1) {
-        const qty = product.stock.colorway.sizeIndex;
+        const qty = product.stock[colorway][size];
         if (qty > 0) {
             return `${qty} available`;
         }
@@ -63,7 +63,7 @@ export const isSizeAvailable = (product: ProductType, size: string): boolean => 
     if (index === -1) { // no such size
         return false;
     }
-    const sizeStock = Object.values(product.stock).map(d => d[index]);
+    const sizeStock = Object.values(product.stock).map(d => d[size]||0);
     const totalQty = sizeStock.reduce((a, b) => {
         return a + b;
     }, 0);
