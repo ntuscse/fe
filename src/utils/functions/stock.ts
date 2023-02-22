@@ -2,13 +2,7 @@ import { ProductType } from "../../typings/product"
 
 export const getQtyInStock = (product: ProductType, colorway: string, size: string): number => {
     // returns remaining stock for specified colorway and size
-    // const colorwayIndex = product.colorways.indexOf(colorway);
-    // const sizeIndex = product.sizes.indexOf(size);
-    // if (colorwayIndex !== -1 && sizeIndex !== -1) {
-    //
-    //     return product.stock[colorway][size];
-    // }
-    if (product.stock[colorway][size] !== 0) {
+    if (product.stock[colorway] && product.stock[colorway][size]) {
         return product.stock[colorway][size]
     }
     return 0;
@@ -16,9 +10,7 @@ export const getQtyInStock = (product: ProductType, colorway: string, size: stri
 
 export const displayStock = (product: ProductType, colorway: string, size: string): string => {
     // returns string describing remaining stock 
-    const colorwayIndex = product.colorways.indexOf(colorway);
-    const sizeIndex = product.sizes.indexOf(size);
-    if (colorwayIndex !== -1 && sizeIndex !== -1) {
+    if (product.stock[colorway] && product.stock[colorway][size]) {
         const qty = product.stock[colorway][size];
         if (qty > 0) {
             return `${qty} available`;
@@ -31,42 +23,26 @@ export const displayStock = (product: ProductType, colorway: string, size: strin
 
 export const isOutOfStock = (product: ProductType): boolean => {
     // returns true if product is out of stock in all colorways and sizes
-    // const totalQty = product.stock.reduce((a,b) => { return a.concat(b) }) // flatten array
-    //                                 .reduce((a,b) => { return a + b }); // sum elements
-    // const totalQty = product.stock.reduce((sum,element) => { return sum + element },0); // sum elements
-    // return (totalQty <= 0);
-    const flatStock = Object.values(product.stock).reduce((acc, stockByColorway)=>{
-        Object.values(stockByColorway).forEach((qty)=>acc.push(qty));
-        return acc
-    }, [] as number[]);
-    const totalQty = flatStock.reduce((acc,qty)=>acc+qty,0);
-    return (totalQty <= 0)
+    const totalQty = Object.values(product.stock).reduce((acc, stockByColorway)=>{
+        const colorQty = Object.values(stockByColorway).reduce((acc2, qty)=>acc2+qty, 0);
+        return acc+colorQty
+    }, 0);
+    return totalQty <= 0;
 
 } 
 
 export const isColorwayAvailable = (product: ProductType, colorway: string): boolean => {
     // returns true if colorway is available in any size
     // returns false if colorway is out of stock in all sizes
-    // const index = product.colorways.indexOf(colorway);
-    // if (index === -1) { // no such colorway
-    //     return false;
-    // }
-    // const colorwayStock = product.stock[index];
-    // const totalQty = colorwayStock.reduce((a, b) => {
-    //     return a + b;
-    // }, 0);
-
-    const colorwayStock = Object.values(product.stock[colorway]).reduce((acc: any, size: any)=>acc+size,0)
+    const colorwayStock = Object.values(product.stock[colorway]).reduce(
+		(acc: any, size: any)=>acc+size, 0
+	);
     return (colorwayStock > 0);
 }
 
 export const isSizeAvailable = (product: ProductType, size: string): boolean => {
     // returns true if size is available in any colorway
     // returns false if size is out of stock in all colorways
-    // const index = product.sizes.indexOf(size);
-    // if (index === -1) { // no such size
-    //     return false;
-    // }
     const sizeStock = Object.values(product.stock).map(d => d[size]||0);
     const totalQty = sizeStock.reduce((a, b) => {
         return a + b;
