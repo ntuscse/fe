@@ -141,9 +141,9 @@ export const MerchDetail: React.FC = () => {
     <Flex flexDirection="column">
       <Flex justifyContent="space-between" alignItems="center" mb={2} display="flex">
         <GroupTitle>Sizes</GroupTitle>
-        <Button size="sm" variant="unstyled" onClick={onOpen}>
+        {product?.sizeChart && <Button size="sm" variant="unstyled" onClick={onOpen}>
           Size Chart
-        </Button>
+        </Button>}
       </Flex>
       <Flex gap={[4, 4]} flexWrap="wrap">
         {product?.sizes?.map((size, idx) => {
@@ -317,7 +317,7 @@ export const MerchDetail: React.FC = () => {
           {/* <Divider my={6} /> */}
           {/* {renderDescription} */}
         </GridItem>
-        <SizeDialog onClose={onClose} isOpen={isOpen} />
+        <SizeDialog sizeChart={product?.sizeChart} onClose={onClose} isOpen={isOpen} />
       </Grid>
     );
   };
