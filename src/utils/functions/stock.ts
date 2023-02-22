@@ -2,10 +2,14 @@ import { ProductType } from "../../typings/product"
 
 export const getQtyInStock = (product: ProductType, colorway: string, size: string): number => {
     // returns remaining stock for specified colorway and size
-    const colorwayIndex = product.colorways.indexOf(colorway);
-    const sizeIndex = product.sizes.indexOf(size);
-    if (colorwayIndex !== -1 && sizeIndex !== -1) {
-        return product.stock[colorway][size];
+    // const colorwayIndex = product.colorways.indexOf(colorway);
+    // const sizeIndex = product.sizes.indexOf(size);
+    // if (colorwayIndex !== -1 && sizeIndex !== -1) {
+    //
+    //     return product.stock[colorway][size];
+    // }
+    if (product.stock[colorway][size] !== 0) {
+        return product.stock[colorway][size]
     }
     return 0;
 }
@@ -43,10 +47,10 @@ export const isOutOfStock = (product: ProductType): boolean => {
 export const isColorwayAvailable = (product: ProductType, colorway: string): boolean => {
     // returns true if colorway is available in any size
     // returns false if colorway is out of stock in all sizes
-    const index = product.colorways.indexOf(colorway);
-    if (index === -1) { // no such colorway
-        return false;
-    }
+    // const index = product.colorways.indexOf(colorway);
+    // if (index === -1) { // no such colorway
+    //     return false;
+    // }
     // const colorwayStock = product.stock[index];
     // const totalQty = colorwayStock.reduce((a, b) => {
     //     return a + b;
@@ -59,10 +63,10 @@ export const isColorwayAvailable = (product: ProductType, colorway: string): boo
 export const isSizeAvailable = (product: ProductType, size: string): boolean => {
     // returns true if size is available in any colorway
     // returns false if size is out of stock in all colorways
-    const index = product.sizes.indexOf(size);
-    if (index === -1) { // no such size
-        return false;
-    }
+    // const index = product.sizes.indexOf(size);
+    // if (index === -1) { // no such size
+    //     return false;
+    // }
     const sizeStock = Object.values(product.stock).map(d => d[size]||0);
     const totalQty = sizeStock.reduce((a, b) => {
         return a + b;
