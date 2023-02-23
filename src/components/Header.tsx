@@ -36,10 +36,10 @@ const Header = () => {
     <Flex pos="sticky" zIndex={2} bg="#0e2b50" top={0} py={4} px={{ base: 4, md: 4, lg: 16 }} align="center">
       <HStack spacing={2}>
         <RouterLink to={routes.HOME}>
-          <Flex alignItems="center">
-            <Image src="/images/SCSE-Logo.png" alt="SCSE Logo" boxSize={14} />
+          <HStack align="center" gap="0.5em">
+            <Image src="https://cdn.ntuscse.com/LogoRedAccent.png" alt="SCSE Logo" boxSize={14} />
             <Heading ml={1} color="white">SCSE MERCH</Heading>
-          </Flex>
+          </HStack>
         </RouterLink>
       </HStack>
 
