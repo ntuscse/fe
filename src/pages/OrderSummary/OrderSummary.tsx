@@ -72,13 +72,12 @@ export const OrderSummary: FC = () => {
   const renderPendingMessage = () => (
     <>
       <Heading size="xl">PAYMENT PENDING</Heading>
-      <Text>
-        We are currently pending confirmation for your payment from our payment
-        processor. If you have paid, please check back later.
-      </Text>
-      <Text>
-        Should the issue persist, please contact us at merch@ntuscse.com with
-        proof of payment. We apologize for the inconvenience.
+      <Text align="center" mb={5}>
+        We are currently pending confirmation for your payment If you have
+        paid, please check back later. <br />
+        Should the issue persist, please contact us at <a
+        href="mailto:merch@ntuscse.com">merch@ntuscse.com</a> with proof of
+        payment. We apologize for the inconvenience.
       </Text>
       <Link to={routes.HOME}>
         <Button borderRadius={0} size="sm">
