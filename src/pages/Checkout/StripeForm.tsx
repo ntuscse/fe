@@ -59,7 +59,6 @@ const PaymentForm = () => {
       // TODO: remove userId as we do not have a login
       // TODO: order ID to be generated iteratively with api call
       setIsLoading(true);
-      // const checkoutCart = await api.postCheckoutCart(cartState.items, cartState.billingEmail, cartState.voucher)
 
       const payload : CartAction = {
        type: CartActionType.RESET_CART

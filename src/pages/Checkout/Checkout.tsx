@@ -19,7 +19,6 @@ export const Checkout: FC = () => {
   const cartContext = useCartStore();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const { state: cartState, dispatch: cartDispatch } = cartContext;
-  // const [checkoutState, setCheckoutState] = useState<CheckoutResponseDto | null>(null);
   const { state: checkoutState, setState: setCheckoutState } = useCheckoutStore()
 
   // For mapping between cart item and info
