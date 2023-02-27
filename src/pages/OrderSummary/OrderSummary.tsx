@@ -8,11 +8,13 @@ import {
   Divider,
   Image,
   Badge,
+  Show,
+  Hide,
 } from "@chakra-ui/react";
 import { Link, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import OrderItem from "../../components/OrderItem";
-import { renderOrderStatus } from "../../utils/constants/order-status";
+import { renderOrderStatus, getOrderStatusColor } from "../../utils/constants/order-status";
 import { QueryKeys } from "../../utils/constants/queryKeys";
 import { api } from "../../services/api";
 import { OrderStatusType, OrderType } from "../../typings/order";
@@ -77,30 +79,71 @@ export const OrderSummary: FC = () => {
         overflow="hidden"
         flexDir="column"
       >
-        <Flex justifyContent="space-between">
-          <Flex flexDir="column">
-            <Flex alignItems="center" gap={4}>
-              <Heading size="md">Order Number</Heading>
-              <Badge width="fit-content">
+        <Show below="md">
+          <Flex justifyContent="space-between">
+            <Flex flexDir="column" w="100%">
+              <Badge 
+                width="fit-content" 
+                fontSize="sm" 
+                mb={2} 
+                color={getOrderStatusColor(orderState?.status ?? OrderStatusType.DELAY)}
+              >
                 {renderOrderStatus(orderState?.status ?? OrderStatusType.DELAY)}
               </Badge>
+              <Heading size="md">Order Number</Heading>
+              <Heading size="lg">
+                {orderState?.orderID.split("-")[0]}
+              </Heading>
+              <Flex alignItems="center" mb={2}>
+                <Text fontSize="sm">{orderState?.orderID}</Text>
+              </Flex>
+              <Text fontSize="sm" color="grey">
+                Order date:{" "}
+                {orderState
+                  ? new Date(`${orderState.orderDateTime}Z`).toLocaleString(
+                      "en-sg"
+                    )
+                  : ""}
+              </Text>
+              <Text fontSize="sm" color="grey">
+                Last update: {orderState?.lastUpdate}
+              </Text>
             </Flex>
-            <Heading size="lg" mt={2}>
-              {orderState?.orderID}
-            </Heading>
           </Flex>
-          <Flex flexDir="column" fontSize="sm" color="grey">
-            <Text>
-              Order date:{" "}
-              {orderState
-                ? new Date(`${orderState.orderDateTime}Z`).toLocaleString(
-                    "en-sg"
-                  )
-                : ""}
-            </Text>
-            <Text>Last update: {orderState?.lastUpdate}</Text>
+        </Show>
+        <Hide below="md">
+          <Flex justifyContent="space-between">
+            <Flex flexDir="column">
+              <Flex alignItems="center" gap={6}>
+                <Heading size="md">Order Number</Heading>
+                <Badge 
+                  width="fit-content" 
+                  fontSize="sm" 
+                  color={getOrderStatusColor(orderState?.status ?? OrderStatusType.DELAY)}
+                >
+                  {renderOrderStatus(orderState?.status ?? OrderStatusType.DELAY)}
+                </Badge>
+              </Flex>
+              <Heading size="lg" mb={2}>
+                {orderState?.orderID.split("-")[0]}
+              </Heading>
+              <Flex alignItems="center">
+                <Text fontSize="sm">{orderState?.orderID}</Text>
+              </Flex>
+            </Flex>
+            <Flex flexDir="column" fontSize="sm" color="grey">
+              <Text>
+                Order date:{" "}
+                {orderState
+                  ? new Date(`${orderState.orderDateTime}Z`).toLocaleString(
+                      "en-sg"
+                    )
+                  : ""}
+              </Text>
+              <Text>Last update: {orderState?.lastUpdate}</Text>
+            </Flex>
           </Flex>
-        </Flex>
+        </Hide>
         <Divider my={4} />
         {orderState?.orderItems.map((item) => (
           <OrderItem data={item} isMobile={isMobile} />

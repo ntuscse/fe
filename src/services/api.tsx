@@ -1,12 +1,8 @@
-import { orderList } from "../data/mock/orderList";
-import { productList } from "../data/mock/product";
 import { CartItemType } from "../typings/cart";
 import { fakeDelay } from "../utils/functions/random";
 import { ProductType } from "../typings/product";
 
 const QUERY_DELAY_TIME = 1000;
-const CUSTOM_MOCK_DATA = false;
-const CUSTOM_STRIPE_DATA = false;
 
 export class Api {
   private API_ORIGIN: string;
@@ -45,10 +41,6 @@ export class Api {
   // eslint-disable-next-line class-methods-use-this
   async getProducts(): Promise<ProductType[]> {
     try {
-      if (CUSTOM_MOCK_DATA) {
-        await fakeDelay(QUERY_DELAY_TIME);
-        return productList;
-      }
       const res = await this.get("/products");
       console.log("product-list", res);
       return res?.products ?? [];
@@ -60,10 +52,6 @@ export class Api {
   // eslint-disable-next-line class-methods-use-this
   async getProduct(productId: string) {
     try {
-      if (CUSTOM_MOCK_DATA) {
-        await fakeDelay(QUERY_DELAY_TIME);
-        return productList.find((product) => product.id === productId);
-      }
       const res = await this.get(`/products/${productId}`);
       console.log("product res", res);
       return res;
@@ -74,18 +62,6 @@ export class Api {
 
   async getOrder(userId: string, orderId: string) {
     try {
-      if (CUSTOM_MOCK_DATA) {
-        await fakeDelay(QUERY_DELAY_TIME);
-        return orderList.find(
-          (order) => order.userId === userId && order.orderID === orderId
-        );
-      }
-      if (CUSTOM_STRIPE_DATA) {
-        await fakeDelay(QUERY_DELAY_TIME);
-        return (
-          JSON.parse(localStorage.getItem("order-history") as string)[0] ?? {}
-        );
-      }
       const res = await this.get(`/orders/${orderId}`);
       console.log("Order Summary response:", res);
       return res;
@@ -96,10 +72,6 @@ export class Api {
 
   async getOrderHistory(userId: string) {
     try {
-      if (CUSTOM_MOCK_DATA) {
-        await fakeDelay(QUERY_DELAY_TIME);
-        return orderList.filter((order) => order.userId === userId) ?? [];
-      }
       const res = await this.get(`/orders/${userId}`);
       console.log("Order Summary response:", res);
       return res.json();
@@ -114,11 +86,6 @@ export class Api {
     promoCode: string | null
   ) {
     try {
-      if (CUSTOM_MOCK_DATA) {
-        await fakeDelay(QUERY_DELAY_TIME);
-        // return orderList.filter((order) => order.userId === userId) ?? [];
-      }
-
       const res = await this.post(`/cart/checkout`, {
         items,
         promoCode: promoCode ?? "",
@@ -132,11 +99,6 @@ export class Api {
 
   async postQuotation(items: CartItemType[], promoCode: string | null) {
     try {
-      if (CUSTOM_MOCK_DATA) {
-        await fakeDelay(QUERY_DELAY_TIME);
-        // return orderList.filter((order) => order.userId === userId) ?? [];
-      }
-
       const res = await this.post(`/cart/quotation`, {
         items,
         promoCode: promoCode ?? "",

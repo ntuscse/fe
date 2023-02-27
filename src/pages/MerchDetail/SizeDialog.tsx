@@ -11,11 +11,12 @@ import {
 } from "@chakra-ui/react";
 
 type SizeDialogType = {
+  sizeChart?: string;
   isOpen: boolean;
   onClose: () => void;
 };
 
-const SizeDialog: React.FC<SizeDialogType> = ({ isOpen, onClose }) => {
+const SizeDialog: React.FC<SizeDialogType> = ({ sizeChart, isOpen, onClose }) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose} isCentered>
       <ModalOverlay />
@@ -24,7 +25,7 @@ const SizeDialog: React.FC<SizeDialogType> = ({ isOpen, onClose }) => {
         <Divider />
         <ModalCloseButton />
         <ModalBody width="fit-content">
-          <Image src="/images/size-chart.png" />
+          <Image src={sizeChart} />
         </ModalBody>
       </ModalContent>
     </Modal>
