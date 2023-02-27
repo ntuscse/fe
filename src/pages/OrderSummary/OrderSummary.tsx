@@ -31,7 +31,6 @@ export const OrderSummary: FC = () => {
   const isMobile: boolean =
     useBreakpointValue({ base: true, md: false }) || false;
   const { slug: orderSlug = "" } = useParams();
-  const [showThankYou, setShowThankYou] = useState<boolean>(false);
   const [orderState, setOrderState] = useState<OrderType | null>(null);
   // TODO: Fetch subtotal and total from server.
   const [total, setTotal] = useState(0);
@@ -48,7 +47,6 @@ export const OrderSummary: FC = () => {
             return item.price * item.quantity + acc;
           }, 0)
         );
-        setShowThankYou(true);
       },
     }
   );
@@ -56,7 +54,12 @@ export const OrderSummary: FC = () => {
   const renderThankYouMessage = () => (
     <>
       <Heading size="xl">THANK YOU</Heading>
-      <Text>Thank you for your purchase. We have received your order.</Text>
+      <Text>
+        Thank you for your purchase.
+        {orderState?.status === OrderStatusType.PAYMENT_COMPLETED
+          ? " We have received your order."
+          : " Your order has been collected."}
+      </Text>
       <Link to={routes.HOME}>
         <Button borderRadius={0} size="sm">
           CONTINUE SHOPPING
@@ -66,10 +69,71 @@ export const OrderSummary: FC = () => {
     </>
   );
 
+  const renderPendingMessage = () => (
+    <>
+      <Heading size="xl">PAYMENT PENDING</Heading>
+      <Text align="center" mb={5}>
+        We are currently pending confirmation for your payment If you have
+        paid, please check back later. <br />
+        Should the issue persist, please contact us at <a
+        href="mailto:merch@ntuscse.com">merch@ntuscse.com</a> with proof of
+        payment. We apologize for the inconvenience.
+      </Text>
+      <Link to={routes.HOME}>
+        <Button borderRadius={0} size="sm">
+          CONTINUE SHOPPING
+        </Button>
+      </Link>
+      <Divider my={8} />
+    </>
+  );
+
+  const renderStatusMessage = () => {
+    if (!orderState) return null;
+    switch (orderState?.status) {
+      case OrderStatusType.PAYMENT_COMPLETED:
+      case OrderStatusType.ORDER_COMPLETED:
+        return renderThankYouMessage();
+      case OrderStatusType.PENDING_PAYMENT:
+        return renderPendingMessage();
+      default:
+        return null;
+    }
+  };
+
+  const renderCollectionQR = () =>
+      <Flex
+        mt={6}
+        alignItems="center"
+        py={3}
+        borderRadius="lg"
+        borderWidth="1px"
+        flexDirection="column"
+        rowGap={4}
+      >
+        {/* TODO: QR Code generator based on Param. */}
+        <Image
+          maxWidth={40}
+          src={
+            orderState
+              ? `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://dev.merch.ntuscse.com/order-summary/${orderState?.orderID}`
+              : ""
+          }
+        />
+        <Text fontWeight="bold">
+          Please screenshot this QR code and show it at SCSE Lounge to collect
+          your order. Alternatively, show the email receipt you have received.
+        </Text>
+        <Text>
+          For any assistance, please contact our email address:
+          merch@ntuscse.com
+        </Text>
+      </Flex>
+
   const renderOrderSummary = () => (
     <>
       <Flex flexDirection="column" alignItems="center" rowGap={3}>
-        {showThankYou && renderThankYouMessage()}
+        {orderState && renderStatusMessage()}
       </Flex>
 
       <Flex
@@ -82,13 +146,13 @@ export const OrderSummary: FC = () => {
         <Show below="md">
           <Flex justifyContent="space-between">
             <Flex flexDir="column" w="100%">
-              <Badge 
-                width="fit-content" 
-                fontSize="sm" 
-                mb={2} 
-                color={getOrderStatusColor(orderState?.status ?? OrderStatusType.DELAY)}
+              <Badge
+                width="fit-content"
+                fontSize="sm"
+                mb={2}
+                color={getOrderStatusColor(orderState?.status ?? OrderStatusType.PENDING_PAYMENT)}
               >
-                {renderOrderStatus(orderState?.status ?? OrderStatusType.DELAY)}
+                {renderOrderStatus(orderState?.status ?? OrderStatusType.PENDING_PAYMENT)}
               </Badge>
               <Heading size="md">Order Number</Heading>
               <Heading size="lg">
@@ -116,12 +180,12 @@ export const OrderSummary: FC = () => {
             <Flex flexDir="column">
               <Flex alignItems="center" gap={6}>
                 <Heading size="md">Order Number</Heading>
-                <Badge 
-                  width="fit-content" 
-                  fontSize="sm" 
-                  color={getOrderStatusColor(orderState?.status ?? OrderStatusType.DELAY)}
+                <Badge
+                  width="fit-content"
+                  fontSize="sm"
+                  color={getOrderStatusColor(orderState?.status ?? OrderStatusType.PENDING_PAYMENT)}
                 >
-                  {renderOrderStatus(orderState?.status ?? OrderStatusType.DELAY)}
+                  {renderOrderStatus(orderState?.status ?? OrderStatusType.PENDING_PAYMENT)}
                 </Badge>
               </Flex>
               <Heading size="lg" mb={2}>
@@ -168,33 +232,7 @@ export const OrderSummary: FC = () => {
         </Flex>
       </Flex>
 
-      <Flex
-        mt={6}
-        alignItems="center"
-        py={3}
-        borderRadius="lg"
-        borderWidth="1px"
-        flexDirection="column"
-        rowGap={4}
-      >
-        {/* TODO: QR Code generator based on Param. */}
-        <Image
-          maxWidth={40}
-          src={
-            orderState
-              ? `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://dev.merch.ntuscse.com/order-summary/${orderState?.orderID}`
-              : ""
-          }
-        />
-        <Text fontWeight="bold">
-          Please screenshot this QR code and show it at SCSE Lounge to collect your order. 
-          Alternatively, show the email receipt you have received.
-        </Text>
-        <Text>
-          For any assistance, please contact our email address:
-          merch@ntuscse.com
-        </Text>
-      </Flex>
+      {orderState?.status === OrderStatusType.PAYMENT_COMPLETED && renderCollectionQR()}
     </>
   );
 

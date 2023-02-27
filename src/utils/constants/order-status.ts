@@ -2,12 +2,12 @@ import { OrderStatusType } from "../../typings/order";
 
 export const renderOrderStatus = (status: OrderStatusType) => {
   switch (status) {
-    case OrderStatusType.COLLECTED:
-      return "Order Collected";
-    case OrderStatusType.PROCESSING:
-      return "Processing";
-    case OrderStatusType.RECEIVED:
-      return "Order Received";
+    case OrderStatusType.PENDING_PAYMENT:
+      return "Pending Payment";
+    case OrderStatusType.PAYMENT_COMPLETED:
+      return "Payment Completed";
+    case OrderStatusType.ORDER_COMPLETED:
+      return "Order Delivered";
     default:
       return "Item Delayed";
   }
@@ -15,11 +15,11 @@ export const renderOrderStatus = (status: OrderStatusType) => {
 
 export const getOrderStatusColor = (status: OrderStatusType) => {
   switch (status) {
-    case OrderStatusType.COLLECTED:
+    case OrderStatusType.ORDER_COMPLETED:
       return "green.500";
-    case OrderStatusType.PROCESSING:
+    case OrderStatusType.PAYMENT_COMPLETED:
       return "primary.400";
-    case OrderStatusType.RECEIVED:
+    case OrderStatusType.PENDING_PAYMENT:
       return "primary.600";
     default:
       return "red.500";
