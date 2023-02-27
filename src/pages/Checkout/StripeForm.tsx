@@ -7,6 +7,7 @@ import { CartAction,CartActionType, useCartStore } from "../../context/cart";
 import routes from "../../utils/constants/routes";
 import { OrderStatusType } from "../../typings/order";
 import { api } from "../../services/api";
+import { useCheckoutStore } from "../../context/checkout";
 
 
 
@@ -25,6 +26,9 @@ const PaymentForm = () => {
   const { dispatch: cartDispatch, state: cartState } = cartContext;
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const toast = useToast();
+
+  const { state: checkoutState } = useCheckoutStore()
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     // We don't want to let default form submission happen here,
     // which would refresh the page.
@@ -55,13 +59,13 @@ const PaymentForm = () => {
       // TODO: remove userId as we do not have a login
       // TODO: order ID to be generated iteratively with api call
       setIsLoading(true);
-      const checkoutCart = await api.postCheckoutCart(cartState.items, cartState.billingEmail, cartState.voucher)
+
       const payload : CartAction = {
        type: CartActionType.RESET_CART
       }
       cartDispatch(payload);
       setIsLoading(false);
-      navigate(`${routes.ORDER_SUMMARY}/${checkoutCart.orderId}`);
+      navigate(`${routes.ORDER_SUMMARY}/${checkoutState?.orderId}`);
     }
   };
   return (

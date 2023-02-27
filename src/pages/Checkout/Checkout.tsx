@@ -12,13 +12,14 @@ import CheckoutSkeleton from "./Skeleton";
 import StripeForm from "./StripeForm";
 import { QueryKeys } from "../../utils/constants/queryKeys";
 import { displayPrice } from "../../utils/functions/currency";
+import { useCheckoutStore } from "../../context/checkout";
 
 export const Checkout: FC = () => {
   // Cart Context Hook.
   const cartContext = useCartStore();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const { state: cartState, dispatch: cartDispatch } = cartContext;
-  const [checkoutState, setCheckoutState] = useState<CheckoutResponseDto | null>(null);
+  const { state: checkoutState, setState: setCheckoutState } = useCheckoutStore()
 
   // For mapping between cart item and info
   // const [productInfo, setProductInfo] = useState<ProductInfoMapType>({});
@@ -72,12 +73,12 @@ export const Checkout: FC = () => {
           const subtotal = (product?.price ?? -1) * item.quantity;
           return (
             <Flex key={item.productId.toString()} mt={[4, 6]}>
-              <Image 
-                src={product?.images?.[0]} 
-                fallbackSrc="https://via.placeholder.com/100" 
+              <Image
+                src={product?.images?.[0]}
+                fallbackSrc="https://via.placeholder.com/100"
                 boxSize="70"
                 objectFit="contain"
-                borderRadius="md" 
+                borderRadius="md"
               />
               <Flex flexDirection="column" flex={1} ml={2}>
                 <Flex justifyContent="space-between" alignItems="flex-start">
@@ -106,13 +107,13 @@ export const Checkout: FC = () => {
         <Divider mt={[4, 8]} mb={[2, 4]} />
         <Flex justifyContent="flex-end" mt={2} fontWeight={500} fontSize={["sm", "md", "l"]} gap={2} color="gray.700">
           <Flex flexDir="column">
-            {/*<Text>Subtotal:</Text>*/}
-            {/*<Text>Discount:</Text>*/}
+            {/* <Text>Subtotal:</Text> */}
+            {/* <Text>Discount:</Text> */}
             <Text fontSize="lg">Grand total:</Text>
           </Flex>
           <Flex flexDir="column" textAlign="end">
-            {/*<Text>{displayPrice(checkoutState?.price?.subtotal ?? 0)}</Text>*/}
-            {/*<Text>{displayPrice(checkoutState?.price?.discount ?? 0)}</Text>*/}
+            {/* <Text>{displayPrice(checkoutState?.price?.subtotal ?? 0)}</Text> */}
+            {/* <Text>{displayPrice(checkoutState?.price?.discount ?? 0)}</Text> */}
             <Text fontSize="lg">{displayPrice(checkoutState?.price?.grandTotal ?? 0)}</Text>
           </Flex>
         </Flex>
