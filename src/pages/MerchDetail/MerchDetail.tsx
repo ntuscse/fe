@@ -118,7 +118,7 @@ export const MerchDetail: React.FC = () => {
 
   const ProductNameSection = (
     <Flex flexDirection="column" gap={1}>
-      <Heading color="primary.600" fontSize={["xl", "2xl", "3xl", "4xl"]}>
+      <Heading color="primary.600" fontSize={["xl", "2xl", "3xl", "4xl"]} data-testid="title-text">
         {product?.name}
         {!product?.isAvailable && (
           <Badge color="grey" ml={4} fontSize="md" variant="outline" display="inline">
@@ -131,7 +131,7 @@ export const MerchDetail: React.FC = () => {
           </Badge>
         )}
       </Heading>
-      <Text fontSize="xl" fontWeight={600} color="primary.600">
+      <Text fontSize="xl" fontWeight={600} color="primary.600" data-testid="price-text">
         {displayPrice(product?.price ?? 0)}
       </Text>
     </Flex>
@@ -145,7 +145,7 @@ export const MerchDetail: React.FC = () => {
           Size Chart
         </Button>
       </Flex>
-      <Flex gap={[4, 4]} flexWrap="wrap">
+      <Flex gap={[4, 4]} flexWrap="wrap" data-testid="sizes-flexbox">
         {product?.sizes?.map((size, idx) => {
           return (
             <SizeOption
@@ -175,7 +175,7 @@ export const MerchDetail: React.FC = () => {
                 ) 
               } 
             >
-              <Text textTransform="uppercase" fontSize={{ base: "sm", md: "md" }}>
+              <Text textTransform="uppercase" fontSize={{ base: "sm", md: "md" }} data-testid="sizes-text">
                 {size}
               </Text>
             </SizeOption>
@@ -190,7 +190,7 @@ export const MerchDetail: React.FC = () => {
       <Flex justifyContent="space-between" alignItems="center" mb={2} display="flex">
         <GroupTitle>Colors</GroupTitle>
       </Flex>
-      <Flex gap={[4, 4]} flexWrap="wrap">
+      <Flex gap={[4, 4]} flexWrap="wrap" data-testid="colors-text">
         {product?.colorways?.map((colorway, idx) => {
           return (
             <SizeOption
@@ -302,7 +302,7 @@ export const MerchDetail: React.FC = () => {
 
   const renderMerchDetails = () => {
     return (
-      <Grid templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(5, 1fr)" }}>
+      <Grid templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(5, 1fr)" }} data-testid="merch-list-grid">
         <GridItem colSpan={2} px={[0, 4]}>
           <MerchCarousel images={product?.images ?? []} />
         </GridItem>

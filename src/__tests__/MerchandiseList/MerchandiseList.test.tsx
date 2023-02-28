@@ -2,7 +2,7 @@ import "../../matchMedia.mock"
 import {renderComponent} from "../../utils/testing";
 import MerchandiseList from "../../pages/MerchandiseList";
 import '@testing-library/jest-dom'
-import { waitForElementToBeRemoved } from "@testing-library/react";
+import { fireEvent, waitForElementToBeRemoved } from "@testing-library/react";
 import { getProductsResponse } from "../../utils/fixtures/products";
 import Api from "../../services/api"
 
@@ -52,6 +52,14 @@ describe("Merchandise List", () => {
         expect(options).toEqual(
             ["All Product Type", "Sticker", "T-shirt", "Lanyard", "Hoodie"]
         )
+
+        // render correct hrefs
+        const stickersText = screen.getByText(/Graphic Stickers/i)
+        expect(screen.getByText('Graphic Stickers').closest('a')).toHaveAttribute('href', '/product/2022_005')
+        // expect(stickersText).toBeInTheDocument()
+        // fireEvent.click(stickersText)
+
+        // screen.debug()
         
     })
 })

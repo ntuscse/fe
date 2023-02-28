@@ -29,7 +29,7 @@ export const OrderHistory: FC = () => {
 
   const renderOrderHistory = () => {
     return (
-      <Box p={{ base: 8, lg: 12 }} maxWidth="1400px" mx="auto">
+      <Box p={{ base: 8, lg: 12 }} maxWidth="1400px" mx="auto" data-testid="order-history">
         <Flex flexDirection="column" alignItems="center" rowGap={3}>
           <Heading size="xl">MY PURCHASE</Heading>
         </Flex>

@@ -77,7 +77,7 @@ export const getProductResponse = {
     "name": "SCSE Standard T-shirt",
     "price": 1200,
     "images": ["https://cdn.ntuscse.com/merch/products/images/2022_001_01.jpeg", "https://cdn.ntuscse.com/merch/products/images/2022_001_02.jpeg", "https://cdn.ntuscse.com/merch/products/images/2022_001_03.jpeg"],
-    "sizes": ["3XS", "2XS", "XS", "S", "M", "XL", "2XL", "3XL"],
+    "sizes": ["S", "M", "XL"],
     "colorways": ["Black", "White", "Navy"],
     "productCategory": "T-shirt",
     "isAvailable": true,

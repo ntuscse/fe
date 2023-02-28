@@ -56,7 +56,7 @@ export const OrderSummary: FC = () => {
       <Heading size="xl">THANK YOU</Heading>
       <Text>Thank you for your purchase. We have received your order.</Text>
       <Link to={routes.HOME}>
-        <Button borderRadius={0} size="sm">
+        <Button borderRadius={0} size="sm" data-testid="continue-shopping-btn">
           CONTINUE SHOPPING
         </Button>
       </Link>
@@ -76,16 +76,17 @@ export const OrderSummary: FC = () => {
         borderRadius="lg"
         overflow="hidden"
         flexDir="column"
+        data-testid="order-summary"
       >
         <Flex justifyContent="space-between">
           <Flex flexDir="column">
             <Flex alignItems="center" gap={4}>
               <Heading size="md">Order Number</Heading>
-              <Badge width="fit-content">
+              <Badge width="fit-content" data-testid="order-status">
                 {renderOrderStatus(orderState?.status ?? OrderStatusType.DELAY)}
               </Badge>
             </Flex>
-            <Heading size="lg" mt={2}>
+            <Heading size="lg" mt={2} data-testid="order-id">
               {orderState?.orderID}
             </Heading>
           </Flex>
@@ -103,7 +104,7 @@ export const OrderSummary: FC = () => {
         </Flex>
         <Divider my={4} />
         {orderState?.orderItems.map((item) => (
-          <OrderItem data={item} isMobile={isMobile} />
+          <OrderItem data={item} isMobile={isMobile} key={item.id} />
         ))}
 
         <Flex alignItems="end" flexDirection="row" gap={1} mt={4}>
@@ -113,14 +114,14 @@ export const OrderSummary: FC = () => {
             <Text>Total:</Text>
           </Flex>
           <Flex flexDir="column" textAlign="end">
-            <Text fontSize="md"> {displayPrice(total)}</Text>
-            <Text fontSize="md">
+            <Text fontSize="md" data-testid="subtotal-text"> {displayPrice(total)}</Text>
+            <Text fontSize="md" data-testid="voucher-text">
               {displayPrice(
                 (orderState?.billing?.subtotal ?? 0) -
                   (orderState?.billing?.total ?? 0)
               )}
             </Text>
-            <Text fontSize="md">{displayPrice(total)}</Text>
+            <Text fontSize="md" data-testid="total-text">{displayPrice(orderState?.billing?.total ?? 0)}</Text>
           </Flex>
         </Flex>
       </Flex>
@@ -142,6 +143,7 @@ export const OrderSummary: FC = () => {
               ? `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://dev.merch.ntuscse.com/order-summary/${orderState?.orderID}`
               : ""
           }
+          data-testid="qr-code-img"
         />
         <Text fontWeight="bold">
           Please screenshot this QR code and show it at SCSE Lounge to collect your order. 

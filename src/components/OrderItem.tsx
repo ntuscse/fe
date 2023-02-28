@@ -19,7 +19,7 @@ const OrderItem: React.FC<OrderItemProps> = (props: OrderItemProps) => {
 
   return (
     <>
-      <Flex my="4" justifyContent="center">
+      <Flex my="4" justifyContent="center" data-testid="order-item">
         <Box boxShadow="sm" borderRadius={5} maxW={isMobile ? 150 : 100}>
           <Image w="100%" borderRadius={5} src={data?.image} fallbackSrc="https://via.placeholder.com/100" />
         </Box>

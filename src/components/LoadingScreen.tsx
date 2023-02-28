@@ -16,7 +16,7 @@ const LoadingScreen: React.FC<LoadingScreenType> = (props) => {
       gap={8}
     >
       <Spinner thickness="4px" speed="0.65s" size="xl" />
-      <Text>{text}</Text>
+      <Text data-testid="loading-screen-text">{text}</Text>
     </Flex>
   );
 };
