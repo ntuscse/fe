@@ -140,7 +140,7 @@ const CartItem: React.FC<CartItemProps> = ({ isMobile, data, onRemove, onQuantit
           <Text noOfLines={2} color="primary.600">
             {productInfo?.name}
           </Text>
-          <Button size="sm" variant="link" onClick={() => onRemove(data.productId, data.size)}>
+          <Button size="sm" variant="link" onClick={() => onRemove(data.productId, data.size)} data-testid = "cartItem-cross-button">
             <SmallCloseIcon h={5} w={5} />
           </Button>
         </Flex>
@@ -156,7 +156,7 @@ const CartItem: React.FC<CartItemProps> = ({ isMobile, data, onRemove, onQuantit
             {data.colorway}
           </Box>
         </Flex>
-        <Text fontWeight={500}>Unit Price: {unitPrice}</Text>
+        <Text fontWeight={500} data-testid="mobile-unit-price">Unit Price: {unitPrice}</Text>
         {quantityInput}
         <Text fontWeight={500}>Subtotal: {subTotalPrice}</Text>
       </Flex>

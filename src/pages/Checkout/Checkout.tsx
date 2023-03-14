@@ -15,6 +15,7 @@ import { displayPrice } from "../../utils/functions/currency";
 
 export const Checkout: FC = () => {
   // Cart Context Hook.
+
   const cartContext = useCartStore();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const { state: cartState, dispatch: cartDispatch } = cartContext;
@@ -23,7 +24,6 @@ export const Checkout: FC = () => {
   // For mapping between cart item and info
   // const [productInfo, setProductInfo] = useState<ProductInfoMapType>({});
   const { data: products, isLoading: isProductsQueryLoading } = useQuery([QueryKeys.PRODUCTS], () => api.getProducts(), {});
-
 
   // No of items;
   const noOfItems = cartState.items.length;
@@ -84,7 +84,7 @@ export const Checkout: FC = () => {
                   <Flex alignItems="center">
                     <Text fontSize="sm">{`Qty x${item.quantity}`}</Text>
                     <Badge h="fit-content" w="fit-content" ml={2}>
-                      <Text textTransform="uppercase">{item.size}</Text>
+                      <Text textTransform="uppercase" data-testid = 'checkout-size'>{item.size}</Text>
                     </Badge>
                   </Flex>
                   <Text>{displayPrice(product?.price ?? 0)} each</Text>
